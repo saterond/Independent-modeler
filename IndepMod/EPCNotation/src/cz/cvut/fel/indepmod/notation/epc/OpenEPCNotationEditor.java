@@ -16,6 +16,7 @@ public final class OpenEPCNotationEditor implements ActionListener {
         Editor editor = new Editor(
                             "Process Hierarchy",
                             new EPCCategoryChildrenFactory(),
+                            null,
                             null);
         editor.open();
         editor.requestActive();

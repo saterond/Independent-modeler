@@ -40,10 +40,5 @@
   <bounds x="422" y="184" width="537" height="338" />
     </editor-area>
     <screen width="1280" height="800"/>
-    <active-mode name="editor"/>
     <toolbar configuration="Standard" preferred-icon-size="24"/>
-    <tc-list>
-  <tc-id id="Editor_1"/>
-  <tc-id id="CommonPalette"/>
-    </tc-list>
 </windowmanager>

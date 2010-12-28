@@ -27,12 +27,12 @@ public class PaletteNodeChildrenFactory extends ChildFactory < PaletteNode > {
     @Override
     protected boolean createKeys(final List < PaletteNode > toPopulate) {
         if (this.getKey().equals("Common")) {
-            PaletteNode myNode = new PaletteNode();
-            myNode.setName("Note");
-            toPopulate.add(myNode);
-            myNode = new PaletteNode();
-            myNode.setName("Dependency");
-            toPopulate.add(myNode);
+            for (IndependentModelerPaletteNodeModel i :
+                                    IndependentModelerPaletteNodeModel.values()) {
+                PaletteNode node = new PaletteNode();
+                node.setName(i.name());
+                toPopulate.add(node);
+            }
         }
         return true;
     }
@@ -47,6 +47,7 @@ public class PaletteNodeChildrenFactory extends ChildFactory < PaletteNode > {
             }
 
         };
+        n.setName(myNodeKey.getName());
         n.setDisplayName(myNodeKey.getName());
         return n;
     }

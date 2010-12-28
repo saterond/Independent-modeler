@@ -10,7 +10,7 @@
         <attr name="_palette_visible__empty_" boolvalue="false"/>
     </fileobject>
     <fileobject name="editor">
-        <attr name="WinSys-TCRef-Order" stringvalue="Editor/Editor_3/Editor_1"/>
+        <attr name="WinSys-TCRef-Order" stringvalue="Editor/Editor_3/Editor_2/Editor_4/Editor_6/Editor_7/Editor_5/Editor_8"/>
     </fileobject>
     <fileobject name="explorer">
         <attr name="WinSys-TCRef-Order" serialvalue="aced0005737200316f72672e6f70656e6964652e66696c6573797374656d732e4d756c746946696c654f626a65637424566f696456616c7565d9ec9c94d5fd3ca40c0000787077040000000178"/>

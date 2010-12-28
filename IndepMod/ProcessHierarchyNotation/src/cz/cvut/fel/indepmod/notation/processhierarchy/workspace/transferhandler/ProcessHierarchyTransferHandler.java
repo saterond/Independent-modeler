@@ -1,5 +1,6 @@
 package cz.cvut.fel.indepmod.notation.processhierarchy.workspace.transferhandler;
 
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.CellFactory;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteNode;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.transferhandler.IndependentModelerTransferHandler;
 import cz.cvut.fel.indepmod.notation.processhierarchy.workspace.graphcells.DataCell;
@@ -15,8 +16,8 @@ import org.jgraph.graph.DefaultGraphCell;
  */  
 public class ProcessHierarchyTransferHandler extends IndependentModelerTransferHandler {
 
-    public ProcessHierarchyTransferHandler() {
-        super();
+    public ProcessHierarchyTransferHandler(CellFactory cellFactory) {
+        super(cellFactory);
     }
 
     @Override

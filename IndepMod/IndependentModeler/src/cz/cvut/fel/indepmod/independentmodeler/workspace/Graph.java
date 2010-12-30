@@ -10,6 +10,7 @@ import org.jgraph.graph.BasicMarqueeHandler;
 import org.jgraph.graph.DefaultGraphCell;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphConstants;
@@ -45,12 +46,27 @@ public class Graph extends JGraph {
     public void createCell(Point point, DefaultGraphCell[] cells) {
 //        DefaultGraphCell[] cells = new DefaultGraphCell[1];
 //        cells[0] = new NoteCell(); //TODO
-        GraphConstants.setBounds(cells[0].getAttributes(), new Rectangle2D.Double(point.getX(), point.getY(), 200, 100));
+        GraphConstants.setBounds(cells[0].getAttributes(), new Rectangle2D.Double(point.
+                getX(), point.getY(), 200, 100));
         GraphConstants.setOpaque(cells[0].getAttributes(), true);
         DefaultPort port0 = new DefaultPort();
         cells[0].add(port0);
         this.getGraphLayoutCache().insert(cells);
         this.repaint();
+    }
+
+    public void drawLine(Color newColor, Color oldColor, Point2D startingPoint,
+            Point2D actualPoint) {
+        if (startingPoint != null && actualPoint != null) {
+            Graphics2D g = (Graphics2D) this.getGraphics();
+            g.setColor(newColor);
+            g.setXORMode(oldColor);
+            g.drawLine(
+                    (int) startingPoint.getX(),
+                    (int) startingPoint.getY(),
+                    (int) actualPoint.getX(),
+                    (int) actualPoint.getY());
+        }
     }
 //
 //    private static final Logger LOG = Logger.getLogger(Graph.class.getName());

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module codename="cz.cvut.fel.indepmod.independentmodeler">
-    <module_version install_time="1293703311118" last="true" origin="installer" specification_version="1.0">
+    <module_version install_time="1293711154621" last="true" origin="installer" specification_version="1.0">
         <file crc="3058871629" name="config/Modules/cz-cvut-fel-indepmod-independentmodeler.xml"/>
-        <file crc="1982453611" name="modules/cz-cvut-fel-indepmod-independentmodeler.jar"/>
+        <file crc="1997047522" name="modules/cz-cvut-fel-indepmod-independentmodeler.jar"/>
     </module_version>
 </module>

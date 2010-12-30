@@ -47,7 +47,6 @@ public class PaletteListener implements PropertyChangeListener {
 //            }
 //        }
 //    }
-
     public String getSelectedTool() {
         return this.selectedTool;
     }
@@ -55,7 +54,7 @@ public class PaletteListener implements PropertyChangeListener {
     /**
      * @param selected the selectedTool to set
      */
-    private void setSelectedTool(final String selected) {
+    protected void setSelectedTool(final String selected) {
         this.selectedTool = selected;
     }
 
@@ -67,10 +66,28 @@ public class PaletteListener implements PropertyChangeListener {
     }
 
     public void resetPaletteTool() {
-        this.paletteController.setSelectedItem(this.paletteController.getSelectedCategory(), null);
+        this.paletteController.setSelectedItem(this.paletteController.
+                getSelectedCategory(), null);
+        this.setSelectedTool(null);
     }
 
-    public boolean isSelectedTool() {
-        return this.getSelectedTool() == null? false: true;
+    public boolean isElementSelected() {
+        String tool = this.getSelectedTool();
+        boolean ret = true;
+        if (tool == null || this.getSelectedTool().contains(
+                IndependentModelerPaletteNodeModel.Dependency.name())) {
+            ret = false;
+        }
+        return ret;
+    }
+
+    public boolean isDependencySelected() {
+        String tool = this.getSelectedTool();
+        boolean ret = false;
+        if (tool != null && this.getSelectedTool().contains(
+                IndependentModelerPaletteNodeModel.Dependency.name())) {
+            ret = true;
+        }
+        return ret;
     }
 }

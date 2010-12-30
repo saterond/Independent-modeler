@@ -9,7 +9,9 @@ import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.util.logging.Logger;
+import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.PortView;
 
 public class MarqueeHandler extends BasicMarqueeHandler {
@@ -48,7 +50,7 @@ public class MarqueeHandler extends BasicMarqueeHandler {
     @Override
     public void mousePressed(final MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e) && this.paletteListener.
-                isSelectedTool()) {
+                isElementSelected()) {
             this.handleButton1Pressed(e);
         } else if (SwingUtilities.isRightMouseButton(e)) {
             System.out.println("right button");
@@ -99,47 +101,52 @@ public class MarqueeHandler extends BasicMarqueeHandler {
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
-        System.out.println("mouse released");
-        super.mouseReleased(mouseEvent);
-//        if (this.startingPort != null && this.graph.isPortsVisible()) {
-//            this.printTempLine(Color.black, this.graph.getBackground());
-//
-//            if (this.actualPort != null && !this.actualPort.equals(this.startingPort)) {
-//                DefaultEdge edge = new DefaultEdge(); //TODO move this into ClassModelGraph and improve it!
-//                edge.setSource(this.startingPort.getCell());
-//                edge.setTarget(this.actualPort.getCell());
-//
-//                GraphConstants.setEndFill(edge.getAttributes(), true);
-//                GraphConstants.setLineStyle(edge.getAttributes(), GraphConstants.STYLE_ORTHOGONAL);
-//                GraphConstants.setLabelAlongEdge(edge.getAttributes(), false);
-//                GraphConstants.setEditable(edge.getAttributes(), true);
-//                GraphConstants.setMoveable(edge.getAttributes(), true);
-//                GraphConstants.setDisconnectable(edge.getAttributes(), false);
-//
-//                this.graph.getGraphLayoutCache().insert(edge);
-//            }
-//
-//            this.actualPort = null;
-//            this.actualPoint = null;
-//            this.startingPort = null;
-//            this.startingPoint = null;
-////            this.selectedToolModel.setSelectedTool(ToolChooserModel.Tool.TOOL_CONTROLL);
-//        } else {
-//            super.mouseReleased(mouseEvent);
-//        }
+        if (this.startingPort != null && this.graph.isPortsVisible()) {
+            this.printTempLine(Color.black, this.graph.getBackground());
+
+            if (this.actualPort != null && !this.actualPort.equals(
+                    this.startingPort)) {
+                DefaultEdge edge = new DefaultEdge(); //TODO move this into ClassModelGraph and improve it!
+                edge.setSource(this.startingPort.getCell());
+                edge.setTarget(this.actualPort.getCell());
+
+                GraphConstants.setEndFill(edge.getAttributes(), true);
+                GraphConstants.setLineStyle(edge.getAttributes(),
+                        GraphConstants.STYLE_ORTHOGONAL);
+                GraphConstants.setLabelAlongEdge(edge.getAttributes(), false);
+                GraphConstants.setEditable(edge.getAttributes(), true);
+                GraphConstants.setMoveable(edge.getAttributes(), true);
+                GraphConstants.setDisconnectable(edge.getAttributes(), false);
+
+                this.graph.getGraphLayoutCache().insert(edge);
+            }
+
+            this.actualPort = null;
+            this.actualPoint = null;
+            this.startingPort = null;
+            this.startingPoint = null;
+//            this.selectedToolModel.setSelectedTool(ToolChooserModel.Tool.TOOL_CONTROLL);
+//            this.resetPaletteTool(mouseEvent);
+        } else {
+            super.mouseReleased(mouseEvent);
+        }
     }
 
     @Override
     public boolean isForceMarqueeEvent(MouseEvent mouseEvent) {
+        boolean dependency = this.paletteListener.isDependencySelected();
+        this.graph.setPortsVisible(dependency);
+        this.graph.setJumpToDefaultPort(dependency);
 
 //        return super.isMarqueeTriggerEvent(mouseEvent, graph);
-        if (SwingUtilities.isRightMouseButton(mouseEvent) && !mouseEvent.isShiftDown()) {
+        if (SwingUtilities.isRightMouseButton(mouseEvent) && !mouseEvent.
+                isShiftDown()) {
             return true;
         }
-//
         this.actualPort = this.graph.getPortViewAt(mouseEvent.getPoint().getX(), mouseEvent.
                 getPoint().getY());
-        return (this.actualPort != null && this.graph.isPortsVisible()) || super.isForceMarqueeEvent(mouseEvent);
+        return (this.actualPort != null && this.graph.isPortsVisible()) || super.
+                isForceMarqueeEvent(mouseEvent);
     }
 
     public boolean addAction() {

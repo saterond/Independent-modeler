@@ -43,7 +43,8 @@
     <active-mode name="editor"/>
     <toolbar configuration="Standard" preferred-icon-size="24"/>
     <tc-list>
-  <tc-id id="Editor_8"/>
+  <tc-id id="Editor_9"/>
   <tc-id id="CommonPalette"/>
+  <tc-id id="Editor_1"/>
     </tc-list>
 </windowmanager>

@@ -92,7 +92,7 @@ public class ToolChooser extends ToolChooserView {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                LOG.fine("addClass tool choosed");
+                LOG.fine("addLifeline tool choosed");
                 model.setSelectedTool(ToolChooserModel.Tool.TOOL_LIFELINE);
             }
         });
@@ -101,8 +101,17 @@ public class ToolChooser extends ToolChooserView {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                LOG.fine("addRelation choosed");
+                LOG.fine("addMessage choosed");
                 model.setSelectedTool(ToolChooserModel.Tool.TOOL_MESSAGE);
+            }
+        });
+
+        this.returnButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LOG.fine("addMessage choosed");
+                model.setSelectedTool(ToolChooserModel.Tool.TOOL_RETURN);
             }
         });
     }
@@ -193,6 +202,9 @@ public class ToolChooser extends ToolChooserView {
                     break;
                 case TOOL_MESSAGE:
                     messageButton.doClick();
+                    break;
+                case TOOL_RETURN:
+                    returnButton.doClick();
                     break;
                 default:
                     LOG.severe("Unknown tool was selected!");

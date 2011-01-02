@@ -14,11 +14,13 @@ public class ToolChooserModel {
     public static final String TOOL_INTERACTION_NAME = "interaction";
     public static final String TOOL_LIFELINE_NAME = "lifeline";
     public static final String TOOL_MESSAGE_NAME = "message";
+    public static final String TOOL_RETURN_NAME = "return";
 
     public static enum Tool {
         TOOL_LIFELINE,
         TOOL_MESSAGE,
-        TOOL_INTERACTION
+        TOOL_INTERACTION,
+        TOOL_RETURN
     }
 
     public static final String SELECTED_TOOL_PROPERTY = "selectedTool";

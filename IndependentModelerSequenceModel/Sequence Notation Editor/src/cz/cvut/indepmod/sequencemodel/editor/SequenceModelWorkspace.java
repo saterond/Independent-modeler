@@ -6,10 +6,14 @@
 package cz.cvut.indepmod.sequencemodel.editor;
 
 import cz.cvut.indepmod.sequencemodel.api.ToolChooserModel;
+import cz.cvut.indepmod.sequencemodel.editor.actions.SequenceModelAbstractAction;
+import cz.cvut.indepmod.sequencemodel.editor.actions.SequenceModelEditAction;
+import cz.cvut.indepmod.sequencemodel.modelFactory.SequenceModelDiagramModelFactory;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.geom.Rectangle2D;
 import java.util.logging.Logger;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import org.jgraph.JGraph;
 import org.jgraph.event.GraphModelEvent;
@@ -35,18 +39,19 @@ import org.openide.windows.WindowManager;
  * @author hegladan <hegladan@fel.cvut.cz>
  */
 
-public class SequenceModelWorkspace extends TopComponent{
+public class SequenceModelWorkspace extends TopComponent implements GraphModelListener {
 
     private GraphModel model;
     private GraphLayoutCache view;
     private SequenceModelGraph graph;
     private ToolChooserModel selectedTool;
+    private JPopupMenu popupMenu;
     private InstanceContent lookupContent = new InstanceContent();
     private static SequenceModelWorkspace instance;
     private static final String PREFERRED_ID = "SequenceModelWorkspace";
 
     public SequenceModelWorkspace(){
-        this.initLayout();
+        this.init(SequenceModelDiagramModelFactory.getInstance().createEmptyDiagramModel().getLayoutCache());
         setName(NbBundle.getMessage(SequenceModelWorkspace.class, "CTL_Editor"));
         setToolTipText(NbBundle.getMessage(SequenceModelWorkspace.class, "HINT_Editor"));
     }
@@ -88,55 +93,43 @@ public class SequenceModelWorkspace extends TopComponent{
         super.open();
         }
 
-    private void initLayout() {
+    private void init(GraphLayoutCache cache) {
         this.model = new DefaultGraphModel();
         this.selectedTool = new ToolChooserModel();
-        this.view = new GraphLayoutCache(model, new DefaultCellViewFactory());
+        this.popupMenu = new JPopupMenu();
+        //this.view = new GraphLayoutCache(model, new DefaultCellViewFactory());
 
         this.graph = new SequenceModelGraph(selectedTool);
-        this.graph.setMarqueeHandler(new SequenceModelMarqueeHandler(this.graph,selectedTool));
-        this.graph.setGraphLayoutCache(view);
-        //this.graph.getModel().addGraphModelListener(this);
+        this.graph.setMarqueeHandler(new SequenceModelMarqueeHandler(this.graph,selectedTool,this.popupMenu));
+        this.graph.setGraphLayoutCache(cache);
+        this.graph.getModel().addGraphModelListener(this);
 
-        //initCells();
         initLookup();
+        initPopupMenu();
         this.setLayout(new GridLayout(1,1));
         this.add(new JScrollPane(this.graph));
 
     }
 
-    private void initCells(){
-        DefaultGraphCell[] cells = new DefaultGraphCell[3];
-        cells[0] = new DefaultGraphCell(new String(":Lifeline1"));
-        GraphConstants.setBounds(cells[0].getAttributes(), new Rectangle2D.Double(20, 20, 40, 30));
-        GraphConstants.setGradientColor(
-                cells[0].getAttributes(),
-                Color.orange);
-        GraphConstants.setOpaque(cells[0].getAttributes(), true);
-        DefaultPort port0 = new DefaultPort();
-        cells[0].add(port0);
-        cells[1] = new DefaultGraphCell(new String(""));
-        GraphConstants.setBounds(cells[1].getAttributes(), new Rectangle2D.Double(40, 140, 1, 1));
-        GraphConstants.setGradientColor(
-                cells[1].getAttributes(),
-                Color.red);
-        GraphConstants.setOpaque(cells[1].getAttributes(), true);
-        DefaultPort port1 = new DefaultPort();
-        cells[1].add(port1);
-        DefaultEdge edge = new DefaultEdge();
-        edge.setSource(cells[0].getChildAt(0));
-        edge.setTarget(cells[1].getChildAt(0));
-        cells[2] = edge;
-        int arrow = GraphConstants.PERMILLE;
-        GraphConstants.setLineEnd(edge.getAttributes(), arrow);
-        GraphConstants.setEndFill(edge.getAttributes(), true);
-        graph.getGraphLayoutCache().insert(cells);
+        private void initPopupMenu() {
+        //SequenceModelAbstractAction deleteAction = this.actions.get(SequenceModelDeleteAction.ACTION_NAME);
+        //deleteAction.setEnabled(true);
+
+        SequenceModelAbstractAction editAction = new SequenceModelEditAction(this.graph);
+
+        //this.popupMenu.add(deleteAction);
+        this.popupMenu.add(editAction);
     }
 
     private void initLookup() {
         this.associateLookup(new AbstractLookup(this.lookupContent));
         this.lookupContent.add(this.selectedTool);
         this.lookupContent.add(this.model);
+    }
+
+    @Override
+    public void graphChanged(GraphModelEvent gme) {
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

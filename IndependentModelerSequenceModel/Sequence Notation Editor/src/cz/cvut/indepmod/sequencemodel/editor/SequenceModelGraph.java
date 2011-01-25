@@ -9,6 +9,7 @@ import cz.cvut.indepmod.sequencemodel.api.ToolChooserModel;
 import cz.cvut.indepmod.sequencemodel.api.ToolChooserModelListener;
 import cz.cvut.indepmod.sequencemodel.editor.cell.SequenceModelCellFactory;
 import cz.cvut.indepmod.sequencemodel.editor.cell.model.MessageModel;
+import cz.cvut.indepmod.sequencemodel.editor.cell.model.PortModel;
 import cz.cvut.indepmod.sequencemodel.editor.cell.model.TypeModel;
 import cz.cvut.indepmod.sequencemodel.editor.frames.dialogs.SequenceModelEditMessageDialog;
 import java.awt.Point;
@@ -143,17 +144,9 @@ public class SequenceModelGraph extends JGraph{
         LOG.fine("adding new return cell");
         ToolChooserModel.Tool tool = this.selectedTool.getSelectedTool();
 
-        //DefaultGraphCell cells = SequenceModelCellFactory.createMessageCells(start, end, tool);
-
-        //this.getGraphLayoutCache().insert(cells);
-
-        DefaultEdge cl = (DefaultEdge) start.getParentView().getCell();
-
-        for(Object bla : cl.getChildren()){
-        System.out.println(bla.toString());
-        DefaultPort dp = (DefaultPort) bla;
-            System.out.println(dp.getEdges().size());    
-
+        DefaultGraphCell returnEdge = SequenceModelCellFactory.createReturnMessageCell(start,end);
+        if(returnEdge != null){
+        this.getGraphLayoutCache().insert(returnEdge);
         }
 
         this.selectedTool.setSelectedTool(ToolChooserModel.Tool.TOOL_INTERACTION);

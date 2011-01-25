@@ -8,12 +8,15 @@ import cz.cvut.indepmod.sequencemodel.api.ToolChooserModel;
 import cz.cvut.indepmod.sequencemodel.editor.SequenceModelGraph;
 import cz.cvut.indepmod.sequencemodel.editor.cell.model.LifelineModel;
 import cz.cvut.indepmod.sequencemodel.editor.cell.model.MessageModel;
+import cz.cvut.indepmod.sequencemodel.editor.cell.model.PortModel;
 import cz.cvut.indepmod.sequencemodel.editor.frames.dialogs.SequenceModelEditMessageDialog;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.List;
 import java.util.logging.Logger;
+import javax.swing.tree.TreeNode;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
@@ -53,7 +56,7 @@ public class SequenceModelCellFactory {
 
         int countPorts = 50;
         for (int i = 1; i < countPorts; i++) {
-            DefaultPort dp = new DefaultPort("port: " + i);
+            DefaultPort dp = new DefaultPort();
             GraphConstants.setOffset(dp.getAttributes(), new Point2D.Double(0, (GraphConstants.PERMILLE / countPorts) * i));
             cells[2].add(dp);
         }
@@ -114,8 +117,17 @@ public class SequenceModelCellFactory {
                 return null;
         }
 
+        DefaultPort startPort = (DefaultPort)start.getCell();
+        DefaultPort endPort = (DefaultPort)end.getCell();
+        startPort.setUserObject(new PortModel("start_port"));
+        endPort.setUserObject(new PortModel("end_port"));
+        start.setCell(startPort);
+        end.setCell(endPort);
+
+
         edge.setSource(start.getCell());
         edge.setTarget(end.getCell());
+        
 
         //add port for titleEdge
         DefaultPort portTitle = new DefaultPort();
@@ -147,7 +159,55 @@ public class SequenceModelCellFactory {
     }
     
     public static DefaultGraphCell createReturnMessageCell(PortView start, PortView end){
+        DefaultGraphCell[] edges = new DefaultGraphCell[3];
         DefaultEdge returnEdge = new DefaultEdge();
+        DefaultEdge liveOfMessage1 = new DefaultEdge();
+        DefaultEdge liveOfMessage2 = new DefaultEdge();
+        DefaultPort startPort = new DefaultPort();
+        DefaultPort endPort = new DefaultPort();
+
+        DefaultEdge startEdge = (DefaultEdge) start.getParentView().getCell();
+        DefaultEdge endEdge = (DefaultEdge) end.getParentView().getCell();
+        
+        List<Object> startPorts = startEdge.getChildren();
+        List<Object> endPorts = endEdge.getChildren();
+        int indexOfStartPort = startPorts.indexOf(start.getCell());
+        int i = indexOfStartPort;
+
+        while(i != 0){
+            Object startObjectPort = startPorts.get(i);
+            Object endObjectPort = endPorts.get(i);
+
+            if(startObjectPort.toString() != null && startObjectPort.toString().contains("end_port")){
+                startPort = (DefaultPort)startObjectPort;
+                endPort = (DefaultPort)endObjectPort;
+                startPort.setUserObject(new PortModel("live_start"));
+                endPort.setUserObject(new PortModel("live_end"));
+                break;
+            }
+            i--;
+            if(i == 0) return null;
+        }
+        /*
+        for(Object port : edge.getChildren()){
+        if(port.toString() != null){
+            startPort = (DefaultPort)port;
+            break;
+        }
+        }
+         *
+         */
+
+        if(startPort != null && endPort != null){
+            liveOfMessage1.setSource(startPort);
+            liveOfMessage1.setTarget(start.getCell());
+            GraphConstants.setLineWidth(liveOfMessage1.getAttributes(), 5);
+
+            liveOfMessage2.setSource(endPort);
+            liveOfMessage2.setTarget(end.getCell());
+            GraphConstants.setLineWidth(liveOfMessage2.getAttributes(), 5);
+        }
+
 
             if ((start != null) && (end != null)) {
                 returnEdge.setSource(start.getCell());
@@ -160,8 +220,11 @@ public class SequenceModelCellFactory {
                 GraphConstants.setLabelEnabled(returnEdge.getAttributes(), true);
                 GraphConstants.setLabelAlongEdge(returnEdge.getAttributes(), true);
             }else return null;
-        
-        return returnEdge;
+        edges[0] = returnEdge;
+        edges[1] = liveOfMessage1;
+        edges[2] = liveOfMessage2;
+
+        return new DefaultGraphCell(new String("return"), null, edges);
     }
 
 

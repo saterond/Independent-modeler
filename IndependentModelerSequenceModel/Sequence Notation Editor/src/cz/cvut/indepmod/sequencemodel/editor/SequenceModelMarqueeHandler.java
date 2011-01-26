@@ -48,12 +48,15 @@ public class SequenceModelMarqueeHandler extends BasicMarqueeHandler{
         this.popupMenu = popupMenu;
     }
 
+    //TODO - try refractor this method
     @Override
     public void mousePressed(final MouseEvent e){
         if(SwingUtilities.isRightMouseButton(e)){
         this.popupMenu.show(this.graph, e.getX(), e.getY());
         }else if (SwingUtilities.isLeftMouseButton(e) && isSelectedLifeline()){
             this.graph.insertLifelineCell(e.getPoint());
+        }else if (SwingUtilities.isLeftMouseButton(e) && isSelectedFragment()){
+            this.graph.insertFragmentCell(e.getPoint());
         }else if(this.actualPort != null && this.graph.isPortsVisible()){
             this.startPort = this.actualPort;
             this.startPoint = this.startPort.getLocation();
@@ -155,6 +158,22 @@ public class SequenceModelMarqueeHandler extends BasicMarqueeHandler{
 
         switch (tool) {
             case TOOL_MESSAGE:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public boolean isSelectedFragment(){
+        ToolChooserModel.Tool tool;
+        try {
+            tool = this.selectedTool.getSelectedTool();
+        } catch (ClassCastException ex) {
+            return false;
+        }
+
+        switch (tool) {
+            case TOOL_FRAGMENT:
                 return true;
             default:
                 return false;

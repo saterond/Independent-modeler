@@ -16,6 +16,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
 import javax.swing.tree.TreeNode;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
@@ -225,6 +227,46 @@ public class SequenceModelCellFactory {
         edges[2] = liveOfMessage2;
 
         return new DefaultGraphCell(new String("return"), null, edges);
+    }
+
+    public static DefaultGraphCell createFragmentCells(Point2D point, ToolChooserModel.Tool selectedTool) {
+        DefaultGraphCell[] cells = null;
+
+        switch (selectedTool) {
+            case TOOL_FRAGMENT:
+                cells = new DefaultGraphCell[2];
+                cells[0] = new DefaultGraphCell();
+                cells[1] = new DefaultGraphCell("Fragment");
+                break;
+            default:
+                LOG.severe("Unknown selected tool");
+        }
+
+       GraphConstants.setBounds(
+                cells[0].getAttributes(),
+                new Rectangle2D.Double(
+                point.getX(),
+                point.getY(),
+                200,
+                100));
+
+       GraphConstants.setBounds(
+                cells[1].getAttributes(),
+                new Rectangle2D.Double(
+                point.getX(),
+                point.getY(),
+                60,
+                20));
+
+       //GraphConstants.setOpaque(cells[0].getAttributes(), true);
+       GraphConstants.setBorder(cells[0].getAttributes(), BorderFactory.createLineBorder(Color.black));
+       GraphConstants.setBorder(cells[1].getAttributes(), BorderFactory.createLineBorder(Color.black));
+       GraphConstants.setSizeable(cells[1].getAttributes(), false);
+       GraphConstants.setOpaque(cells[1].getAttributes(), true);
+       GraphConstants.setAutoSize(cells[1].getAttributes(), true);
+       GraphConstants.setBackground(cells[1].getAttributes(), Color.white);
+
+        return new DefaultGraphCell(new String("fragment"), null, cells);
     }
 
 

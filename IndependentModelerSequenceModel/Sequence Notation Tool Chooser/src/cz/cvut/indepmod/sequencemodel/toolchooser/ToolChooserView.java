@@ -21,6 +21,7 @@ public class ToolChooserView extends TopComponent {
     protected JToggleButton lifelineButton = new JToggleButton(ToolChooserModel.TOOL_LIFELINE_NAME);
     protected JToggleButton messageButton = new JToggleButton(ToolChooserModel.TOOL_MESSAGE_NAME);
     protected JToggleButton returnButton = new JToggleButton(ToolChooserModel.TOOL_RETURN_NAME);
+    protected JToggleButton fragmentButton = new JToggleButton(ToolChooserModel.TOOL_FRAGMENT_NAME);
 
     public ToolChooserView() {
         this.setLayout(new GridLayout(20, 1));
@@ -33,6 +34,7 @@ public class ToolChooserView extends TopComponent {
         this.lifelineButton.setEnabled(false);
         this.messageButton.setEnabled(false);
         this.returnButton.setEnabled(false);
+        this.fragmentButton.setEnabled(false);
     }
 
     public void enableToolChooser() {
@@ -40,6 +42,7 @@ public class ToolChooserView extends TopComponent {
         this.lifelineButton.setEnabled(true);
         this.messageButton.setEnabled(true);
         this.returnButton.setEnabled(true);
+        this.fragmentButton.setEnabled(true);
     }
 
 
@@ -48,10 +51,12 @@ public class ToolChooserView extends TopComponent {
         this.add(this.lifelineButton);
         this.add(this.messageButton);
         this.add(this.returnButton);
+        this.add(this.fragmentButton);
 
         this.buttonGroup.add(this.interactionButton);
         this.buttonGroup.add(this.lifelineButton);
         this.buttonGroup.add(this.messageButton);
         this.buttonGroup.add(this.returnButton);
+        this.buttonGroup.add(this.fragmentButton);
     }
 }

@@ -110,8 +110,17 @@ public class ToolChooser extends ToolChooserView {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                LOG.fine("addMessage choosed");
+                LOG.fine("addReturn choosed");
                 model.setSelectedTool(ToolChooserModel.Tool.TOOL_RETURN);
+            }
+        });
+
+        this.fragmentButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LOG.fine("addFragment choosed");
+                model.setSelectedTool(ToolChooserModel.Tool.TOOL_FRAGMENT);
             }
         });
     }
@@ -205,6 +214,9 @@ public class ToolChooser extends ToolChooserView {
                     break;
                 case TOOL_RETURN:
                     returnButton.doClick();
+                    break;
+                case TOOL_FRAGMENT:
+                    fragmentButton.doClick();
                     break;
                 default:
                     LOG.severe("Unknown tool was selected!");

@@ -152,6 +152,18 @@ public class SequenceModelGraph extends JGraph{
         this.selectedTool.setSelectedTool(ToolChooserModel.Tool.TOOL_INTERACTION);
     }
 
+    public void insertFragmentCell(Point p) {
+        LOG.fine("adding new fragment cell");
+        ToolChooserModel.Tool tool = this.selectedTool.getSelectedTool();
+
+        DefaultGraphCell fragmentCell = SequenceModelCellFactory.createFragmentCells(p, tool);
+        if(fragmentCell != null){
+        this.getGraphLayoutCache().insert(fragmentCell);
+        }
+
+        this.selectedTool.setSelectedTool(ToolChooserModel.Tool.TOOL_INTERACTION);
+    }
+
         private void initEventHandling() {
         this.selectedTool.addListener(new ToolChooserModelListener() {
 

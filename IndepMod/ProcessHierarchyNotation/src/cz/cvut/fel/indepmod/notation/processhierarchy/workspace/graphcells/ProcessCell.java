@@ -21,4 +21,27 @@ public class ProcessCell extends Cell {
     public VertexView getVertexView() {
         return new ProcessView(this);
     }
+
+    public boolean canConnectTo(ProcessCell processCell) {
+        return true;
+    }
+
+    public boolean canConnectTo(RoleCell roleCell) {
+        return false;
+    }
+
+    public boolean canConnectTo(DataCell dataCell) {
+        return true;
+    }
+
+    @Override
+    public boolean canConnectTo(Cell cell) {
+        boolean ret = false;
+        if (cell instanceof ProcessCell) {
+            ret = true;
+        } else if (cell instanceof DataCell) {
+            ret = true;
+        }
+        return ret;
+    }
 }

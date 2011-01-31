@@ -6,26 +6,18 @@ import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.IndependentMode
  *
  * @author Petr Vales
  */
-public class CellFactory  {
+public class CellFactory {
 
-        public CellFactory() {
+    public CellFactory() {
         super();
     }
 
-
-    public Cell getCell(String cellName) {
-        if (cellName == null) {
-            return null;
-        }
-        return this.getCell(this.findNodeModel(cellName));
-//        Cell cell = null;
-//        if (cellName.contains("Note")) {
-//            cell = new NoteCell(cellName);
-//        } else if (cellName.contains("Dependency")) {
-//            cell = new RoundRectCell(cellName);
+//    public Cell getCell(String cellNode) {
+//        if (cellNode == null) {
+//            return null;
 //        }
-//        return cell;
-    }
+//        return this.getCell(this.findNodeModel(cellNode));
+//    }
 
     public Cell getCell(Enum cellNode) {
         if (cellNode == null) {
@@ -34,19 +26,17 @@ public class CellFactory  {
         Cell cell = null;
         if (cellNode == IndependentModelerPaletteNodeModel.Note) {
             cell = new NoteCell(cellNode.name());
-        } else if (cellNode == IndependentModelerPaletteNodeModel.Dependency) {
-            cell = new RoundRectCell(cellNode.name());
         }
         return cell;
     }
 
-    protected Enum findNodeModel(String cellName) {
-        for (IndependentModelerPaletteNodeModel i :
-                IndependentModelerPaletteNodeModel.values()) {
-            if (i.name().contains(cellName)) {
-                return i;
-            }
-        }
-        return null;
-    }
+//    protected Enum findNodeModel(String cellName) {
+//        for (IndependentModelerPaletteNodeModel i :
+//                IndependentModelerPaletteNodeModel.values()) {
+//            if (i.name().contains(cellName)) {
+//                return i;
+//            }
+//        }
+//        return null;
+//    }
 }

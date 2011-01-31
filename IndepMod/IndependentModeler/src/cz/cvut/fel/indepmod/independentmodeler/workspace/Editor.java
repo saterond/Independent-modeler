@@ -26,7 +26,7 @@ public class Editor extends TopComponent {
 
     private PaletteController palette;
     private JScrollPane scenePane = new JScrollPane();
-    private Graph graph = new Graph();
+    private Graph graph;
     private IndependentModelerTransferHandler transferHandler;
     private PaletteListener paletteListener;
     private CellFactory cellFactory;

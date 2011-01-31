@@ -21,5 +21,6 @@ abstract public class Cell extends DefaultGraphCell{
      * @return
      */
     abstract public VertexView getVertexView();
+    abstract public boolean canConnectTo(Cell cell);
 
 }

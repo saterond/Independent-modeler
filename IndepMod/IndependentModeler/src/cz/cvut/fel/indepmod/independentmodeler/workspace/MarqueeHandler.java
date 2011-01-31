@@ -1,17 +1,16 @@
 package cz.cvut.fel.indepmod.independentmodeler.workspace;
 
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteListener;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.CellFactory;
 import java.awt.Color;
 import org.jgraph.graph.BasicMarqueeHandler;
-
-import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.util.logging.Logger;
-import org.jgraph.graph.DefaultEdge;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.PortView;
 
 public class MarqueeHandler extends BasicMarqueeHandler {
@@ -27,179 +26,225 @@ public class MarqueeHandler extends BasicMarqueeHandler {
     private PortView startingPort;
     private Point2D startingPoint;
 
-    public MarqueeHandler(Graph graph,
-            PaletteListener paletteListener,
-            CellFactory cellFactory,
-            JPopupMenu popupMenu) {
+    public MarqueeHandler(final Graph _graph,
+            final PaletteListener _paletteListener,
+            final CellFactory _cellFactory,
+            final JPopupMenu _popupMenu) {
         super();
-        this.graph = graph;
-        this.paletteListener = paletteListener;
-        this.cellFactory = cellFactory;
+        this.graph = _graph;
+        this.paletteListener = _paletteListener;
+        this.cellFactory = _cellFactory;
 //        this.popupMenu = popupMenu;
-//
         this.actualPort = null;
         this.actualPoint = null;
         this.startingPort = null;
         this.startingPoint = null;
     }
 
-    public Graph getGraph() {
-        return graph;
-    }
-
     @Override
     public void mousePressed(final MouseEvent e) {
-        if (SwingUtilities.isLeftMouseButton(e) && this.paletteListener.
+        if (SwingUtilities.isLeftMouseButton(e) && this.getPaletteListener().
                 isElementSelected()) {
-            this.handleButton1Pressed(e);
+            this.handleLeftButtonPressed(e);
         } else if (SwingUtilities.isRightMouseButton(e)) {
-            System.out.println("right button");
-        } else if (this.actualPort != null && this.graph.isPortsVisible()) {
-            this.startingPort = this.actualPort;
-            this.startingPoint = this.startingPort.getLocation();
+            this.handleRightButtonPressed(e);
+        } else if (this.getActualPort() != null
+                && this.getGraph().isPortsVisible()) {
+            this.setStartingPort(this.getActualPort());
+            this.setStartingPoint(this.getStartingPort().getLocation());
         } else {
             super.mousePressed(e);
         }
         this.resetPaletteTool(e);
-//        if (SwingUtilities.isRightMouseButton(e)) {
-//            this.popupMenu.show(this.graph, e.getX(), e.getY());
-//        } else if (this.addAction()) {
-////            this.graph.insertCell(e.getPoint());
-//        } else if (this.actualPort != null && this.graph.isPortsVisible()) {
-//            this.startingPort = this.actualPort;
-//            this.startingPoint = this.startingPort.getLocation();
-//        } else {
-//            super.mousePressed(e);
-//        }
     }
 
-    private void handleButton1Pressed(final MouseEvent e) {
+    private void handleLeftButtonPressed(final MouseEvent e) {
+        LOG.fine("handleLeftButtonPressed");
         DefaultGraphCell[] cells = new DefaultGraphCell[1];
-        cells[0] = this.cellFactory.getCell(
-                this.paletteListener.getSelectedTool());
+//        cells[0] = this.getCellFactory().getCell(this.getPaletteListener().
+//                getSelectedToolEnum());
+        cells[0] = this.getPaletteListener().getCell();
         if (cells[0] != null) {
             this.getGraph().createCell(e.getPoint(), cells);
         }
     }
 
+    private void handleRightButtonPressed(final MouseEvent e) {
+        LOG.fine("handleRightButtonPressed");
+    }
+
     @Override
-    public void mouseDragged(MouseEvent mouseEvent) {
-        if (this.startingPort != null && this.graph.isPortsVisible()) {
+    public void mouseDragged(final MouseEvent mouseEvent) {
+        if (this.getStartingPort() != null && this.getGraph().isPortsVisible()) {
             LOG.fine("mouseDraged");
-            this.printTempLine(Color.black, this.graph.getBackground());
+            this.drawTempLine(Color.black, this.getGraph().getBackground());
 
-            this.actualPort = this.graph.getPortViewAt(mouseEvent.getPoint().
-                    getX(), mouseEvent.getPoint().getY());
-            this.actualPoint = this.actualPort != null ? this.actualPort.
-                    getLocation() : mouseEvent.getPoint();
-
-            this.printTempLine(Color.black, this.graph.getBackground());
+            this.setActualPort(this.getGraph().getPortViewAt(mouseEvent.getPoint().
+                    getX(), mouseEvent.getPoint().getY()));
+            if (this.getActualPort() != null) {
+                this.setActualPoint(this.getActualPort().getLocation());
+            } else {
+                this.setActualPoint(mouseEvent.getPoint());
+            }
+            this.drawTempLine(Color.black, this.getGraph().getBackground());
         } else {
             super.mouseDragged(mouseEvent);
         }
     }
 
     @Override
-    public void mouseReleased(MouseEvent mouseEvent) {
-        if (this.startingPort != null && this.graph.isPortsVisible()) {
-            this.printTempLine(Color.black, this.graph.getBackground());
+    public void mouseReleased(final MouseEvent mouseEvent) {
+        if (this.getStartingPort() != null && this.getGraph().isPortsVisible()) {
+            LOG.fine("mouseReleased");
+            this.drawTempLine(Color.black, this.getGraph().getBackground());
+            if (this.getActualPort() != null && !this.getActualPort().equals(
+                    this.getStartingPort())) {
 
-            if (this.actualPort != null && !this.actualPort.equals(
-                    this.startingPort)) {
-                DefaultEdge edge = new DefaultEdge(); //TODO move this into ClassModelGraph and improve it!
-                edge.setSource(this.startingPort.getCell());
-                edge.setTarget(this.actualPort.getCell());
-
-                GraphConstants.setEndFill(edge.getAttributes(), true);
-                GraphConstants.setLineStyle(edge.getAttributes(),
-                        GraphConstants.STYLE_ORTHOGONAL);
-                GraphConstants.setLabelAlongEdge(edge.getAttributes(), false);
-                GraphConstants.setEditable(edge.getAttributes(), true);
-                GraphConstants.setMoveable(edge.getAttributes(), true);
-                GraphConstants.setDisconnectable(edge.getAttributes(), false);
-
-                this.graph.getGraphLayoutCache().insert(edge);
+                if (((Cell) this.getStartingPort().getParentView().getCell()).
+                        canConnectTo((Cell) this.getActualPort().getParentView().
+                        getCell())) {
+                    this.getGraph().addEdge(this.getStartingPort(), this.
+                            getActualPort());
+                }
             }
-
-            this.actualPort = null;
-            this.actualPoint = null;
-            this.startingPort = null;
-            this.startingPoint = null;
-//            this.selectedToolModel.setSelectedTool(ToolChooserModel.Tool.TOOL_CONTROLL);
-//            this.resetPaletteTool(mouseEvent);
+            this.setActualPort(null);
+            this.setActualPoint(null);
+            this.setStartingPort(null);
+            this.setStartingPoint(null);
         } else {
             super.mouseReleased(mouseEvent);
         }
     }
 
     @Override
-    public boolean isForceMarqueeEvent(MouseEvent mouseEvent) {
-        boolean dependency = this.paletteListener.isDependencySelected();
-        this.graph.setPortsVisible(dependency);
-        this.graph.setJumpToDefaultPort(dependency);
-
-//        return super.isMarqueeTriggerEvent(mouseEvent, graph);
+    public boolean isForceMarqueeEvent(final MouseEvent mouseEvent) {
+        this.handleGraphPorts();
         if (SwingUtilities.isRightMouseButton(mouseEvent) && !mouseEvent.
                 isShiftDown()) {
             return true;
         }
-        this.actualPort = this.graph.getPortViewAt(mouseEvent.getPoint().getX(), mouseEvent.
-                getPoint().getY());
-        return (this.actualPort != null && this.graph.isPortsVisible()) || super.
+        this.setActualPort(this.getGraph().getPortViewAt(
+                mouseEvent.getPoint().getX(), mouseEvent.getPoint().getY()));
+        return (this.getActualPort() != null && this.graph.isPortsVisible()) || super.
                 isForceMarqueeEvent(mouseEvent);
     }
 
-    public boolean addAction() {
-        return true;
-//        IndependentModelerPaletteNodeModel tool =
-//                    this.paletteListener.getSelectedTool();
-////        try {
-//////            tool = this.selectedToolModel.getSelectedTool();
-////        } catch (ClassCastException ex) {
-////            return false;
-////        }
-//        //TODO predelat
-//        if (tool == IndependentModelerPaletteNodeModel.Note) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//
-//        switch (tool) {
-//            case TOOL_ADD_CLASS:
-//                return true;
-//            default:
-//        return false;
-//        }
+    private void handleGraphPorts() {
+        this.getGraph().setPortsVisible(this.getPaletteListener().
+                isDependencySelected());
+        this.getGraph().setJumpToDefaultPort(this.getPaletteListener().
+                isDependencySelected());
     }
 
-    //TODO - newColor and oldColor are the same in all calls
-    /**
-     * This method prints temporary line when user want add an connection between vertices. Line is printed in XOR mode,
-     * so if newColor pixel is printed on the pixel with the same color (newColor color), the oldColor pixel is
-     * printed (like XOR operation)
-     *
-     * @param newColor color which will be used if repainted pixel has another color
-     * @param oldColor color which will be used if repainted pixel has equal color to the newColor
-     */
-    private void printTempLine(Color newColor, Color oldColor) {
-        graph.drawLine(newColor, oldColor, this.startingPoint, this.actualPoint);
-//        if (this.startingPoint != null && this.actualPoint != null) {
-//            Graphics2D g = (Graphics2D) this.graph.getGraphics();
-//            g.setColor(newColor);
-//            g.setXORMode(oldColor);
-//
-//            g.drawLine(
-//                    (int) this.startingPoint.getX(),
-//                    (int) this.startingPoint.getY(),
-//                    (int) this.actualPoint.getX(),
-//                    (int) this.actualPoint.getY());
-//        }
+//    public boolean addAction() {
+//        return true;
+////        IndependentModelerPaletteNodeModel tool =
+////                    this.paletteListener.getSelectedTool();
+//////        try {
+////////            tool = this.selectedToolModel.getSelectedTool();
+//////        } catch (ClassCastException ex) {
+//////            return false;
+//////        }
+////        //TODO predelat
+////        if (tool == IndependentModelerPaletteNodeModel.Note) {
+////            return true;
+////        } else {
+////            return false;
+////        }
+////
+////        switch (tool) {
+////            case TOOL_ADD_CLASS:
+////                return true;
+////            default:
+////        return false;
+////        }
+//    }
+    private void drawTempLine(final Color newColor, final Color oldColor) {
+        graph.drawLine(newColor, oldColor, this.getStartingPoint(), this.
+                getActualPoint());
     }
 
     private void resetPaletteTool(final MouseEvent e) {
         if (!e.isShiftDown()) {
-            this.paletteListener.resetPaletteTool();
+            this.getPaletteListener().resetPaletteTool();
         }
+    }
+
+    /**
+     * @return PaletteListener
+     */
+    public PaletteListener getPaletteListener() {
+        return paletteListener;
+    }
+
+    /**
+     *
+     * @return Graph
+     */
+    public Graph getGraph() {
+        return graph;
+    }
+
+    /**
+     * @return the actualPort
+     */
+    public PortView getActualPort() {
+        return actualPort;
+    }
+
+    /**
+     * @param actualPort the actualPort to set
+     */
+    private void setActualPort(PortView actualPort) {
+        this.actualPort = actualPort;
+    }
+
+    /**
+     * @return the actualPoint
+     */
+    public Point2D getActualPoint() {
+        return actualPoint;
+    }
+
+    /**
+     * @param actualPoint the actualPoint to set
+     */
+    private void setActualPoint(Point2D actualPoint) {
+        this.actualPoint = actualPoint;
+    }
+
+    /**
+     * @return the startingPort
+     */
+    public PortView getStartingPort() {
+        return startingPort;
+    }
+
+    /**
+     * @param startingPort the startingPort to set
+     */
+    private void setStartingPort(PortView startingPort) {
+        this.startingPort = startingPort;
+    }
+
+    /**
+     * @return the startingPoint
+     */
+    public Point2D getStartingPoint() {
+        return startingPoint;
+    }
+
+    /**
+     * @param startingPoint the startingPoint to set
+     */
+    private void setStartingPoint(Point2D startingPoint) {
+        this.startingPoint = startingPoint;
+    }
+
+    /**
+     * @return the cellFactory
+     */
+    public CellFactory getCellFactory() {
+        return cellFactory;
     }
 }

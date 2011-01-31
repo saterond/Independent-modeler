@@ -1,46 +1,29 @@
 package cz.cvut.fel.indepmod.independentmodeler.workspace;
 
-//import cz.cvut.indepmod.classmodel.actions.ClassModelEditAction;
-//import cz.cvut.indepmod.classmodel.api.ToolChooserModelListener;
-//import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
-//import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
-import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.NoteCell;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.IndependentModelerCellViewFactory;
 import org.jgraph.JGraph;
 import org.jgraph.graph.BasicMarqueeHandler;
 import org.jgraph.graph.DefaultGraphCell;
-
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
+import org.jgraph.graph.PortView;
 
+/**
+ *
+ * @author Petr Vales
+ */
 public class Graph extends JGraph {
-
-    public Graph(GraphModel gm, GraphLayoutCache glc, BasicMarqueeHandler bmh) {
-        super(gm, glc, bmh);
-    }
-
-    public Graph(GraphModel gm, BasicMarqueeHandler bmh) {
-        super(gm, bmh);
-    }
 
     public Graph(GraphModel gm, GraphLayoutCache glc) {
         super(gm, glc);
-    }
-
-    public Graph(GraphLayoutCache glc) {
-        super(glc);
-    }
-
-    public Graph(GraphModel gm) {
-        super(gm);
-    }
-
-    public Graph() {
-        super();
+        this.getGraphLayoutCache().setFactory(
+                new IndependentModelerCellViewFactory());
     }
 
     public void createCell(Point point, DefaultGraphCell[] cells) {
@@ -67,6 +50,31 @@ public class Graph extends JGraph {
                     (int) actualPoint.getX(),
                     (int) actualPoint.getY());
         }
+    }
+
+    public void addEdge(PortView beginPort, PortView endPort) {
+        DefaultEdge edge = new DefaultEdge();
+
+
+        GraphConstants.setEndFill(edge.getAttributes(), true);
+        GraphConstants.setLineStyle(edge.getAttributes(),
+                GraphConstants.STYLE_ORTHOGONAL);
+        GraphConstants.setLabelAlongEdge(edge.getAttributes(), true);
+        GraphConstants.setEditable(edge.getAttributes(), true);
+        GraphConstants.setMoveable(edge.getAttributes(), true);
+        GraphConstants.setDisconnectable(edge.getAttributes(), false);
+        GraphConstants.setRouting(edge.getAttributes(),
+                GraphConstants.ROUTING_SIMPLE);
+        GraphConstants.setBendable(edge.getAttributes(), true);
+        GraphConstants.setLineEnd(edge.getAttributes(),
+                GraphConstants.ARROW_SIMPLE);
+
+        edge.setSource(beginPort.getCell());
+        edge.setTarget(endPort.getCell());
+
+
+        this.getGraphLayoutCache().insert(edge);
+        this.repaint();
     }
 //
 //    private static final Logger LOG = Logger.getLogger(Graph.class.getName());

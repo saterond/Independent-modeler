@@ -25,6 +25,7 @@ public class CategoryChildrenFactory extends ChildFactory < String > {
     protected Node createNodeForKey(final String key) {
         Node node = new AbstractNode(Children.create(
                         new PaletteNodeChildrenFactory(key),true));
+
         node.setDisplayName(key);
         return node;
     }

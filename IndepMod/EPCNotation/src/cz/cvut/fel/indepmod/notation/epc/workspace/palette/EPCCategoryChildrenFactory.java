@@ -22,8 +22,7 @@ public class EPCCategoryChildrenFactory
 
     @Override
     protected boolean createKeys(final List<String> toPopulate) {
-//        super.createKeys(toPopulate);
-        toPopulate.add("EPC");
+        toPopulate.add("EPC Notation");
         return true;
     }
 

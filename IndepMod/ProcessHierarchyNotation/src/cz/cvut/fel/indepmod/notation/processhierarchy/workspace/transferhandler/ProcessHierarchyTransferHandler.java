@@ -13,6 +13,7 @@ import org.jgraph.graph.DefaultGraphCell;
 /**
  *
  * @author Petr Vales
+ * @deprecated 
  */  
 public class ProcessHierarchyTransferHandler extends IndependentModelerTransferHandler {
 

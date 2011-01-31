@@ -21,5 +21,11 @@ public class NoteCell extends Cell {
         return new NoteView(this);
     }
 
+    @Override
+    public boolean canConnectTo(Cell cell) {
+        return true;
+    }
+
+
 
 }

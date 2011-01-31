@@ -32,15 +32,15 @@ public class ProcessHierarchyCellFactory extends CellFactory {
     }
 
     
-    @Override
-    protected Enum findNodeModel(String cellName) {
-        for (ProcessHierarchyPaletteNodeModel i :
-                ProcessHierarchyPaletteNodeModel.values()) {
-            if (i.name().contains(cellName)) {
-                return i;
-            }
-        }
-        return super.findNodeModel(cellName);
-    }
+//    @Override
+//    protected Enum findNodeModel(String cellName) {
+//        for (ProcessHierarchyPaletteNodeModel i :
+//                ProcessHierarchyPaletteNodeModel.values()) {
+//            if (i.name().contains(cellName)) {
+//                return i;
+//            }
+//        }
+//        return super.findNodeModel(cellName);
+//    }
 
 }

@@ -21,4 +21,25 @@ public class RoleCell extends Cell {
     public VertexView getVertexView() {
         return new RoleView(this);
     }
+
+    public boolean canConnectTo(ProcessCell processCell) {
+        return true;
+    }
+
+    public boolean canConnectTo(RoleCell roleCell) {
+        return false;
+    }
+
+    public boolean canConnectTo(DataCell dataCell) {
+        return false;
+    }
+
+    @Override
+    public boolean canConnectTo(Cell cell) {
+        boolean ret = false;
+        if (cell instanceof ProcessCell) {
+            ret = true;
+        }
+        return ret;
+    }
 }

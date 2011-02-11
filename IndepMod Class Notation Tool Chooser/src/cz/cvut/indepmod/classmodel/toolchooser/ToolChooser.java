@@ -66,6 +66,62 @@ public class ToolChooser extends ToolChooserView {
         this.model = model;
     }
 
+    /**
+     * Gets default instance. Do not use directly: reserved for *.settings files only,
+     * i.e. deserialization routines; otherwise you could get a non-deserialized instance.
+     * To obtain the singleton instance, use {@link #findInstance}.
+     */
+    public static synchronized ToolChooser getDefault() {
+        if (instance == null) {
+            instance = new ToolChooser();
+        }
+        return instance;
+    }
+
+    /**
+     * Obtain the MyViewerTopComponent instance. Never call {@link #getDefault} directly!
+     */
+    public static synchronized ToolChooser findInstance() {
+        TopComponent win = WindowManager.getDefault().findTopComponent(PREFERRED_ID);
+        if (win == null) {
+            LOG.warning("Cannot find " + PREFERRED_ID + " component. It will not be located properly in the window system.");
+            return getDefault();
+        }
+        if (win instanceof ToolChooser) {
+            return (ToolChooser) win;
+        }
+        LOG.warning(
+                "There seem to be multiple components with the '" + PREFERRED_ID
+                + "' ID. That is a potential source of errors and unexpected behavior.");
+        return getDefault();
+    }
+
+    @Override
+    public void open() {
+        Mode m = WindowManager.getDefault().findMode("rightSlidingSide");
+        if (m != null) {
+            m.dockInto(this);
+        }
+        super.open();
+    }
+    
+    @Override
+    protected void componentClosed() {
+        this.modelLookup.removeLookupListener(this.toolChooserLookupLsnr);
+        this.modelLookup = null;
+    }
+
+    @Override
+    protected void componentOpened() {
+        this.modelLookup = Utilities.actionsGlobalContext().lookup(new Lookup.Template(ToolChooserModel.class));
+        this.modelLookup.addLookupListener(this.toolChooserLookupLsnr);
+    }
+
+    @Override
+    protected String preferredID() {
+        return PREFERRED_ID;
+    }
+
     private void initActions() {
         this.controllButton.addActionListener(new ActionListener() {
 
@@ -102,53 +158,6 @@ public class ToolChooser extends ToolChooserView {
                 model.setSelectedTool(ToolChooserModel.Tool.TOOL_ADD_GENERALIZATION);
             }
         });
-    }
-
-    @Override
-    protected void componentClosed() {
-        this.modelLookup.removeLookupListener(this.toolChooserLookupLsnr);
-        this.modelLookup = null;
-    }
-
-    @Override
-    protected void componentOpened() {
-        this.modelLookup = Utilities.actionsGlobalContext().lookup(new Lookup.Template(ToolChooserModel.class));
-        this.modelLookup.addLookupListener(this.toolChooserLookupLsnr);
-    }
-
-    /**
-     * Gets default instance. Do not use directly: reserved for *.settings files only,
-     * i.e. deserialization routines; otherwise you could get a non-deserialized instance.
-     * To obtain the singleton instance, use {@link #findInstance}.
-     */
-    public static synchronized ToolChooser getDefault() {
-        if (instance == null) {
-            instance = new ToolChooser();
-        }
-        return instance;
-    }
-
-    /**
-     * Obtain the MyViewerTopComponent instance. Never call {@link #getDefault} directly!
-     */
-    public static synchronized ToolChooser findInstance() {
-        TopComponent win = WindowManager.getDefault().findTopComponent(PREFERRED_ID);
-        if (win == null) {
-            LOG.warning("Cannot find " + PREFERRED_ID + " component. It will not be located properly in the window system.");
-            return getDefault();
-        }
-        if (win instanceof ToolChooser) {
-            return (ToolChooser) win;
-        }
-        LOG.warning(
-                "There seem to be multiple components with the '" + PREFERRED_ID
-                + "' ID. That is a potential source of errors and unexpected behavior.");
-        return getDefault();
-    }
-
-    @Override
-    protected String preferredID() {
-        return PREFERRED_ID;
     }
 
     private class ToolChooserModelLookupListener implements LookupListener {

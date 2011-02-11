@@ -18,6 +18,10 @@ public class ClassModelCellViewFactory extends DefaultCellViewFactory {
 
     @Override
     protected VertexView createVertexView(Object o) {
-        return new ClassModelVertexView(o);
+        if (o instanceof ClassModelClassCell) {
+            return new ClassModelVertexView(o);
+        } else {
+            return super.createVertexView(o);
+        }
     }
 }

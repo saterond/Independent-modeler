@@ -1,6 +1,7 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
 
+import cz.cvut.indepmod.classmodel.util.GridBagConstraintsUtils;
 import javax.swing.*;
 import java.awt.*;
 
@@ -56,32 +57,75 @@ public class ClassModelEditClassDialogView extends ClassModelAbstractDialog {
     }
 
     private void initLayout() {
-        this.setLayout(new GridLayout(9, 2));
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints c = null;
 
-        this.add(this.classNameLabel);
-        this.add(this.classNameField);
+        c = GridBagConstraintsUtils.createNewConstraints(0, 0, 1, 1);
+        c.anchor = GridBagConstraints.LINE_START;
+        this.add(this.classNameLabel, c);
 
-        this.add(this.addAnotationButton);
-        this.add(this.removeAnotationButton);
+        c = GridBagConstraintsUtils.createNewConstraints(1, 0, 2, 1);
+        c.weightx = 0.5;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        this.add(this.classNameField, c);
 
-        this.add(this.anotationsLabel);
-        this.add(this.anotationList);
+        c = GridBagConstraintsUtils.createNewConstraints(0, 1, 1, 1);
+        c.anchor = GridBagConstraints.LINE_START;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        this.add(this.anotationsLabel, c);
+        
+        c = GridBagConstraintsUtils.createNewConstraints(1, 1, 1, 3);
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        c.fill = GridBagConstraints.BOTH;
+        this.add(new JScrollPane(this.anotationList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), c);
 
-        this.add(this.addAttributeButton);
-        this.add(this.removeAttributeButton);
-        //this.add(this.editAttributeButton);
-        //this.add(new JLabel());
+        c = GridBagConstraintsUtils.createNewConstraints(2, 1, 1, 1);
+        this.add(this.addAnotationButton, c);
 
-        this.add(this.attributesLabel);
-        this.add(this.attributeList);
+        c = GridBagConstraintsUtils.createNewConstraints(2, 2, 1, 1);
+        this.add(this.removeAnotationButton, c);
 
-        this.add(this.addMethodButton);
-        this.add(this.removeMethodButton);
+        
+        c = GridBagConstraintsUtils.createNewConstraints(0, 4, 1, 1);
+        c.anchor = GridBagConstraints.LINE_START;
+        this.add(this.attributesLabel, c);
 
-        this.add(this.methodsLabel);
-        this.add(this.methodList);
+        c = GridBagConstraintsUtils.createNewConstraints(1, 4, 1, 3);
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        c.fill = GridBagConstraints.BOTH;
+        this.add(new JScrollPane(this.attributeList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), c);
 
-        this.add(this.saveButton);
-        this.add(this.cancelButton);
+        c = GridBagConstraintsUtils.createNewConstraints(2, 4, 1, 1);
+        this.add(this.addAttributeButton, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(2, 5, 1, 1);
+        this.add(this.removeAttributeButton, c);
+
+        
+        c = GridBagConstraintsUtils.createNewConstraints(0, 7, 1, 1);
+        c.anchor = GridBagConstraints.LINE_START;
+        this.add(this.methodsLabel, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(1, 7, 1, 3);
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        c.fill = GridBagConstraints.BOTH;
+        this.add(new JScrollPane(this.methodList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(2, 7, 1, 1);
+        this.add(this.addMethodButton, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(2, 8, 1, 1);
+        this.add(this.removeMethodButton, c);
+
+
+        c = GridBagConstraintsUtils.createNewConstraints(1, 10, 1, 1);
+        c.anchor = GridBagConstraints.LINE_END;
+        this.add(this.saveButton, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(2, 10, 1, 1);
+        this.add(this.cancelButton, c);
     }
 }

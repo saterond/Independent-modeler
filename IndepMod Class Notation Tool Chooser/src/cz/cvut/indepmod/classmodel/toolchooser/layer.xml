@@ -22,7 +22,7 @@
             <file name="ToolChooser.settings" url="ToolChooserSettings.xml"/>
         </folder>
         <folder name="Modes">
-            <folder name="rightSlidingSide">
+            <folder name="properties">
                 <file name="ToolChooser.wstcref" url="ToolChooserWstcref.xml"/>
             </folder>
         </folder>

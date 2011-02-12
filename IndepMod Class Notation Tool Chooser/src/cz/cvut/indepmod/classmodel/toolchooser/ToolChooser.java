@@ -98,12 +98,14 @@ public class ToolChooser extends ToolChooserView {
 
     @Override
     public void open() {
-        Mode m = WindowManager.getDefault().findMode("rightSlidingSide");
+        Mode m = WindowManager.getDefault().findMode("properties");
         if (m != null) {
             m.dockInto(this);
         }
         super.open();
     }
+
+
     
     @Override
     protected void componentClosed() {

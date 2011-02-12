@@ -23,6 +23,8 @@ public class ClassModelAbstractDialog extends JDialog {
         Rectangle abounds = getBounds();
         setLocation((dim.width - abounds.width) / 2,
                 (dim.height - abounds.height) / 2);
+
+        this.setMinimumSize(this.getSize());
         this.setVisible(true);
         this.requestFocus();
     }

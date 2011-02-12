@@ -81,9 +81,11 @@ public class ClassModelEditClassDialogView extends ClassModelAbstractDialog {
         this.add(new JScrollPane(this.anotationList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), c);
 
         c = GridBagConstraintsUtils.createNewConstraints(2, 1, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
         this.add(this.addAnotationButton, c);
 
         c = GridBagConstraintsUtils.createNewConstraints(2, 2, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
         this.add(this.removeAnotationButton, c);
 
         
@@ -98,9 +100,11 @@ public class ClassModelEditClassDialogView extends ClassModelAbstractDialog {
         this.add(new JScrollPane(this.attributeList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), c);
 
         c = GridBagConstraintsUtils.createNewConstraints(2, 4, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
         this.add(this.addAttributeButton, c);
 
         c = GridBagConstraintsUtils.createNewConstraints(2, 5, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
         this.add(this.removeAttributeButton, c);
 
         
@@ -115,9 +119,11 @@ public class ClassModelEditClassDialogView extends ClassModelAbstractDialog {
         this.add(new JScrollPane(this.methodList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), c);
 
         c = GridBagConstraintsUtils.createNewConstraints(2, 7, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
         this.add(this.addMethodButton, c);
 
         c = GridBagConstraintsUtils.createNewConstraints(2, 8, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
         this.add(this.removeMethodButton, c);
 
 
@@ -126,6 +132,7 @@ public class ClassModelEditClassDialogView extends ClassModelAbstractDialog {
         this.add(this.saveButton, c);
 
         c = GridBagConstraintsUtils.createNewConstraints(2, 10, 1, 1);
+        c.anchor = GridBagConstraints.LINE_START;
         this.add(this.cancelButton, c);
     }
 }

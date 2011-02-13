@@ -38,6 +38,7 @@ public class ClassModelGraph extends JGraph {
         this.initActions();
         this.initEventHandling();
         this.initStaticTypes();
+        this.setDoubleBuffered(true);
     }
 
     //TODO - this could be saved (and updated when model id changed)

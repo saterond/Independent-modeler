@@ -1,5 +1,6 @@
 package cz.cvut.indepmod.classmodel.workspace.cell.components;
 
+import cz.cvut.indepmod.classmodel.util.GridBagConstraintsUtils;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
@@ -9,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.Set;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,107 +31,104 @@ public class ClassComponent extends JComponent {
 
     public ClassComponent(ClassModel model) {
         this.model = model;
-    }
 
-    @Override
-    public void paint(Graphics g) {
-        Dimension d = this.getSize();
-        int namePartHeight = this.getNamePartHeight();
-        int attributePartHeight = this.getAttributePartHeight();
-        int methodPartHeight = this.getMethodPartHeight();
-        int anotationPartHeight = this.getAnotationPartHeight();
-
-        this.paintClassPart(g.create(0, 0, d.width, namePartHeight));
-        this.paintAnotationPart(g.create(0, namePartHeight, d.width, anotationPartHeight));
-        this.paintAttributePart(g.create(0, namePartHeight + anotationPartHeight, d.width, attributePartHeight));
-        this.paintMethodPart(g.create(0, namePartHeight + anotationPartHeight + attributePartHeight, d.width, methodPartHeight));
+        this.initLayout();
     }
 
     @Override
     public Dimension getPreferredSize() {
-        int width = 100;
-        int height = this.getNamePartHeight() + this.getAnotationPartHeight() + this.getMethodPartHeight() + this.getAttributePartHeight();
+        int width = 0;
+        int height = 0;
+        for (Component child : this.getComponents()) {
+            Dimension prefSize = child.getPreferredSize();
+            if (prefSize.width > width) {
+                width = prefSize.width;
+            }
+
+            height += prefSize.height;
+        }
         return new Dimension(width, height);
     }
 
-    private void paintClassPart(Graphics g) {
-        int width = getSize().width;
-        int height = this.getNamePartHeight();
-        String className = this.model.toString();
 
-        g.setColor(Color.BLACK);
-        g.drawRect(0, 0, width - 1, height - 1);
 
-        g.setFont(CLASS_NAME_FONT);
-        Rectangle2D rect = g.getFontMetrics().getStringBounds(className, g);
-        g.drawString(className, (int) ((width - rect.getWidth()) / 2), height - 5);
+    private void initLayout() {
+        this.setLayout(new GridBagLayout());
+        this.setBackground(Color.WHITE);
+        GridBagConstraints c = new GridBagConstraints();
+        c.weightx = 0.5;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = GridBagConstraints.RELATIVE;
+
+        this.add(this.getClassNamePanel(), c);
+        this.add(this.getAnotationPanel(), c);
+        this.add(this.getAttributePanel(), c);
+
+        c.weighty = 0.5;
+        c.fill = GridBagConstraints.BOTH;
+        this.add(this.getMethodPanel(), c);
     }
 
-    private void paintAnotationPart(Graphics g) {
-        int width = getSize().width;
-        int height = this.getAttributePartHeight();
+    private JPanel getClassNamePanel() {
+        JPanel res = new JPanel(new GridBagLayout());
+        res.setBorder(new LineBorder(Color.BLACK));
+
+        GridBagConstraints c = new GridBagConstraints();
+        JLabel className = new JLabel(this.model.getTypeName());
+        res.add(className, c);
+
+        return res;
+    }
+
+    private JPanel getAnotationPanel() {
+        JPanel res = new JPanel(new GridBagLayout());
+        res.setBorder(new LineBorder(Color.BLACK));
+
         Set<AnotationModel> anots = this.model.getAnotations();
-
-        g.setColor(Color.BLACK);
-        g.drawRect(0, 0, width - 1, height - 1);
-
-        g.setFont(CLASS_NAME_FONT);
-
-        int stage = 1;
         for (AnotationModel anot : anots ) {
-            g.drawString(anot.toString(), 5, stage * 20 - 5);
-            stage++;
+            JLabel anotLabel = new JLabel(anot.toString());
+            GridBagConstraints c = new GridBagConstraints();
+            c.gridx = 0;
+            c.gridy = GridBagConstraints.RELATIVE;
+            c.anchor = GridBagConstraints.LINE_START;
+            res.add(anotLabel, c);
         }
+
+        return res;
     }
 
-    private void paintAttributePart(Graphics g) {
-        int width = getSize().width;
-        int height = this.getAttributePartHeight();
+    private JPanel getAttributePanel() {
+        JPanel res = new JPanel(new GridBagLayout());
+        res.setBorder(new LineBorder(Color.BLACK));
+
         Set<AttributeModel> attrs = this.model.getAttributeModels();
-
-        g.setColor(Color.BLACK);
-        g.drawRect(0, 0, width - 1, height - 1);
-
-        g.setFont(CLASS_NAME_FONT);
-        //Rectangle2D rect = g.getFontMetrics().getStringBounds(className, g);
-
-        int stage = 1;
         for (AttributeModel attr : attrs ) {
-            g.drawString(attr.toString(), 5, stage * 20 - 5);
-            stage++;
+            JLabel anotLabel = new JLabel(attr.toString());
+            GridBagConstraints c = new GridBagConstraints();
+            c.gridx = 0;
+            c.gridy = GridBagConstraints.RELATIVE;
+            c.anchor = GridBagConstraints.LINE_START;
+            res.add(anotLabel, c);
         }
+
+        return res;
     }
 
-    private void paintMethodPart(Graphics g) {
-        int width = getSize().width;
-        int height = this.getMethodPartHeight();
+    private JPanel getMethodPanel() {
+        JPanel res = new JPanel(new GridBagLayout());
+        res.setBorder(new LineBorder(Color.BLACK));
+
         Set<MethodModel> attrs = this.model.getMethodModels();
-
-        g.setColor(Color.BLACK);
-        g.drawRect(0, 0, width - 1, height - 1);
-
-        g.setFont(CLASS_NAME_FONT);
-
-        int stage = 1;
         for (MethodModel method : attrs) {
-            g.drawString(method.toString(), 5, stage * 20 - 5);
-            stage++;
+            JLabel anotLabel = new JLabel(method.toString());
+            GridBagConstraints c = new GridBagConstraints();
+            c.gridx = 0;
+            c.gridy = GridBagConstraints.RELATIVE;
+            c.anchor = GridBagConstraints.LINE_START;
+            res.add(anotLabel, c);
         }
-    }
 
-    private int getNamePartHeight() {
-        return 20;
-    }
-
-    private int getMethodPartHeight() {
-        return 3 + this.model.getMethodModels().size() * 20;
-    }
-
-    private int getAttributePartHeight() {
-        return 3 + this.model.getAttributeModels().size() * 20;
-    }
-
-    private int getAnotationPartHeight() {
-        return 3 + this.model.getAnotations().size() * 20;
+        return res;
     }
 }

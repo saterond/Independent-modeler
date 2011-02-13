@@ -20,9 +20,11 @@ import org.jgraph.graph.DefaultGraphCell;
 import java.awt.*;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import org.jgraph.graph.GraphConstants;
 
 /**
  * Created by IntelliJ IDEA.
@@ -96,7 +98,9 @@ public class ClassModelEditClassDialog extends ClassModelEditClassDialogView imp
      * cell's view should be updated (e.g. attribute action adds an attribute)
      */
     public void updateCell() {
-        this.graph.getGraphLayoutCache().editCell(this.cell, new HashMap());
+        Map<Object, Object> attributes = new HashMap<Object, Object>();
+        GraphConstants.setResize(attributes, true);
+        this.graph.getGraphLayoutCache().editCell(this.cell, attributes);
     }
 
     /**

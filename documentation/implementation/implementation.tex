@@ -76,15 +76,41 @@ This module consists of Interfaces which implementations can be found in the loo
 
 In this package there are interfaces which can be used to read the Class Model Notation Model. There is an implementation of the IClassModelModel interface in the workspace lookup. This object provides the list of Classes from a model. Classes provides the list of annotations, attributes, methods and relations to other classes. And so on with the attributes, etc. 
 
-Relation between (two) classes is represented by instance of IRelation interface. IClass returns the list of IRelations that belongs to it. IRelation holds information about its type (simple relation, composition, agregation, generalization, implementation) and about what class is at the beginning and at the end of the relation, including cardinalities. The interface structure can be seen in the Figure \ref{f-ModuleAPIClassModelModelInterface}.
+Relation between (two) classes is represented by instance of IRelation interface. IClass returns the list of IRelations that belongs to it. IRelation holds information about its type (simple relation, composition, agregation, generalization, implementation) and about what class is at the beginning and at the end of the relation, including cardinalities. 
 
-\begin{figure}[!ht]
+Cardinalities are represented by instance of ICardinality interface. The ICardinality interface has two methods (getFrom() and getTo()) which return from and to value (both are of integer type). Sign of infinity (e.g. 1..* or *) is treated as -1. In the Table \ref{tab:cardinalityExamples} you can see examples of return values of some cardinalities.
+
+\begin{table}[h]
 \begin{center}
-\includegraphics[width=\textwidth]{img/ModuleAPIClassModelModelInterface.png}
-\caption{Class Diagram of ClassModel API package}
-\label{f-ModuleAPIClassModelModelInterface}
+\begin{tabular}{|l|c|c|}
+	\hline
+	{ \bf Cardinality } & { \bf getFrom() result } & { \bf getTo() result } \\
+	\hline \hline
+	0 (or 0..0)      & 0 & 0  \\
+	1 (or 1..1)      & 1 & 1  \\
+   4 (or 4..4)      & 4 & 4  \\
+	* (or 0..*)      & 0 & -1 \\
+	1..*             & 1 & -1 \\
+   0..1             & 0 & 1  \\
+   2..5             & 2 & 5  \\
+	\hline
+\end{tabular}
+\caption{Examples of cardinalities}
+\label{tab:cardinalityExamples}
 \end{center}
-\end{figure}
+\end{table}
+
+TODO: Image with structure (tree)
+
+%The interface structure can be seen in the Figure \ref{f-ModuleAPIClassModelModelInterface}.
+
+%\begin{figure}[!ht]
+%\begin{center}
+%\includegraphics[width=\textwidth]{img/ModuleAPIClassModelModelInterface.png}
+%\caption{Class Diagram of ClassModel API package}
+%\label{f-ModuleAPIClassModelModelInterface}
+%\end{center}
+%\end{figure}
 
 \subsection{ToolChooser API (cz.cvut.indepmod.classmodel.api.toolchooser)}
 

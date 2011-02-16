@@ -26,13 +26,13 @@ public interface IRelation {
      * Returns the starting cardinality
      * @return the starting cardinality
      */
-    public Cardinality getStartCardinality();
+    public ICardinality getStartCardinality();
 
     /**
      * Returns the ending cardinality
      * @return the ending cardinality
      */
-    public Cardinality getEndCardinality();
+    public ICardinality getEndCardinality();
 
     /**
      * Return the type of the relation (Generalization, Agregation, ...)

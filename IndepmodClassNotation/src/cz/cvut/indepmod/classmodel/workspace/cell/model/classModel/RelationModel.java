@@ -1,6 +1,5 @@
 package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 
-import cz.cvut.indepmod.classmodel.api.model.Cardinality;
 import cz.cvut.indepmod.classmodel.api.model.RelationType;
 import org.jgraph.graph.GraphConstants;
 

@@ -1,8 +1,8 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
 import cz.cvut.indepmod.classmodel.actions.ClassModelEditRelationDialogSave;
-import cz.cvut.indepmod.classmodel.api.model.Cardinality;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.RelationModel;
 import java.awt.Frame;
 import java.awt.event.ItemEvent;
@@ -59,6 +59,19 @@ public class ClassModelEditRelationDialog extends ClassModelEditRelationDialogVi
     }
 
     private void initValues() {
+        this.sourceCardinality.removeAllItems();
+        this.targetCardinality.removeAllItems();
+
+        this.sourceCardinality.addItem(Cardinality.ZERO);
+        this.sourceCardinality.addItem(Cardinality.ONE);
+        this.sourceCardinality.addItem(Cardinality.ZERO_INFINITY);
+        this.sourceCardinality.addItem(Cardinality.ONE_INFINITY);
+
+        this.targetCardinality.addItem(Cardinality.ZERO);
+        this.targetCardinality.addItem(Cardinality.ONE);
+        this.targetCardinality.addItem(Cardinality.ZERO_INFINITY);
+        this.targetCardinality.addItem(Cardinality.ONE_INFINITY);
+
         this.sourceCardinality.setSelectedItem(model.getStartCardinality());
         this.targetCardinality.setSelectedItem(model.getEndCardinality());
     }

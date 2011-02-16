@@ -1,8 +1,8 @@
 package cz.cvut.indepmod.classmodel.workspace.cell;
 
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
-import cz.cvut.indepmod.classmodel.api.model.Cardinality;
 import cz.cvut.indepmod.classmodel.api.model.RelationType;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.GeneralizationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.RelationModel;

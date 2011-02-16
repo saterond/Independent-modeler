@@ -1,8 +1,8 @@
 package cz.cvut.indepmod.classmodel.actions;
 
-import cz.cvut.indepmod.classmodel.api.model.Cardinality;
 import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditRelationDialog;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import java.awt.event.ActionEvent;
 import java.util.Hashtable;
 import java.util.Map;

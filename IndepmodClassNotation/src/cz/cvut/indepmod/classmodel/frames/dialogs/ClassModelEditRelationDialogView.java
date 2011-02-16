@@ -1,6 +1,5 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
-import cz.cvut.indepmod.classmodel.api.model.Cardinality;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import javax.swing.JButton;
@@ -39,8 +38,8 @@ public class ClassModelEditRelationDialogView extends ClassModelAbstractDialog {
 
         this.sourceCardinLab = new JLabel(SOURCE_CARD_LABEL_TEXT);
         this.targetCardinLab = new JLabel(TARGET_CARD_LABEL_TEXT);
-        this.sourceCardinality = new JComboBox(Cardinality.values());
-        this.targetCardinality = new JComboBox(Cardinality.values());
+        this.sourceCardinality = new JComboBox();
+        this.targetCardinality = new JComboBox();
         this.saveButton = new JButton(SAVE_TEXT);
         this.cancelButton = new JButton(CANCEL_TEXT);
 

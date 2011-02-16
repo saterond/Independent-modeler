@@ -1,5 +1,6 @@
 package cz.cvut.indepmod.classmodel.persistence.xml;
 
+import java.awt.geom.Point2D;
 import cz.cvut.indepmod.classmodel.Common;
 import cz.cvut.indepmod.classmodel.api.model.IClass;
 import java.util.Collection;
@@ -15,6 +16,7 @@ import cz.cvut.indepmod.classmodel.api.model.IRelation;
 import cz.cvut.indepmod.classmodel.modelFactory.ClassModelDiagramModelFactory;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelClassCell;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
 import java.awt.Rectangle;
@@ -35,7 +37,6 @@ import static org.junit.Assert.*;
 public class ClassModelXMLCoderTest {
 
     public static final String FILE_NAME = "TestClass";
-
     private ClassModelGraph graph;
 
     public ClassModelXMLCoderTest() {
@@ -93,14 +94,14 @@ public class ClassModelXMLCoderTest {
         assertTrue("Cell 1 is not there after decode", isThereClass1);
         assertTrue("Cell 2 is not there after decode", isThereClass2);
 
-        DefaultGraphCell root = (DefaultGraphCell)this.graph.getRoots()[0];
-        ClassModel model = (ClassModel)root.getUserObject();
+        DefaultGraphCell root = (DefaultGraphCell) this.graph.getRoots()[0];
+        ClassModel model = (ClassModel) root.getUserObject();
         assertEquals(Common.CLASS_NAME, model.getTypeName());
         assertTrue(model.getAttributeModels().isEmpty());
         assertTrue(model.getMethodModels().isEmpty());
 
-        root = (DefaultGraphCell)this.graph.getRoots()[1];
-        model = (ClassModel)root.getUserObject();
+        root = (DefaultGraphCell) this.graph.getRoots()[1];
+        model = (ClassModel) root.getUserObject();
 
         assertEquals(Common.CLASS_NAME2, model.getTypeName());
         assertTrue(model.getAttributeModels().isEmpty());
@@ -113,11 +114,18 @@ public class ClassModelXMLCoderTest {
         IClass c2 = r.getEndingClass();
         assertEquals(mod1.getTypeName(), c1.getTypeName());
         assertEquals(mod2.getTypeName(), c2.getTypeName());
+        assertEquals(Cardinality.ONE, r.getStartCardinality());
+        assertEquals(Cardinality.ONE, r.getEndCardinality());
     }
 
     private void initEdge(Edge edge, Port startPort, Port endPort) {
         edge.setSource(startPort);
         edge.setTarget(endPort);
+
+        Cardinality[] labels = {Cardinality.ONE, Cardinality.ONE};
+        Point2D[] labPos = {new Point2D.Double(GraphConstants.PERMILLE / 8, 20), new Point2D.Double(GraphConstants.PERMILLE * 7 / 8, 20)};
+        GraphConstants.setExtraLabelPositions(edge.getAttributes(), labPos);
+        GraphConstants.setExtraLabels(edge.getAttributes(), labels);
 
         GraphConstants.setEndFill(edge.getAttributes(), true);
         GraphConstants.setLineStyle(edge.getAttributes(), GraphConstants.STYLE_ORTHOGONAL);
@@ -126,5 +134,4 @@ public class ClassModelXMLCoderTest {
         GraphConstants.setMoveable(edge.getAttributes(), true);
         GraphConstants.setDisconnectable(edge.getAttributes(), false);
     }
-
 }

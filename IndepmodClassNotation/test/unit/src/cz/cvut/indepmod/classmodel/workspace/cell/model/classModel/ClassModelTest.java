@@ -3,7 +3,6 @@ package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 import cz.cvut.indepmod.classmodel.Common;
 import org.jgraph.graph.DefaultEdge;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel.Tool;
-import cz.cvut.indepmod.classmodel.api.model.Cardinality;
 import cz.cvut.indepmod.classmodel.api.model.IRelation;
 import cz.cvut.indepmod.classmodel.api.model.RelationType;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelCellFactory;

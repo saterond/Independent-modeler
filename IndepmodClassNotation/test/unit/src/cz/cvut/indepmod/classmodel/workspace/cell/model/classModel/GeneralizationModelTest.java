@@ -10,7 +10,6 @@ import org.jgraph.graph.Edge;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.Port;
 import cz.cvut.indepmod.classmodel.Common;
-import cz.cvut.indepmod.classmodel.api.model.Cardinality;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelClassCell;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelRelation;
 import org.jgraph.graph.DefaultPort;

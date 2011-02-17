@@ -2,6 +2,7 @@ package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 
 import cz.cvut.indepmod.classmodel.api.model.IAnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
+import cz.cvut.indepmod.classmodel.api.model.Visibility;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,8 +18,10 @@ public class AttributeModel extends AbstractModel implements IAttribute {
     private TypeModel type;
     private String name;
     private List<AnotationModel> anotations;
+    private Visibility visibility;
 
     public AttributeModel(TypeModel typeModel, String name) {
+        this.visibility = Visibility.PUBLIC;
         this.type = typeModel;
         this.name = name;
 
@@ -47,7 +50,13 @@ public class AttributeModel extends AbstractModel implements IAttribute {
 
     @Override
     public String toString() {
-        return this.name + " : " + this.type.getTypeName();
+        StringBuilder res = new StringBuilder(30);
+        res.append(this.visibility.toString());
+        res.append(" ");
+        res.append(this.name);
+        res.append(" : ");
+        res.append(this.type.getTypeName());
+        return res.toString();
     }
 
     @Override
@@ -63,5 +72,10 @@ public class AttributeModel extends AbstractModel implements IAttribute {
 
     public void removeAnotation(AnotationModel anot) {
         this.anotations.remove(anot);
+    }
+
+    @Override
+    public Visibility getVisibility() {
+        return this.visibility;
     }
 }

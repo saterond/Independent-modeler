@@ -15,6 +15,12 @@ import java.util.Set;
 public interface IClass extends IType {
 
     /**
+     * Returns the Visibility of this class
+     * @return the Visibility of this class
+     */
+    public Visibility getVisibility();
+
+    /**
      * Returns an attribute set
      *
      * @return an attribute set

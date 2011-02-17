@@ -14,6 +14,12 @@ import java.util.Set;
 public interface IMethod {
 
     /**
+     * Returns the Visibility of this Method
+     * @return the Visibility of this Method
+     */
+    public Visibility getVisibility();
+
+    /**
      * Returns an unmodifiable view of the attributes set
      *
      * @return an unmodifiable view of the attributes set

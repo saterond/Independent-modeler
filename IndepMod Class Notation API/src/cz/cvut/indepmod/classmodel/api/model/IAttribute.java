@@ -14,6 +14,12 @@ import java.util.Collection;
 public interface IAttribute {
 
     /**
+     * Returns the Visibility of this Attribute
+     * @return the Visibility of this Attribute
+     */
+    public Visibility getVisibility();
+
+    /**
      * Returns the name of this attribute
      *
      * @return the name of this attribute

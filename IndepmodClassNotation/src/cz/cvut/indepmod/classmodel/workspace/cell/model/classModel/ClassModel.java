@@ -2,6 +2,7 @@ package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 
 import cz.cvut.indepmod.classmodel.api.model.IClass;
 import cz.cvut.indepmod.classmodel.api.model.IRelation;
+import cz.cvut.indepmod.classmodel.api.model.Visibility;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -26,6 +27,7 @@ public class ClassModel extends TypeModel implements IClass {
     private Set<MethodModel> methodModels;
     private Set<AttributeModel> attributeModels;
     private Set<AnotationModel> anotationModels;
+    private Visibility visibility;
     private DefaultGraphCell cell;
 
     public ClassModel() {
@@ -47,6 +49,7 @@ public class ClassModel extends TypeModel implements IClass {
         this.methodModels = new HashSet<MethodModel>(model.getMethodModels());
         this.attributeModels = new HashSet<AttributeModel>(model.getAttributeModels());
         this.anotationModels = new HashSet<AnotationModel>(model.getAnotations());
+        this.visibility = Visibility.PUBLIC;
         this.cell = model.cell;
     }
 
@@ -78,6 +81,7 @@ public class ClassModel extends TypeModel implements IClass {
             this.anotationModels = new HashSet<AnotationModel>();
         }
 
+        this.visibility = Visibility.PUBLIC;
         this.cell = null;
     }
 
@@ -186,13 +190,6 @@ public class ClassModel extends TypeModel implements IClass {
                 Iterator it = p.edges();
                 while (it.hasNext()) {
                     DefaultEdge e = (DefaultEdge) it.next();
-//                        DefaultGraphCell source = (DefaultGraphCell) ((DefaultPort) e.getSource()).getParent();
-//                        DefaultGraphCell target = (DefaultGraphCell) ((DefaultPort) e.getTarget()).getParent();
-//                        IClass sourceClass = (IClass) source.getUserObject();
-//                        IClass targetClass = (IClass) target.getUserObject();
-//
-//                        IRelation relation = new RelationModel(sourceClass, targetClass, RelationType.RELATION, Cardinality.ONE, Cardinality.ONE);
-
                     Object o = e.getUserObject();
                     if (o == null) {
                         throw new NullPointerException("User object of the edge is null");
@@ -205,6 +202,11 @@ public class ClassModel extends TypeModel implements IClass {
         }
 
         return res;
+    }
+
+    @Override
+    public Visibility getVisibility() {
+        return this.visibility;
     }
 
     

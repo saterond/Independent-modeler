@@ -1,6 +1,5 @@
 package cz.cvut.indepmod.classmodel.workspace.cell.components;
 
-import cz.cvut.indepmod.classmodel.util.GridBagConstraintsUtils;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
@@ -8,9 +7,8 @@ import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.MethodModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
 import java.util.Set;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 /**
@@ -22,10 +20,7 @@ import javax.swing.border.LineBorder;
  * The purpose of this class is to paint a Class representation according to its model
  */
 
-//TODO - complete painting of the class component
 public class ClassComponent extends JComponent {
-
-    private static final Font CLASS_NAME_FONT = new Font("Serif", Font.BOLD, 15);
 
     private final ClassModel model;
 
@@ -62,6 +57,8 @@ public class ClassComponent extends JComponent {
         c.gridy = GridBagConstraints.RELATIVE;
 
         this.add(this.getClassNamePanel(), c);
+
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(this.getAnotationPanel(), c);
         this.add(this.getAttributePanel(), c);
 
@@ -91,6 +88,7 @@ public class ClassComponent extends JComponent {
             GridBagConstraints c = new GridBagConstraints();
             c.gridx = 0;
             c.gridy = GridBagConstraints.RELATIVE;
+            c.weightx = 0.5;
             c.anchor = GridBagConstraints.LINE_START;
             res.add(anotLabel, c);
         }
@@ -104,12 +102,13 @@ public class ClassComponent extends JComponent {
 
         Set<AttributeModel> attrs = this.model.getAttributeModels();
         for (AttributeModel attr : attrs ) {
-            JLabel anotLabel = new JLabel(attr.toString());
+            JLabel attributeLabel = new JLabel(attr.toString());
             GridBagConstraints c = new GridBagConstraints();
             c.gridx = 0;
             c.gridy = GridBagConstraints.RELATIVE;
+            c.weightx = 0.5;
             c.anchor = GridBagConstraints.LINE_START;
-            res.add(anotLabel, c);
+            res.add(attributeLabel, c);
         }
 
         return res;
@@ -119,16 +118,22 @@ public class ClassComponent extends JComponent {
         JPanel res = new JPanel(new GridBagLayout());
         res.setBorder(new LineBorder(Color.BLACK));
 
-        Set<MethodModel> attrs = this.model.getMethodModels();
-        for (MethodModel method : attrs) {
-            JLabel anotLabel = new JLabel(method.toString());
+        Set<MethodModel> methods = this.model.getMethodModels();
+        Iterator<MethodModel> it = methods.iterator();
+        while (it.hasNext()) {
+            MethodModel method = it.next();
+
+            JLabel methodLabel = new JLabel(method.toString());
             GridBagConstraints c = new GridBagConstraints();
             c.gridx = 0;
             c.gridy = GridBagConstraints.RELATIVE;
-            c.anchor = GridBagConstraints.LINE_START;
-            res.add(anotLabel, c);
+            c.weightx = 0.5;
+            c.anchor = GridBagConstraints.FIRST_LINE_START;
+            if (!it.hasNext()) {
+                c.weighty = 0.5;
+            }
+            res.add(methodLabel, c);
         }
-
         return res;
     }
 }

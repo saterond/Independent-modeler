@@ -11,6 +11,7 @@ public enum RelationType {
     RELATION,
     COMPOSITION,
     AGREGATION,
-    GENERALIZATION
+    GENERALIZATION,
+    IMPLEMENTATION
 
 }

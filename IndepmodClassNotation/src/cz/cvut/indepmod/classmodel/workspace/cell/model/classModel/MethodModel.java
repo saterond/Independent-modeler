@@ -1,6 +1,7 @@
 package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 
 import cz.cvut.indepmod.classmodel.api.model.IMethod;
+import cz.cvut.indepmod.classmodel.api.model.Visibility;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,8 +16,10 @@ public class MethodModel extends AbstractModel implements IMethod {
     private TypeModel type;
     private String name;
     private Set<AttributeModel> attributeModels;
+    private Visibility visibility;
 
     public MethodModel(TypeModel typeModel, String name, Set<AttributeModel> attributeModels) {
+        this.visibility = Visibility.PUBLIC;
         this.type = typeModel;
         this.name = name;
 
@@ -61,6 +64,8 @@ public class MethodModel extends AbstractModel implements IMethod {
     @Override
     public String toString() {
         StringBuilder bfr = new StringBuilder(30);
+        bfr.append(this.visibility.toString());
+        bfr.append(" ");
         bfr.append(this.type.toString());
         bfr.append(" ");
         bfr.append(this.name);
@@ -80,5 +85,10 @@ public class MethodModel extends AbstractModel implements IMethod {
         bfr.append(")");
 
         return bfr.toString();
+    }
+
+    @Override
+    public Visibility getVisibility() {
+        return this.visibility;
     }
 }

@@ -115,7 +115,7 @@ public class ToolChooser extends ToolChooserView {
 
     @Override
     protected void componentOpened() {
-        this.modelLookup = Utilities.actionsGlobalContext().lookup(new Lookup.Template(ToolChooserModel.class));
+        this.modelLookup = Utilities.actionsGlobalContext().lookup(new Lookup.Template<ToolChooserModel>(ToolChooserModel.class));
         this.modelLookup.addLookupListener(this.toolChooserLookupLsnr);
     }
 

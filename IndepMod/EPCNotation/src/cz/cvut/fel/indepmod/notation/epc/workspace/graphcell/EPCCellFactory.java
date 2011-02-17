@@ -7,6 +7,7 @@ import cz.cvut.fel.indepmod.notation.epc.workspace.palette.EPCPaletteNodeModel;
 /**
  *
  * @author Petr Vales
+ * @deprecated 
  */
 public class EPCCellFactory extends CellFactory {
 

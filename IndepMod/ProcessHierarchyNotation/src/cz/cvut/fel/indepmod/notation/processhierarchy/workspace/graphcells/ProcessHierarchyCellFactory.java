@@ -7,6 +7,7 @@ import cz.cvut.fel.indepmod.notation.processhierarchy.workspace.palette.ProcessH
 /**
  *
  * @author Petr Vales
+ * @deprecated 
  */
 public class ProcessHierarchyCellFactory extends CellFactory {
 

@@ -1,6 +1,8 @@
 package cz.cvut.fel.indepmod.notation.epc.workspace.graphcell;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
+import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.nodes.InputNode;
 import org.jgraph.graph.VertexView;
 
 /**
@@ -9,12 +11,15 @@ import org.jgraph.graph.VertexView;
  */
 public class InputCell extends EPCCell {
 
+    private InputNode node;
+
     public InputCell() {
         this(null);
     }
 
     public InputCell(Object o) {
         super(o);
+        this.node = new InputNode(this);
     }
 
     @Override
@@ -59,5 +64,10 @@ public class InputCell extends EPCCell {
     @Override
     public boolean canBeEndCellOnEdgeWith(SupportingSystemCell cell) {
         return false;
+    }
+
+    @Override
+    public CellNode getNode() {
+        return this.node;
     }
 }

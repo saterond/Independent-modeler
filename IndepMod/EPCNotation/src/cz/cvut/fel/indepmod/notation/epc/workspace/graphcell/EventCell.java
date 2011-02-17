@@ -1,6 +1,8 @@
 package cz.cvut.fel.indepmod.notation.epc.workspace.graphcell;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
+import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.nodes.EventNode;
 import org.jgraph.graph.VertexView;
 
 /**
@@ -9,12 +11,15 @@ import org.jgraph.graph.VertexView;
  */
 public class EventCell extends EPCCell {
 
+    private EventNode node;
+
     public EventCell() {
         this(null);
     }
 
     public EventCell(Object o) {
         super(o);
+        this.node = new EventNode(this);
     }
 
     @Override
@@ -59,6 +64,11 @@ public class EventCell extends EPCCell {
     @Override
     public boolean canBeEndCellOnEdgeWith(SupportingSystemCell cell) {
         return false;
+    }
+
+    @Override
+    public CellNode getNode() {
+        return this.node;
     }
 
 

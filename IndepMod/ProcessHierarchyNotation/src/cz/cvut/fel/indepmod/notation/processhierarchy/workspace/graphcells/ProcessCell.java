@@ -1,6 +1,8 @@
 package cz.cvut.fel.indepmod.notation.processhierarchy.workspace.graphcells;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
+import cz.cvut.fel.indepmod.notation.processhierarchy.workspace.graphcells.nodes.ProcessNode;
 import org.jgraph.graph.VertexView;
 
 /**
@@ -9,12 +11,15 @@ import org.jgraph.graph.VertexView;
  */
 public class ProcessCell extends Cell {
 
+    private ProcessNode node;
+
     public ProcessCell(Object o) {
         super(o);
     }
 
     public ProcessCell() {
         this(null);
+        this.node = new ProcessNode(this);
     }
 
     @Override
@@ -43,5 +48,10 @@ public class ProcessCell extends Cell {
             ret = true;
         }
         return ret;
+    }
+
+    @Override
+    public CellNode getNode() {
+        return this.node;
     }
 }

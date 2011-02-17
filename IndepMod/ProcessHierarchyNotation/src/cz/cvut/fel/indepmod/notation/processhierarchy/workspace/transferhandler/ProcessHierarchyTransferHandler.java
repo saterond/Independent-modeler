@@ -1,7 +1,6 @@
 package cz.cvut.fel.indepmod.notation.processhierarchy.workspace.transferhandler;
 
-import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.CellFactory;
-import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteNode;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteCellNode;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.transferhandler.IndependentModelerTransferHandler;
 import cz.cvut.fel.indepmod.notation.processhierarchy.workspace.graphcells.DataCell;
 import cz.cvut.fel.indepmod.notation.processhierarchy.workspace.graphcells.ProcessCell;
@@ -17,8 +16,8 @@ import org.jgraph.graph.DefaultGraphCell;
  */  
 public class ProcessHierarchyTransferHandler extends IndependentModelerTransferHandler {
 
-    public ProcessHierarchyTransferHandler(CellFactory cellFactory) {
-        super(cellFactory);
+    public ProcessHierarchyTransferHandler() {
+        super();
     }
 
     @Override
@@ -30,7 +29,7 @@ public class ProcessHierarchyTransferHandler extends IndependentModelerTransferH
     protected DefaultGraphCell handleData(TransferSupport support) throws UnsupportedFlavorException, IOException {
         DefaultGraphCell[] cells = new DefaultGraphCell[1];
         cells[0] = super.handleData(support);
-        PaletteNode myNode = (PaletteNode) support.getTransferable().getTransferData(PaletteNode.DATA_FLAVOR);
+        PaletteCellNode myNode = (PaletteCellNode) support.getTransferable().getTransferData(PaletteCellNode.DATA_FLAVOR);
         if (myNode.getName().contains("Process")) {
             cells[0] = new ProcessCell(myNode.getName());
         } else if(myNode.getName().contains("Role")) {

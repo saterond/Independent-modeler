@@ -5,8 +5,8 @@
   <joined-properties
    x="-8"
    y="-8"
-   width="1152"
-   height="693"
+   width="1296"
+   height="786"
    relative-x="0.0"
    relative-y="0.0"
    relative-width="0.0"
@@ -35,16 +35,17 @@
   <constraints>
   <path orientation="horizontal" number="60" weight="0.7" />
   <path orientation="vertical" number="40" weight="0.7" />
-  <path orientation="horizontal" number="40" weight="0.6973451327433628" />
+  <path orientation="horizontal" number="40" weight="0.7" />
   </constraints>
   <bounds x="422" y="184" width="537" height="338" />
     </editor-area>
     <screen width="1280" height="800"/>
-    <active-mode name="editor"/>
+    <active-mode name="anonymousMode_1"/>
     <toolbar configuration="Standard" preferred-icon-size="24"/>
     <tc-list>
-  <tc-id id="Editor_9"/>
+  <tc-id id="Navigator"/>
+  <tc-id id="Editor"/>
+  <tc-id id="properties"/>
   <tc-id id="CommonPalette"/>
-  <tc-id id="Editor_1"/>
     </tc-list>
 </windowmanager>

@@ -1,6 +1,8 @@
 package cz.cvut.fel.indepmod.notation.epc.workspace.graphcell;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
+import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.nodes.FunctionNode;
 import org.jgraph.graph.VertexView;
 
 /**
@@ -9,12 +11,15 @@ import org.jgraph.graph.VertexView;
  */
 public class FunctionCell extends EPCCell {
 
+    private FunctionNode node;
+
     public FunctionCell() {
         this(null);
     }
 
     public FunctionCell(Object o) {
         super(o);
+        this.node = new FunctionNode(this);
     }
 
     @Override
@@ -59,6 +64,11 @@ public class FunctionCell extends EPCCell {
     @Override
     public boolean canBeEndCellOnEdgeWith(SupportingSystemCell cell) {
         return true;
+    }
+
+    @Override
+    public CellNode getNode() {
+        return this.node;
     }
 
 

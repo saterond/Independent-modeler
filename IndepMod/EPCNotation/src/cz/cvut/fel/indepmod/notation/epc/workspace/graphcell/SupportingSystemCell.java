@@ -1,6 +1,8 @@
 package cz.cvut.fel.indepmod.notation.epc.workspace.graphcell;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
+import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.nodes.SupportingSystemNode;
 import org.jgraph.graph.VertexView;
 
 /**
@@ -9,12 +11,15 @@ import org.jgraph.graph.VertexView;
  */
 public class SupportingSystemCell extends EPCCell {
 
+    private SupportingSystemNode node;
+
     public SupportingSystemCell() {
         this(null);
     }
 
     public SupportingSystemCell(Object o) {
         super(o);
+        this.node = new SupportingSystemNode(this);
     }
 
     @Override
@@ -60,5 +65,10 @@ public class SupportingSystemCell extends EPCCell {
     @Override
     public boolean canBeEndCellOnEdgeWith(SupportingSystemCell cell) {
         return false;
+    }
+
+    @Override
+    public CellNode getNode() {
+        return this.node;
     }
 }

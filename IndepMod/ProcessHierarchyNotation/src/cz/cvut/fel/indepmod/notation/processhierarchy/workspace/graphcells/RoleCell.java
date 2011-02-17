@@ -1,6 +1,8 @@
 package cz.cvut.fel.indepmod.notation.processhierarchy.workspace.graphcells;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
+import cz.cvut.fel.indepmod.notation.processhierarchy.workspace.graphcells.nodes.RoleNode;
 import org.jgraph.graph.VertexView;
 
 /**
@@ -9,12 +11,15 @@ import org.jgraph.graph.VertexView;
  */
 public class RoleCell extends Cell {
 
+    private RoleNode node;
+
     public RoleCell() {
         this(null);
     }
 
     public RoleCell(Object o) {
         super(o);
+        this.node = new RoleNode(this);
     }
 
     @Override
@@ -41,5 +46,10 @@ public class RoleCell extends Cell {
             ret = true;
         }
         return ret;
+    }
+
+    @Override
+    public CellNode getNode() {
+        return this.node;
     }
 }

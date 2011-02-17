@@ -2,7 +2,6 @@ package cz.cvut.fel.indepmod.independentmodeler.workspace;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteListener;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.actions.IndependentModelerPaletteActions;
-import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.CellFactory;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.CategoryChildrenFactory;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.transferhandler.IndependentModelerTransferHandler;
 import java.awt.BorderLayout;
@@ -22,22 +21,19 @@ import org.openide.windows.TopComponent;
  *
  * @author Petr Vales
  */
-public class Editor extends TopComponent {
+public class Editor extends TopComponent{
 
     private PaletteController palette;
     private JScrollPane scenePane = new JScrollPane();
     private Graph graph;
     private IndependentModelerTransferHandler transferHandler;
     private PaletteListener paletteListener;
-    private CellFactory cellFactory;
 
     public Editor(String title,
-                    CategoryChildrenFactory childrenfactory,
-                    IndependentModelerTransferHandler transferHandler,
-                    CellFactory cellFactory) {
+            CategoryChildrenFactory childrenfactory,
+            IndependentModelerTransferHandler transferHandler) {
         super();
         this.transferHandler = transferHandler;
-        this.cellFactory = cellFactory;
         this.setDisplayName(title);
         this.initPalette(childrenfactory);
         this.initComponents();
@@ -59,9 +55,8 @@ public class Editor extends TopComponent {
         initTransferHandler();
         this.graph.setMarqueeHandler(
                 new MarqueeHandler(graph,
-                    this.paletteListener,
-                    this.cellFactory,
-                    null));
+                this.paletteListener,
+                null));
     }
 
     private void initTransferHandler() {
@@ -79,4 +74,12 @@ public class Editor extends TopComponent {
         this.paletteListener = new PaletteListener(palette);
         this.palette.addPropertyChangeListener(this.paletteListener);
     }
+
+    @Override
+    protected void componentActivated() {
+        Navigator.findInstance().setRoot(this.graph.getGraphNode());
+    }
+
+
+
 }

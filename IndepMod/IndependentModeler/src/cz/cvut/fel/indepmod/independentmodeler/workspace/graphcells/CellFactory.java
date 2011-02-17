@@ -5,6 +5,7 @@ import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.IndependentMode
 /**
  *
  * @author Petr Vales
+ * @deprecated 
  */
 public class CellFactory {
 

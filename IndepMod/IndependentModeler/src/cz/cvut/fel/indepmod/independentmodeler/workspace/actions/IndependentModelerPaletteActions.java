@@ -1,6 +1,6 @@
 package cz.cvut.fel.indepmod.independentmodeler.workspace.actions;
 
-import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteNode;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteCellNode;
 import javax.swing.Action;
 import org.netbeans.spi.palette.PaletteActions;
 import org.openide.util.Lookup;

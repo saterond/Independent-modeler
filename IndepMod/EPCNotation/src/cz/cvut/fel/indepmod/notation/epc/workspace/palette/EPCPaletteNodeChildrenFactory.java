@@ -1,12 +1,21 @@
 package cz.cvut.fel.indepmod.notation.epc.workspace.palette;
 
-import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteNode;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.ArrowEdgeFactory;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.IPaletteNode;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteCellNode;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteEdgeNode;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteNodeChildrenFactory;
+import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.EventCell;
 import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.EventCellFactory;
+import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.FunctionCell;
 import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.FunctionCellFactory;
+import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.InputCell;
 import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.InputCellFactory;
+import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.OrganizationUnitCell;
 import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.OrganizationUnitCellFactory;
+import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.OutputCell;
 import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.OutputCellFactory;
+import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.SupportingSystemCell;
 import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.SupportingSystemCellFactory;
 import java.util.List;
 
@@ -22,36 +31,29 @@ public class EPCPaletteNodeChildrenFactory
     }
 
     @Override
-    protected boolean createKeys(final List<PaletteNode> toPopulate) {
+    protected boolean createKeys(final List<IPaletteNode> toPopulate) {
         if (super.getKey().equals("EPC Notation")) {
-            toPopulate.add(new PaletteNode(
+            toPopulate.add(new PaletteCellNode<EventCell>(
                     EPCPaletteNodeModel.Event.name(),
-                    EPCPaletteNodeModel.Event,
                     new EventCellFactory()));
-            toPopulate.add(new PaletteNode(
+            toPopulate.add(new PaletteCellNode<InputCell>(
                     EPCPaletteNodeModel.Input.name(),
-                    EPCPaletteNodeModel.Input,
                     new InputCellFactory()));
-            toPopulate.add(new PaletteNode(
+            toPopulate.add(new PaletteCellNode<FunctionCell>(
                     EPCPaletteNodeModel.Function.name(),
-                    EPCPaletteNodeModel.Function,
                     new FunctionCellFactory()));
-            toPopulate.add(new PaletteNode(
+            toPopulate.add(new PaletteCellNode<OrganizationUnitCell>(
                     "Organization Unit",
-                    EPCPaletteNodeModel.Oraganization_Unit,
                     new OrganizationUnitCellFactory()));
-            toPopulate.add(new PaletteNode(
+            toPopulate.add(new PaletteCellNode<OutputCell>(
                     EPCPaletteNodeModel.Output.name(),
-                    EPCPaletteNodeModel.Output,
                     new OutputCellFactory()));
-            toPopulate.add(new PaletteNode(
+            toPopulate.add(new PaletteCellNode<SupportingSystemCell>(
                     "Supporting System",
-                    EPCPaletteNodeModel.Supporting_System,
                     new SupportingSystemCellFactory()));
-            toPopulate.add(new PaletteNode(
-                    EPCPaletteNodeModel.Dependency.name(),
-                    EPCPaletteNodeModel.Dependency,
-                    null));
+            toPopulate.add(new PaletteEdgeNode(
+                    "Edge",
+                    new ArrowEdgeFactory()));
         }
         return true;
     }

@@ -1,9 +1,8 @@
 package cz.cvut.fel.indepmod.independentmodeler.workspace.transferhandler;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.Graph;
-import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.CellFactory;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteListener;
-import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteNode;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteCellNode;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import javax.swing.TransferHandler;
@@ -17,15 +16,9 @@ import org.openide.util.Exceptions;
 public class IndependentModelerTransferHandler extends TransferHandler {
 
     private Graph graph;
-    private CellFactory cellFactory;
     private PaletteListener paletteListener;
 
-    public IndependentModelerTransferHandler(CellFactory cellFactory) {
-        this.cellFactory = cellFactory;
-    }
-
-    public CellFactory getCellFactory() {
-        return cellFactory;
+    public IndependentModelerTransferHandler() {
     }
 
     public void setGraph(Graph graph) {
@@ -38,7 +31,7 @@ public class IndependentModelerTransferHandler extends TransferHandler {
 
     @Override
     public boolean canImport(final TransferSupport support) {
-        return support.isDataFlavorSupported(PaletteNode.DATA_FLAVOR);
+        return support.isDataFlavorSupported(PaletteCellNode.DATA_FLAVOR);
     }
 
     @Override
@@ -59,7 +52,7 @@ public class IndependentModelerTransferHandler extends TransferHandler {
 
     protected DefaultGraphCell handleData(final TransferSupport support) throws UnsupportedFlavorException, IOException {
         DefaultGraphCell[] cells = new DefaultGraphCell[1];
-        PaletteNode myNode = (PaletteNode) support.getTransferable().getTransferData(PaletteNode.DATA_FLAVOR);
+        PaletteCellNode myNode = (PaletteCellNode) support.getTransferable().getTransferData(PaletteCellNode.DATA_FLAVOR);
         cells[0] = myNode.getCell();
         return cells[0];
     }

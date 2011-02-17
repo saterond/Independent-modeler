@@ -1,6 +1,8 @@
 package cz.cvut.fel.indepmod.notation.processhierarchy.workspace.graphcells;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
+import cz.cvut.fel.indepmod.notation.processhierarchy.workspace.graphcells.nodes.DataNode;
 import org.jgraph.graph.VertexView;
 
 /**
@@ -9,12 +11,16 @@ import org.jgraph.graph.VertexView;
  */
 public class DataCell extends Cell {
 
+    private DataNode node;
+
     public DataCell() {
         this(null);
     }
 
     public DataCell(Object o) {
         super(o);
+        node = new DataNode(this);
+
     }
 
     @Override
@@ -29,5 +35,10 @@ public class DataCell extends Cell {
             ret = true;
         }
         return ret;
+    }
+
+    @Override
+    public CellNode getNode() {
+        return this.node;
     }
 }

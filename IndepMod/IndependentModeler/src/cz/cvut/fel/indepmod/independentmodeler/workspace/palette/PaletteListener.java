@@ -3,6 +3,7 @@ package cz.cvut.fel.indepmod.independentmodeler.workspace.palette;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import org.jgraph.graph.DefaultEdge;
 import org.netbeans.spi.palette.PaletteController;
 import org.openide.util.Lookup;
 
@@ -13,13 +14,12 @@ import org.openide.util.Lookup;
 public class PaletteListener implements PropertyChangeListener {
 
     private PaletteController paletteController;
-    private String selectedTool;
-    private Enum selectedToolEnum;
-    private PaletteNode<? extends Cell> paletteNode;
+    private PaletteCellNode<? extends Cell> paletteCellNode;
+    private PaletteEdgeNode paletteEdgeNode;
 
     public PaletteListener(final PaletteController palette) {
         this.paletteController = palette;
-        this.selectedTool = null;
+        this.paletteCellNode = null;
     }
 
     @Override
@@ -28,31 +28,28 @@ public class PaletteListener implements PropertyChangeListener {
                 evt.getPropertyName())) {
             Lookup selItem = getPaletteController().getSelectedItem();
             if (null != selItem) {
-                IndependentModelerPaletteNode selNode = selItem.lookup(
-                        IndependentModelerPaletteNode.class);
-                if (null != selNode) {
-
-                    this.setSelectedTool(selNode.getName());
-                    this.setSelectedToolEnum(selNode.getType());
-                    this.setPaletteNode(selNode.getPaletteNode());
-                } else {
-                    this.setSelectedTool(null);
-                }
-            } else {
-                this.setSelectedTool(null);
+                this.lookupCellNode(selItem);
+                this.lookupEdgeNode(selItem);
             }
         }
     }
 
-    public String getSelectedTool() {
-        return this.selectedTool;
+    private void lookupCellNode(Lookup selItem) {
+        IndependentModelerPaletteCellNode selNode = selItem.lookup(
+                IndependentModelerPaletteCellNode.class);
+        if (null != selNode) {
+            this.setPaletteEdgeNode(null);
+            this.setPaletteCellNode(selNode.getPaletteNode());
+        }
     }
 
-    /**
-     * @param selected the selectedTool to set
-     */
-    protected void setSelectedTool(final String selected) {
-        this.selectedTool = selected;
+    private void lookupEdgeNode(Lookup selItem) {
+        IndependentModelerPaletteEdgeNode selNode = selItem.lookup(
+                IndependentModelerPaletteEdgeNode.class);
+        if (null != selNode) {
+            this.setPaletteCellNode(null);
+            this.setPaletteEdgeNode(selNode.getPaletteNode());
+        }
     }
 
     /**
@@ -65,47 +62,41 @@ public class PaletteListener implements PropertyChangeListener {
     public void resetPaletteTool() {
         this.paletteController.setSelectedItem(this.paletteController.
                 getSelectedCategory(), null);
-        this.setSelectedTool(null);
-        this.setSelectedToolEnum(null);
+        this.setPaletteCellNode(null);
+        this.setPaletteEdgeNode(null);
     }
 
-    public boolean isElementSelected() {
-        String tool = this.getSelectedTool();
-        boolean ret = true;
-        if (tool == null || this.getSelectedTool().contains(
-                IndependentModelerPaletteNodeModel.Dependency.name())) {
-            ret = false;
-        }
-        return ret;
+    public boolean isCellSelected() {
+        return (this.getPaletteCellNode() != null)
+                && (this.getPaletteCellNode().isCell()) ? true : false;
     }
 
-    public boolean isDependencySelected() {
-        String tool = this.getSelectedTool();
-        boolean ret = false;
-        if (tool != null && this.getSelectedTool().contains(
-                IndependentModelerPaletteNodeModel.Dependency.name())) {
-            ret = true;
-        }
-        return ret;
+    public boolean isEdgeSelected() {
+        return this.getPaletteEdgeNode() != null ? true : false;
     }
 
-    public Enum getSelectedToolEnum() {
-        return selectedToolEnum;
+    protected PaletteCellNode<? extends Cell> getPaletteCellNode() {
+        return paletteCellNode;
     }
 
-    private void setSelectedToolEnum(Enum selectedToolEnum) {
-        this.selectedToolEnum = selectedToolEnum;
-    }
-
-    public PaletteNode<? extends Cell> getPaletteNode() {
-        return paletteNode;
-    }
-
-    public void setPaletteNode(PaletteNode<? extends Cell> paletteNode) {
-        this.paletteNode = paletteNode;
+    protected void setPaletteCellNode(
+            PaletteCellNode<? extends Cell> paletteNode) {
+        this.paletteCellNode = paletteNode;
     }
 
     public Cell getCell() {
-        return this.getPaletteNode().getCell();
+        return this.getPaletteCellNode().getCell();
+    }
+
+    protected void setPaletteEdgeNode(PaletteEdgeNode paletteNode) {
+        this.paletteEdgeNode = paletteNode;
+    }
+
+    protected PaletteEdgeNode getPaletteEdgeNode() {
+        return this.paletteEdgeNode;
+    }
+
+    public DefaultEdge getEdge() {
+        return this.getPaletteEdgeNode().getEdge();
     }
 }

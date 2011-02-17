@@ -104,47 +104,65 @@ public class RoleRenderer extends VertexRenderer {
      */
     @Override
     public void paint(Graphics g) {
-        int b = borderWidth;
+//        int b = borderWidth;
         Graphics2D g2 = (Graphics2D) g;
-        Dimension d = getSize();
-        boolean tmp = selected;
+//        Dimension d = getSize();
+//        boolean tmp = selected;
         if (super.isOpaque()) {
-            g.setColor(super.getBackground());
-            if (gradientColor != null && !preview) {
-                setOpaque(false);
-                g2.setPaint(new GradientPaint(0, 0, getBackground(),
-                        getWidth(), getHeight(), gradientColor, true));
-            }
-            g.setColor(Color.BLACK);
-            g2.setStroke(new BasicStroke(2));
-            this.drawRole(g, d, b);
+            this.drawOpaque(g, g2);
         }
-        try {
-            setBorder(null);
-            setOpaque(false);
-            selected = false;
-            super.paint(g);
-        } finally {
-            selected = tmp;
-        }
+//        try {
+//            setBorder(null);
+//            setOpaque(false);
+//            selected = false;
+//            super.paint(g);
+//        } finally {
+//            selected = tmp;
+//        }
         if (bordercolor != null) {
-            g.setColor(bordercolor);
-            g2.setStroke(new BasicStroke(b));
-            this.drawRole(g, d, b);
+            this.drawBorder(g, g2);
         }
         if (selected) {
-            g2.setStroke(GraphConstants.SELECTION_STROKE);
-            g.setColor(highlightColor);
-            this.drawEllipse(g, d, b);
+            this.drawSelected(g, g2);
         }
     }
 
-    private void drawEllipse(Graphics g, Dimension d, int b) {
-        g.drawOval(b - 1, b - 1, d.width - b, d.height - b);
+    private void drawOpaque(Graphics g, Graphics2D g2) {
+        g.setColor(super.getBackground());
+        if (gradientColor != null && !preview) {
+            setOpaque(false);
+            g2.setPaint(new GradientPaint(0, 0, getBackground(),
+                    getWidth(), getHeight(), gradientColor, true));
+        }
+        g2.setStroke(new BasicStroke(2));
+        this.fillRole(g);
     }
-    
-    private void drawRole(Graphics g, Dimension d, int b) {
-        this.drawEllipse(g, d, b);
-        g.drawLine(d.width / 10, 2*d.height / 7, d.width / 10, d.height - 2*d.height / 7);
+
+    private void drawBorder(Graphics g, Graphics2D g2) {
+        g.setColor(this.bordercolor);
+        g2.setStroke(new BasicStroke(this.borderWidth));
+        this.drawRole(g);
+    }
+
+    private void drawSelected(Graphics g, Graphics2D g2) {
+        g2.setStroke(GraphConstants.SELECTION_STROKE);
+        g.setColor(highlightColor);
+        this.drawRole(g);
+    }
+
+    private void fillRole(Graphics g) {
+        g.fillOval(this.borderWidth - 1, this.borderWidth - 1,
+                this.getSize().width - this.borderWidth, this.getSize().height - this.borderWidth);
+    }
+
+    private void drawRole(Graphics g) {
+        g.drawOval(this.borderWidth - 1,
+                this.borderWidth - 1,
+                this.getSize().width - this.borderWidth,
+                this.getSize().height - this.borderWidth);
+        g.drawLine(this.getSize().width / 10,
+                2 * this.getSize().height / 7,
+                this.getSize().width / 10,
+                this.getSize().height - 2 * this.getSize().height / 7);
     }
 }

@@ -17,19 +17,10 @@ public class FunctionRenderer extends VertexRenderer  {
 
     @Override
     public void paint(Graphics g) {
-        int b = borderWidth;
         Graphics2D g2 = (Graphics2D) g;
-        Dimension d = getSize();
         boolean tmp = selected;
         if (super.isOpaque()) {
-            g.setColor(super.getBackground());
-            if (gradientColor != null && !preview) {
-                setOpaque(false);
-                g2.setPaint(new GradientPaint(0, 0, getBackground(), getWidth(), getHeight(), gradientColor, true));
-            }
-            g.setColor(Color.BLACK);
-            g2.setStroke(new BasicStroke(2));
-            this.drawFunction(g, d, b);
+            this.drawOpaque(g, g2);
         }
         try {
             setBorder(null);
@@ -40,18 +31,55 @@ public class FunctionRenderer extends VertexRenderer  {
             selected = tmp;
         }
         if (bordercolor != null) {
-            g.setColor(bordercolor);
-            g2.setStroke(new BasicStroke(b));
-            this.drawFunction(g, d, b);
+            this.drawBorder(g, g2);
         }
         if (selected) {
-            g2.setStroke(GraphConstants.SELECTION_STROKE);
-            g.setColor(highlightColor);
-            this.drawFunction(g, d, b);
+            this.drawSelected(g, g2);
         }
     }
 
-    private void drawFunction(Graphics g, Dimension d, int b) {
-        g.drawRoundRect(0, 0, d.width, d.height, d.width/3, d.height/3);
+    private void drawOpaque(Graphics g, Graphics2D g2) {
+        g.setColor(super.getBackground());
+        if (gradientColor != null && !preview) {
+            setOpaque(false);
+            g2.setPaint(new GradientPaint(0, 0, super.getBackground(),
+                    getWidth(), getHeight(), gradientColor, true));
+        }
+        g2.setStroke(new BasicStroke(2));
+        this.fillShape(g2);
+    }
+
+    private void drawBorder(Graphics g, Graphics2D g2) {
+        g.setColor(bordercolor);
+        g2.setStroke(new BasicStroke(this.borderWidth));
+        this.drawShape(g2);
+    }
+
+    private void drawSelected(Graphics g, Graphics2D g2) {
+        g2.setStroke(GraphConstants.SELECTION_STROKE);
+        g.setColor(highlightColor);
+        this.drawShape(g2);
+    }
+
+    private void fillShape(Graphics g) {
+        g.fillRoundRect(
+                0 + this.borderWidth,
+                0 + this.borderWidth,
+                this.getSize().width - 2*this.borderWidth,
+                this.getSize().height - 2*this.borderWidth,
+                (this.getSize().width - this.borderWidth) / 3,
+                (this.getSize().height - this.borderWidth) / 3
+                );
+    }
+
+    private void drawShape(Graphics g) {
+        g.drawRoundRect(
+                0 + this.borderWidth,
+                0 + this.borderWidth,
+                this.getSize().width - 2*this.borderWidth,
+                this.getSize().height - 2*this.borderWidth,
+                (this.getSize().width - this.borderWidth) / 3,
+                (this.getSize().height - this.borderWidth) / 3
+                );
     }
 }

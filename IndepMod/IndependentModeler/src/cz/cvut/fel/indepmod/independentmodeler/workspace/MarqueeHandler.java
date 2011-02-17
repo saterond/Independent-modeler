@@ -2,16 +2,18 @@ package cz.cvut.fel.indepmod.independentmodeler.workspace;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteListener;
-import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.CellFactory;
 import java.awt.Color;
+import java.beans.PropertyVetoException;
 import org.jgraph.graph.BasicMarqueeHandler;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.util.logging.Logger;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.PortView;
+import org.openide.nodes.Node;
 
 public class MarqueeHandler extends BasicMarqueeHandler {
 
@@ -19,7 +21,6 @@ public class MarqueeHandler extends BasicMarqueeHandler {
             getName());
     private final Graph graph;
     private final PaletteListener paletteListener;
-    private final CellFactory cellFactory;
 //    private final JPopupMenu popupMenu;
     private PortView actualPort;
     private Point2D actualPoint;
@@ -28,12 +29,10 @@ public class MarqueeHandler extends BasicMarqueeHandler {
 
     public MarqueeHandler(final Graph _graph,
             final PaletteListener _paletteListener,
-            final CellFactory _cellFactory,
             final JPopupMenu _popupMenu) {
         super();
         this.graph = _graph;
         this.paletteListener = _paletteListener;
-        this.cellFactory = _cellFactory;
 //        this.popupMenu = popupMenu;
         this.actualPort = null;
         this.actualPoint = null;
@@ -44,7 +43,7 @@ public class MarqueeHandler extends BasicMarqueeHandler {
     @Override
     public void mousePressed(final MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e) && this.getPaletteListener().
-                isElementSelected()) {
+                isCellSelected()) {
             this.handleLeftButtonPressed(e);
         } else if (SwingUtilities.isRightMouseButton(e)) {
             this.handleRightButtonPressed(e);
@@ -55,22 +54,22 @@ public class MarqueeHandler extends BasicMarqueeHandler {
         } else {
             super.mousePressed(e);
         }
-        this.resetPaletteTool(e);
+
     }
 
     private void handleLeftButtonPressed(final MouseEvent e) {
         LOG.fine("handleLeftButtonPressed");
         DefaultGraphCell[] cells = new DefaultGraphCell[1];
-//        cells[0] = this.getCellFactory().getCell(this.getPaletteListener().
-//                getSelectedToolEnum());
         cells[0] = this.getPaletteListener().getCell();
         if (cells[0] != null) {
             this.getGraph().createCell(e.getPoint(), cells);
         }
+        this.resetPaletteTool(e);
     }
 
     private void handleRightButtonPressed(final MouseEvent e) {
         LOG.fine("handleRightButtonPressed");
+        this.resetPaletteTool(e);
     }
 
     @Override
@@ -103,8 +102,12 @@ public class MarqueeHandler extends BasicMarqueeHandler {
                 if (((Cell) this.getStartingPort().getParentView().getCell()).
                         canConnectTo((Cell) this.getActualPort().getParentView().
                         getCell())) {
-                    this.getGraph().addEdge(this.getStartingPort(), this.
-                            getActualPort());
+//                    this.getGraph().addEdge(this.getStartingPort(),
+//                                            this.getActualPort());
+                    DefaultEdge edge = this.getPaletteListener().getEdge();
+                    edge.setSource(this.getStartingPort().getCell());
+                    edge.setTarget(this.getActualPort().getCell());
+                    this.getGraph().addEdge(edge);
                 }
             }
             this.setActualPort(null);
@@ -114,10 +117,13 @@ public class MarqueeHandler extends BasicMarqueeHandler {
         } else {
             super.mouseReleased(mouseEvent);
         }
+        this.resetPaletteTool(mouseEvent);
     }
 
     @Override
     public boolean isForceMarqueeEvent(final MouseEvent mouseEvent) {
+        this.bobbleEventToCell(mouseEvent);
+        this.selectNodeInNavigator(mouseEvent);
         this.handleGraphPorts();
         if (SwingUtilities.isRightMouseButton(mouseEvent) && !mouseEvent.
                 isShiftDown()) {
@@ -129,11 +135,43 @@ public class MarqueeHandler extends BasicMarqueeHandler {
                 isForceMarqueeEvent(mouseEvent);
     }
 
+    private boolean bobbleEventToCell(final MouseEvent e) {
+        Cell cell = (Cell) this.getGraph().getFirstCellForLocation(e.getX(), e.
+                getY());
+        if (cell != null) {
+            cell.mouseClicked(e);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //TODO refactor
+    private void selectNodeInNavigator(final MouseEvent e) {
+        Object clickedObject =
+                this.getGraph().getFirstCellForLocation(e.getX(), e.getY());
+        try {
+            if (clickedObject != null) {
+                if (clickedObject instanceof Cell) {
+                    Cell cell = ((Cell)clickedObject);
+                    Node[] node = {cell.getNode()};
+                    Navigator.findInstance().setSelectedNodes(node);
+                }
+            }
+            else {
+                Node[] node = {this.getGraph().getGraphNode()};
+                Navigator.findInstance().setSelectedNodes(node);
+            }
+        } catch (PropertyVetoException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     private void handleGraphPorts() {
         this.getGraph().setPortsVisible(this.getPaletteListener().
-                isDependencySelected());
+                isEdgeSelected());
         this.getGraph().setJumpToDefaultPort(this.getPaletteListener().
-                isDependencySelected());
+                isEdgeSelected());
     }
 
 //    public boolean addAction() {
@@ -239,12 +277,5 @@ public class MarqueeHandler extends BasicMarqueeHandler {
      */
     private void setStartingPoint(Point2D startingPoint) {
         this.startingPoint = startingPoint;
-    }
-
-    /**
-     * @return the cellFactory
-     */
-    public CellFactory getCellFactory() {
-        return cellFactory;
     }
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module codename="org.jgraph">
-    <module_version install_time="1293711153652" last="true" origin="installer" specification_version="1.0">
+    <module_version install_time="1297952329138" last="true" origin="installer" specification_version="1.0">
         <file crc="302264802" name="config/Modules/org-jgraph.xml"/>
         <file crc="2736305738" name="modules/ext/jgraph.jar"/>
-        <file crc="2961827993" name="modules/org-jgraph.jar"/>
+        <file crc="2587321956" name="modules/org-jgraph.jar"/>
     </module_version>
 </module>

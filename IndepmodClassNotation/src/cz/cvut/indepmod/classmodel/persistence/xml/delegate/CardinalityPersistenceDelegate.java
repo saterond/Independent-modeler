@@ -1,7 +1,6 @@
 package cz.cvut.indepmod.classmodel.persistence.xml.delegate;
 
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Expression;

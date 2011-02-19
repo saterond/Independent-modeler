@@ -48,15 +48,6 @@ public class AttributeModelTest {
         assertEquals(Common.ATTRIBUTE_NAME, this.model.getName());
     }
 
-    /**
-     * Test of toString method, of class AttributeModel.
-     */
-    @Test
-    public void testToString() {
-        assertNotNull(model.toString());
-        assertEquals(Common.ATTRIBUTE_NAME +" : "+ Common.TYPE_NAME, this.model.toString());
-    }
-
     @Test
     public void testAnotations() {
         this.model.addAnotation(new AnotationModel(Common.ANOT1));

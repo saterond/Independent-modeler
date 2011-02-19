@@ -9,6 +9,7 @@ import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.modelFactory.ClassModelDiagramModelFactory;
 import cz.cvut.indepmod.classmodel.file.ClassModelSaveCookie;
 import cz.cvut.indepmod.classmodel.file.ClassModelXMLDataObject;
+import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramModel;
 import cz.cvut.indepmod.classmodel.persistence.xml.ClassModelXMLCoder;
 import java.awt.GridLayout;
 import java.util.HashMap;
@@ -17,7 +18,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
-import org.jgraph.graph.GraphLayoutCache;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 import org.openide.windows.CloneableTopComponent;
@@ -29,8 +29,10 @@ import org.openide.windows.TopComponent;
  */
 public class ClassModelWorkspace extends CloneableTopComponent implements GraphModelListener {
 
+    private ClassModelDiagramModel diagramModel;
+    
     private ClassModelGraph graph;
-    private ClassModelModel model; //TODO - This could be directly ClassModelGraph
+    private ClassModelModel classModelAPI;
     private JPopupMenu popupMenu;
     private Map<String, ClassModelAbstractAction> actions;
     private ToolChooserModel selectedTool;
@@ -39,23 +41,26 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
     private boolean modified;
 
     public ClassModelWorkspace() {
-        this.init(ClassModelDiagramModelFactory.getInstance().createEmptyDiagramModel().getLayoutCache());
+        this.diagramModel = ClassModelDiagramModelFactory.getInstance().createEmptyDiagramModel();
+        this.init();
     }
 
     public ClassModelWorkspace(ClassModelXMLDataObject dataObject) {
         String fileName = dataObject.getPrimaryFile().getPath();
-        GraphLayoutCache cache = ClassModelXMLCoder.getInstance().decode(fileName);
+        this.diagramModel = ClassModelXMLCoder.getInstance().decode(fileName);
 
-        if (cache != null) {
-            this.init(cache);
+        if (this.diagramModel != null) {
+            this.init();
         } else {
-            this.init(ClassModelDiagramModelFactory.getInstance().createEmptyDiagramModel().getLayoutCache());
+            this.diagramModel = ClassModelDiagramModelFactory.getInstance().createEmptyDiagramModel();
+            this.init();
         }
         this.lookupContent.add(dataObject);
     }
 
-    public ClassModelWorkspace(GraphLayoutCache cache) {
-        this.init(cache);
+    public ClassModelWorkspace(ClassModelDiagramModel diagramModel) {
+        this.diagramModel = diagramModel;
+        this.init();
     }
 
     @Override
@@ -81,20 +86,18 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
         }
     }
 
-
-
 //===========================PRIVATE METHODS====================================
-    private void init(GraphLayoutCache cache) {
+    private void init() {
         this.actions = new HashMap<String, ClassModelAbstractAction>();
         this.popupMenu = new JPopupMenu();
         this.selectedTool = new ToolChooserModel();
         this.graph = new ClassModelGraph(this.actions, this.selectedTool);
-        this.model = new ClassModelModel(this.graph);
-        this.saveCookie = new ClassModelSaveCookie(this, this.graph);
+        this.classModelAPI = new ClassModelModel(this.graph);
+        this.saveCookie = new ClassModelSaveCookie(this, this.diagramModel);
         this.modified = false;
 
         this.graph.setMarqueeHandler(new ClassModelMarqueeHandler(this.graph, this.selectedTool, this.popupMenu));
-        this.graph.setGraphLayoutCache(cache); //TODO: THIS SHOULD BE ADDED THROUGH CONSTRUCTOR
+        this.graph.setGraphLayoutCache(this.diagramModel.getLayoutCache()); //TODO: THIS SHOULD BE ADDED THROUGH CONSTRUCTOR
         this.graph.getModel().addGraphModelListener(this);
 
         this.initLookup();
@@ -141,6 +144,6 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
     private void initLookup() {
         this.associateLookup(new AbstractLookup(this.lookupContent));
         this.lookupContent.add(this.selectedTool);
-        this.lookupContent.add(this.model);
+        this.lookupContent.add(this.classModelAPI);
     }
 }

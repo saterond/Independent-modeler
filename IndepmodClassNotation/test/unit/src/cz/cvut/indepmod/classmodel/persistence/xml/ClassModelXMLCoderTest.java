@@ -14,6 +14,7 @@ import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.api.model.IRelation;
 import cz.cvut.indepmod.classmodel.modelFactory.ClassModelDiagramModelFactory;
+import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramModel;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelClassCell;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
@@ -38,6 +39,7 @@ public class ClassModelXMLCoderTest {
 
     public static final String FILE_NAME = "TestClass";
     private ClassModelGraph graph;
+    private ClassModelDiagramModel diagramModel;
 
     public ClassModelXMLCoderTest() {
     }
@@ -45,7 +47,8 @@ public class ClassModelXMLCoderTest {
     @Before
     public void setUp() {
         this.graph = new ClassModelGraph(new HashMap<String, ClassModelAbstractAction>(), new ToolChooserModel());
-        this.graph.setGraphLayoutCache(ClassModelDiagramModelFactory.getInstance().createEmptyDiagramModel().getLayoutCache());
+        this.diagramModel = ClassModelDiagramModelFactory.getInstance().createEmptyDiagramModel();
+        this.graph.setGraphLayoutCache(this.diagramModel.getLayoutCache());
     }
 
     @After
@@ -74,9 +77,9 @@ public class ClassModelXMLCoderTest {
         this.graph.getGraphLayoutCache().insert(edge);
 
         ClassModelXMLCoder encoder = ClassModelXMLCoder.getInstance();
-        encoder.encode(this.graph.getGraphLayoutCache(), FILE_NAME);
+        encoder.encode(this.diagramModel, FILE_NAME);
 
-        this.graph.setGraphLayoutCache(encoder.decode(FILE_NAME));
+        this.graph.setGraphLayoutCache(encoder.decode(FILE_NAME).getLayoutCache());
 
         assertEquals(3, this.graph.getModel().getRootCount());
 

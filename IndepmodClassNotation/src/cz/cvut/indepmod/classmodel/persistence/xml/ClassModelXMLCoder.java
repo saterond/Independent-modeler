@@ -1,8 +1,10 @@
 package cz.cvut.indepmod.classmodel.persistence.xml;
 
+import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramModel;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.AnotationModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.AttributeModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.CardinalityPersistenceDelegate;
+import cz.cvut.indepmod.classmodel.persistence.xml.delegate.ClassModelDiagramModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.ClassModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.MethodModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.RelationModelPersistenceDelegate;
@@ -92,7 +94,7 @@ public class ClassModelXMLCoder {
 
     
 
-    public void encode(GraphLayoutCache graphLayoutCache, String fileName) {
+    public void encode(ClassModelDiagramModel diagramModel, String fileName) {
         XMLEncoder encoder;
         try {
             encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(fileName)));
@@ -102,17 +104,17 @@ public class ClassModelXMLCoder {
         }
 
         this.initEncoder(encoder);
-        encoder.writeObject(graphLayoutCache);
+        encoder.writeObject(diagramModel);
         encoder.close();
     }
 
-    public GraphLayoutCache decode(String fileName) {
+    public ClassModelDiagramModel decode(String fileName) {
         try {
             XMLDecoder dec = new XMLDecoder(new BufferedInputStream(new FileInputStream(fileName)));
             if (dec != null) {
                 Object obj = dec.readObject();
                 dec.close();
-                return (GraphLayoutCache) obj;
+                return (ClassModelDiagramModel) obj;
             }
         } catch (FileNotFoundException ex) {
             LOG.severe(ex.getMessage());
@@ -131,6 +133,9 @@ public class ClassModelXMLCoder {
                 e.printStackTrace();
             }
         });
+
+        encoder.setPersistenceDelegate(ClassModelDiagramModel.class,
+                new ClassModelDiagramModelPersistenceDelegate());
 
         //GRAPH LAYOUT CACHE====================================================
         encoder.setPersistenceDelegate(GraphLayoutCache.class,

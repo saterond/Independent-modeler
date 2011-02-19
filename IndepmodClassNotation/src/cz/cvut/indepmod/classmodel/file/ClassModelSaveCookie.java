@@ -1,5 +1,6 @@
 package cz.cvut.indepmod.classmodel.file;
 
+import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramModel;
 import cz.cvut.indepmod.classmodel.persistence.xml.ClassModelXMLCoder;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelWorkspace;
@@ -17,11 +18,11 @@ import org.openide.loaders.DataObject;
 public class ClassModelSaveCookie implements SaveCookie {
 
     private ClassModelWorkspace workspace;
-    private ClassModelGraph graph;
+    private ClassModelDiagramModel diagramModel;
 
-    public ClassModelSaveCookie(ClassModelWorkspace workspace, ClassModelGraph graph) {
+    public ClassModelSaveCookie(ClassModelWorkspace workspace, ClassModelDiagramModel diagramModel) {
         this.workspace = workspace;
-        this.graph = graph;
+        this.diagramModel = diagramModel;
     }
 
     @Override
@@ -29,7 +30,7 @@ public class ClassModelSaveCookie implements SaveCookie {
         DataObject dataObj = this.workspace.getLookup().lookup(DataObject.class);
         if (dataObj != null) {
             File f = FileUtil.toFile(dataObj.getPrimaryFile());
-            ClassModelXMLCoder.getInstance().encode(this.graph.getGraphLayoutCache(), f.getPath());
+            ClassModelXMLCoder.getInstance().encode(this.diagramModel, f.getPath());
             this.workspace.setModified(false);
         } else {
             

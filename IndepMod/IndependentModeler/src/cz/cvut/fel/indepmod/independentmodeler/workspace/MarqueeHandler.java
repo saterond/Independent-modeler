@@ -7,6 +7,8 @@ import java.beans.PropertyVetoException;
 import org.jgraph.graph.BasicMarqueeHandler;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
@@ -14,6 +16,7 @@ import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.PortView;
 import org.openide.nodes.Node;
+import org.openide.util.Exceptions;
 
 public class MarqueeHandler extends BasicMarqueeHandler {
 
@@ -91,6 +94,7 @@ public class MarqueeHandler extends BasicMarqueeHandler {
         }
     }
 
+    //TODO refactorovat
     @Override
     public void mouseReleased(final MouseEvent mouseEvent) {
         if (this.getStartingPort() != null && this.getGraph().isPortsVisible()) {
@@ -102,8 +106,6 @@ public class MarqueeHandler extends BasicMarqueeHandler {
                 if (((Cell) this.getStartingPort().getParentView().getCell()).
                         canConnectTo((Cell) this.getActualPort().getParentView().
                         getCell())) {
-//                    this.getGraph().addEdge(this.getStartingPort(),
-//                                            this.getActualPort());
                     DefaultEdge edge = this.getPaletteListener().getEdge();
                     edge.setSource(this.getStartingPort().getCell());
                     edge.setTarget(this.getActualPort().getCell());
@@ -116,10 +118,27 @@ public class MarqueeHandler extends BasicMarqueeHandler {
             this.setStartingPoint(null);
         } else {
             super.mouseReleased(mouseEvent);
+            try {
+
+                Object[] objects = this.getGraph().getSelectionCells();
+                List<Node> nodes =
+                        new ArrayList<Node>();
+                for (Object object : objects) {
+                    if (object instanceof Cell) {
+                        Cell cell =
+                                (Cell) object;
+                        nodes.add(cell.getNode());
+                    }
+                }
+                Navigator.findInstance().
+                        setSelectedNodes(nodes.toArray(new Node[0]));
+            } catch (PropertyVetoException ex) {
+                Exceptions.printStackTrace(ex);
+            }
         }
         this.resetPaletteTool(mouseEvent);
     }
-
+    //TODO calling selectNodeNavigator should be called elsewhere?
     @Override
     public boolean isForceMarqueeEvent(final MouseEvent mouseEvent) {
         this.bobbleEventToCell(mouseEvent);
@@ -147,18 +166,18 @@ public class MarqueeHandler extends BasicMarqueeHandler {
     }
 
     //TODO refactor
+    //TODO select edge
     private void selectNodeInNavigator(final MouseEvent e) {
         Object clickedObject =
                 this.getGraph().getFirstCellForLocation(e.getX(), e.getY());
         try {
             if (clickedObject != null) {
                 if (clickedObject instanceof Cell) {
-                    Cell cell = ((Cell)clickedObject);
+                    Cell cell = ((Cell) clickedObject);
                     Node[] node = {cell.getNode()};
                     Navigator.findInstance().setSelectedNodes(node);
                 }
-            }
-            else {
+            } else {
                 Node[] node = {this.getGraph().getGraphNode()};
                 Navigator.findInstance().setSelectedNodes(node);
             }

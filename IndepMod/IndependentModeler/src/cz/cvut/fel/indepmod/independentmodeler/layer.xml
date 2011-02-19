@@ -16,6 +16,11 @@
                 <attr name="displayName" bundlevalue="cz.cvut.fel.indepmod.independentmodeler.workspace.Bundle#CTL_NavigatorAction"/>
                 <attr name="instanceCreate" methodvalue="org.openide.windows.TopComponent.openAction"/>
             </file>
+            <file name="cz-cvut-fel-indepmod-independentmodeler-workspace-ProjectAction.instance">
+                <attr name="component" methodvalue="cz.cvut.fel.indepmod.independentmodeler.workspace.ProjectTopComponent.findInstance"/>
+                <attr name="displayName" bundlevalue="cz.cvut.fel.indepmod.independentmodeler.workspace.Bundle#CTL_ProjectAction"/>
+                <attr name="instanceCreate" methodvalue="org.openide.windows.TopComponent.openAction"/>
+            </file>
         </folder>
     </folder>
     <folder name="Menu">
@@ -29,13 +34,20 @@
             <file name="NavigatorAction.shadow">
                 <attr name="originalFile" stringvalue="Actions/Window/cz-cvut-fel-indepmod-independentmodeler-workspace-NavigatorAction.instance"/>
             </file>
+            <file name="ProjectAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Window/cz-cvut-fel-indepmod-independentmodeler-workspace-ProjectAction.instance"/>
+            </file>
         </folder>
     </folder>
     <folder name="Windows2">
         <folder name="Components">
             <file name="NavigatorTopComponent.settings" url="NavigatorTopComponentSettings.xml"/>
+            <file name="ProjectTopComponent.settings" url="ProjectTopComponentSettings.xml"/>
         </folder>
         <folder name="Modes">
+            <folder name="explorer">
+                <file name="ProjectTopComponent.wstcref" url="ProjectTopComponentWstcref.xml"/>
+            </folder>
             <folder name="output">
                 <file name="NavigatorTopComponent.wstcref" url="NavigatorTopComponentWstcref.xml"/>
             </folder>

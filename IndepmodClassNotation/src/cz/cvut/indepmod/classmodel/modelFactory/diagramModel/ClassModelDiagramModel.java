@@ -5,27 +5,33 @@ import cz.cvut.indepmod.classmodel.workspace.ClassModelGraphModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelCellViewFactory;
 import org.jgraph.graph.GraphLayoutCache;
 
-
+/**
+ * This class stores information which have to be saved. It is information
+ * like which type of diagram is used (business, class), used GraphLayoutCache,
+ * static data types, ...
+ * @author Lucky
+ */
 public class ClassModelDiagramModel {
 
     private GraphLayoutCache layoutCache;
     private DiagramType diagramType;
-//    private UndoManager undoManager;
 
     public ClassModelDiagramModel() {
         this.layoutCache = new GraphLayoutCache(
                 new ClassModelGraphModel(),
-                new ClassModelCellViewFactory()
-        );
+                new ClassModelCellViewFactory());
         this.diagramType = DiagramType.CLASS;
-
-//        this.undoManager = new UndoManager();
-//        this.layoutCache.getModel().addUndoableEditListener(this.undoManager);
     }
 
-    public ClassModelDiagramModel(GraphLayoutCache layoutCache) {
+    public ClassModelDiagramModel(GraphLayoutCache layoutCache, DiagramType diagramType) {
         this.layoutCache = layoutCache;
-        this.diagramType = DiagramType.CLASS;
+        this.diagramType = diagramType;
+
+        if (this.layoutCache == null) {
+            this.layoutCache = new GraphLayoutCache(
+                    new ClassModelGraphModel(),
+                    new ClassModelCellViewFactory());
+        }
     }
 
     public GraphLayoutCache getLayoutCache() {
@@ -35,9 +41,4 @@ public class ClassModelDiagramModel {
     public DiagramType getDiagramType() {
         return diagramType;
     }
-
-//    public UndoManager getUndoManager() {
-//        return undoManager;
-//    }
-
 }

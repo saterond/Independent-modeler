@@ -87,6 +87,7 @@
                 <attr name="instantiatingIterator" newvalue="cz.cvut.indepmod.classmodel.file.wizard.ClassModelWizardWizardIterator"/>
                 <attr name="template" boolvalue="true"/>
                 <attr name="templateWizardURL" urlvalue="nbresloc:/cz/cvut/indepmod/classmodel/file/wizard/classModelWizard.html"/>
+                <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
             </file>
         </folder>
     </folder>

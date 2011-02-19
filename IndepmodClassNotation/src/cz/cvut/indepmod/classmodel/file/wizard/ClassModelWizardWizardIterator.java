@@ -1,9 +1,11 @@
 package cz.cvut.indepmod.classmodel.file.wizard;
 
+import cz.cvut.indepmod.classmodel.api.model.DiagramType;
 import java.awt.Component;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.swing.JComponent;
@@ -67,7 +69,11 @@ public final class ClassModelWizardWizardIterator implements WizardDescriptor.In
 
         String targetName = Templates.getTargetName(wizard);
 
-        DataObject dobj = template.createFromTemplate(df, targetName, new HashMap<String, Object>());
+        Map<String, Object> attributes = new HashMap<String, Object>();
+        DiagramType diagramType = (DiagramType)wizard.getProperty(NewFileConstants.TYPE);
+        attributes.put("diagramType", diagramType.toString());
+
+        DataObject dobj = template.createFromTemplate(df, targetName, attributes);
         FileObject createdFile = dobj.getPrimaryFile();
 
         //Create the new file:

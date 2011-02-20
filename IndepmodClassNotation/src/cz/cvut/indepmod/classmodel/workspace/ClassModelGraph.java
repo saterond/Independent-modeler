@@ -1,6 +1,7 @@
 package cz.cvut.indepmod.classmodel.workspace;
 
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
+import cz.cvut.indepmod.classmodel.actions.ClassModelDeleteAction;
 import cz.cvut.indepmod.classmodel.actions.ClassModelEditAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModelListener;
@@ -83,6 +84,16 @@ public class ClassModelGraph extends JGraph {
         this.selectedTool.setSelectedTool(ToolChooserModel.Tool.TOOL_CONTROLL);
     }
 
+    public void selectCell(Object cell) {
+        for (Object selection : this.getSelectionCells()) {
+            this.removeSelectionCell(selection);
+        }
+
+        if (cell != null) {
+            this.setSelectionCell(cell);
+        }
+    }
+
     /**
      * TODO - this will be loaded from a XML. Only temporary
      */
@@ -102,6 +113,10 @@ public class ClassModelGraph extends JGraph {
                 ClassModelEditAction.ACTION_NAME,
                 new ClassModelEditAction(this)
         );
+
+        this.actions.put(
+                ClassModelDeleteAction.ACTION_NAME,
+                new ClassModelDeleteAction(this));
     }
 
 

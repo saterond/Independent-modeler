@@ -1,10 +1,6 @@
 package cz.cvut.indepmod.classmodel.workspace;
 
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
-import cz.cvut.indepmod.classmodel.actions.ClassModelDeleteAction;
-import cz.cvut.indepmod.classmodel.actions.ClassModelEditAction;
-import cz.cvut.indepmod.classmodel.actions.ClassModelRedoAction;
-import cz.cvut.indepmod.classmodel.actions.ClassModelUndoAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.modelFactory.ClassModelDiagramModelFactory;
 import cz.cvut.indepmod.classmodel.file.ClassModelSaveCookie;
@@ -18,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
@@ -39,7 +34,6 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
     
     private ClassModelGraph graph;
     private ClassModelModel classModelAPI;
-    private JPopupMenu popupMenu;
     private Map<String, ClassModelAbstractAction> actions;
     private ToolChooserModel selectedTool;
     private ClassModelSaveCookie saveCookie;
@@ -86,12 +80,9 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
     public void setModified(boolean modified) {
         if (!this.modified && modified) {
             this.modified = modified;
-            //this.setFont(this.getFont().deriveFont(Font.BOLD));
-            //this.setHtmlDisplayName(this.getName());
             this.lookupContent.add(this.saveCookie);
         } else if (this.modified && !modified) {
             this.modified = modified;
-            //this.setFont(this.getFont().deriveFont(Font.PLAIN));
             this.lookupContent.remove(this.saveCookie);
         }
     }
@@ -99,20 +90,19 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
 //===========================PRIVATE METHODS====================================
     private void init() {
         this.actions = new HashMap<String, ClassModelAbstractAction>();
-        this.popupMenu = new JPopupMenu();
         this.selectedTool = new ToolChooserModel();
         this.graph = new ClassModelGraph(this.actions, this.selectedTool);
         this.classModelAPI = new ClassModelModel(this.graph);
         this.saveCookie = new ClassModelSaveCookie(this, this.diagramModel);
         this.modified = false;
 
-        this.graph.setMarqueeHandler(new ClassModelMarqueeHandler(this.graph, this.selectedTool, this.popupMenu));
+        this.graph.setMarqueeHandler(new ClassModelMarqueeHandler(this.graph, this.selectedTool, this.actions));
         this.graph.setGraphLayoutCache(this.diagramModel.getLayoutCache()); //TODO: THIS SHOULD BE ADDED THROUGH CONSTRUCTOR
         this.graph.getModel().addGraphModelListener(this);
 
         this.initLookup();
-        this.initActions();
-        this.initPopupMenu();
+        //this.initActions();
+        //this.initPopupMenu();
         this.initLayout();
     }
 
@@ -124,32 +114,28 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
         this.add(new JScrollPane(this.graph));
     }
 
-    /**
-     * This method inititalizes actions
-     */
-    private void initActions() {
-        this.actions.put(
-                ClassModelDeleteAction.ACTION_NAME,
-                new ClassModelDeleteAction(this.graph));
+//    /**
+//     * This method inititalizes actions
+//     */
+//    private void initActions() {
+//        this.actions.put(
+//                ClassModelUndoAction.ACTION_NAME,
+//                new ClassModelUndoAction());
+//
+//        this.actions.put(
+//                ClassModelRedoAction.ACTION_NAME,
+//                new ClassModelRedoAction());
+//    }
 
-        this.actions.put(
-                ClassModelUndoAction.ACTION_NAME,
-                new ClassModelUndoAction());
-
-        this.actions.put(
-                ClassModelRedoAction.ACTION_NAME,
-                new ClassModelRedoAction());
-    }
-
-    private void initPopupMenu() {
-        ClassModelAbstractAction deleteAction = this.actions.get(ClassModelDeleteAction.ACTION_NAME);
-        deleteAction.setEnabled(true);
-
-        ClassModelAbstractAction editAction = this.actions.get(ClassModelEditAction.ACTION_NAME);
-
-        this.popupMenu.add(deleteAction);
-        this.popupMenu.add(editAction);
-    }
+//    private void initPopupMenu() {
+//        ClassModelAbstractAction deleteAction = this.actions.get(ClassModelDeleteAction.ACTION_NAME);
+//        deleteAction.setEnabled(true);
+//
+//        ClassModelAbstractAction editAction = this.actions.get(ClassModelEditAction.ACTION_NAME);
+//
+//        this.popupMenu.add(deleteAction);
+//        this.popupMenu.add(editAction);
+//    }
 
     private void initLookup() {
         this.associateLookup(new AbstractLookup(this.lookupContent));

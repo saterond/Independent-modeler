@@ -1,5 +1,8 @@
 package cz.cvut.indepmod.classmodel.workspace;
 
+import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
+import cz.cvut.indepmod.classmodel.actions.ClassModelDeleteAction;
+import cz.cvut.indepmod.classmodel.actions.ClassModelEditAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelCellFactory;
 import org.jgraph.graph.BasicMarqueeHandler;
@@ -9,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.util.Map;
 import java.util.logging.Logger;
 import org.jgraph.graph.DefaultEdge;
 
@@ -18,7 +22,7 @@ public class ClassModelMarqueeHandler extends BasicMarqueeHandler {
 
     private final ClassModelGraph graph;
     private final ToolChooserModel selectedToolModel;
-    private final JPopupMenu popupMenu;
+    private Map<String, ClassModelAbstractAction> actions;
 
     private PortView actualPort;
     private Point2D actualPoint;
@@ -27,10 +31,10 @@ public class ClassModelMarqueeHandler extends BasicMarqueeHandler {
 
     public ClassModelMarqueeHandler(ClassModelGraph graph,
                                     ToolChooserModel selectedToolModel,
-                                    JPopupMenu popupMenu) {
+                                    Map<String, ClassModelAbstractAction> actions) {
         this.graph = graph;
         this.selectedToolModel = selectedToolModel;
-        this.popupMenu = popupMenu;
+        this.actions = actions;
 
         this.actualPort = null;
         this.actualPoint = null;
@@ -41,7 +45,7 @@ public class ClassModelMarqueeHandler extends BasicMarqueeHandler {
     @Override
     public void mousePressed(final MouseEvent e) {
         if (SwingUtilities.isRightMouseButton(e)) {
-            this.popupMenu.show(this.graph, e.getX(), e.getY());
+            this.handlePopupMenu(e);
         } else if (this.addAction()) {
             this.graph.insertCell(e.getPoint());
         } else if (this.actualPort != null && this.graph.isPortsVisible()) {
@@ -116,8 +120,6 @@ public class ClassModelMarqueeHandler extends BasicMarqueeHandler {
         }
     }
 
-    //TODO - newColor and oldColor are the same in all calls
-
     /**
      * This method prints temporary line when user want add an connection between vertices. Line is printed in XOR mode,
      * so if newColor pixel is printed on the pixel with the same color (newColor color), the oldColor pixel is
@@ -141,4 +143,17 @@ public class ClassModelMarqueeHandler extends BasicMarqueeHandler {
         }
     }
 
+    private void handlePopupMenu(final MouseEvent e) {
+        Object c = this.graph.getFirstCellForLocation(e.getX(), e.getY());
+        this.graph.selectCell(c);
+
+        if (this.graph.getSelectionCell() != null) {
+            JPopupMenu res = new JPopupMenu();
+
+            res.add(this.actions.get(ClassModelEditAction.ACTION_NAME));
+            res.add(this.actions.get(ClassModelDeleteAction.ACTION_NAME));
+
+            res.show(this.graph, e.getX(), e.getY());
+        }
+    }
 }

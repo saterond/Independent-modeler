@@ -5,7 +5,7 @@ import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.modelFactory.ClassModelDiagramModelFactory;
 import cz.cvut.indepmod.classmodel.file.ClassModelSaveCookie;
 import cz.cvut.indepmod.classmodel.file.ClassModelXMLDataObject;
-import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramModel;
+import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramDataModel;
 import cz.cvut.indepmod.classmodel.persistence.xml.ClassModelXMLCoder;
 import java.awt.GridLayout;
 import java.io.FileNotFoundException;
@@ -30,7 +30,7 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
 
     private static final Logger LOG = Logger.getLogger(ClassModelWorkspace.class.getName());
 
-    private ClassModelDiagramModel diagramModel;
+    private ClassModelDiagramDataModel diagramDataModel;
     
     private ClassModelGraph graph;
     private ClassModelModel classModelAPI;
@@ -41,29 +41,29 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
     private boolean modified;
 
     public ClassModelWorkspace() {
-        this.diagramModel = ClassModelDiagramModelFactory.getInstance().createEmptyDiagramModel();
+        this.diagramDataModel = ClassModelDiagramModelFactory.getInstance().createNewDiagramModel();
         this.init();
     }
 
     public ClassModelWorkspace(ClassModelXMLDataObject dataObject) {
         try {
             InputStream inStream = dataObject.getPrimaryFile().getInputStream();
-            this.diagramModel = ClassModelXMLCoder.getInstance().decode(inStream);
+            this.diagramDataModel = ClassModelXMLCoder.getInstance().decode(inStream);
         } catch (FileNotFoundException ex) {
             LOG.log(Level.SEVERE, "File could not be opened: {0}", ex.getMessage());
         }
 
-        if (this.diagramModel != null) {
+        if (this.diagramDataModel != null) {
             this.init();
         } else {
-            this.diagramModel = ClassModelDiagramModelFactory.getInstance().createEmptyDiagramModel();
+            this.diagramDataModel = ClassModelDiagramModelFactory.getInstance().createNewDiagramModel();
             this.init();
         }
         this.lookupContent.add(dataObject);
     }
 
-    public ClassModelWorkspace(ClassModelDiagramModel diagramModel) {
-        this.diagramModel = diagramModel;
+    public ClassModelWorkspace(ClassModelDiagramDataModel diagramModel) {
+        this.diagramDataModel = diagramModel;
         this.init();
     }
 
@@ -91,13 +91,13 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
     private void init() {
         this.actions = new HashMap<String, ClassModelAbstractAction>();
         this.selectedTool = new ToolChooserModel();
-        this.graph = new ClassModelGraph(this.actions, this.selectedTool);
+        this.graph = new ClassModelGraph(this.actions, this.selectedTool, this.diagramDataModel);
         this.classModelAPI = new ClassModelModel(this.graph);
-        this.saveCookie = new ClassModelSaveCookie(this, this.diagramModel);
+        this.saveCookie = new ClassModelSaveCookie(this, this.diagramDataModel);
         this.modified = false;
 
         this.graph.setMarqueeHandler(new ClassModelMarqueeHandler(this.graph, this.selectedTool, this.actions));
-        this.graph.setGraphLayoutCache(this.diagramModel.getLayoutCache()); //TODO: THIS SHOULD BE ADDED THROUGH CONSTRUCTOR
+        this.graph.setGraphLayoutCache(this.diagramDataModel.getLayoutCache()); //TODO: THIS SHOULD BE ADDED THROUGH CONSTRUCTOR
         this.graph.getModel().addGraphModelListener(this);
 
         this.initLookup();

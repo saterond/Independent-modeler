@@ -13,4 +13,6 @@ public interface IClassModelModel {
 
     public Collection<? extends IClass> getClasses();
 
+    public DiagramType getDiagramType();
+
 }

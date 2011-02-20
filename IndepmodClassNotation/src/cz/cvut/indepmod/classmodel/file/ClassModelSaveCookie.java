@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.file;
 
-import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramModel;
+import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramDataModel;
 import cz.cvut.indepmod.classmodel.persistence.xml.ClassModelXMLCoder;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelWorkspace;
 import java.io.File;
@@ -18,9 +18,9 @@ import org.openide.loaders.DataObject;
 public class ClassModelSaveCookie implements SaveCookie {
 
     private ClassModelWorkspace workspace;
-    private ClassModelDiagramModel diagramModel;
+    private ClassModelDiagramDataModel diagramModel;
 
-    public ClassModelSaveCookie(ClassModelWorkspace workspace, ClassModelDiagramModel diagramModel) {
+    public ClassModelSaveCookie(ClassModelWorkspace workspace, ClassModelDiagramDataModel diagramModel) {
         this.workspace = workspace;
         this.diagramModel = diagramModel;
     }

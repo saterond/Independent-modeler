@@ -5,6 +5,8 @@ import cz.cvut.indepmod.classmodel.actions.ClassModelDeleteAction;
 import cz.cvut.indepmod.classmodel.actions.ClassModelEditAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModelListener;
+import cz.cvut.indepmod.classmodel.api.model.DiagramType;
+import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramDataModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelCellFactory;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
@@ -15,10 +17,8 @@ import org.jgraph.graph.DefaultGraphCell;
 
 import java.awt.*;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 import org.jgraph.graph.CellView;
 
@@ -28,33 +28,27 @@ public class ClassModelGraph extends JGraph {
 
     private Map<String, ClassModelAbstractAction> actions;
     private ToolChooserModel selectedTool;
+    private ClassModelDiagramDataModel diagramDataModel;
 
-    private Set<TypeModel> staticModels;
 
-
-    public ClassModelGraph(Map<String, ClassModelAbstractAction> actions, ToolChooserModel selectedTool) {
+    public ClassModelGraph(
+            Map<String, ClassModelAbstractAction> actions,
+            ToolChooserModel selectedTool,
+            ClassModelDiagramDataModel diagramDataModel) {
         this.actions = actions;
         this.selectedTool = selectedTool;
+        this.diagramDataModel = diagramDataModel;
 
         this.initActions();
         this.initEventHandling();
-        this.initStaticTypes();
         this.setDoubleBuffered(true);
     }
 
     //TODO - this could be saved (and updated when model id changed)
     public Collection<TypeModel> getAllTypes() {
         Collection<TypeModel> res = new LinkedList<TypeModel>(this.getAllClasses());
-//        CellView[] cw = this.getGraphLayoutCache().getCellViews();
-//        for (int i = 0; i < cw.length; i++) {
-//            DefaultGraphCell cell = (DefaultGraphCell)cw[i].getCell();
-//            Object userObject = cell.getUserObject();
-//            if (userObject instanceof ClassModel) {
-//                res.add((TypeModel) userObject);
-//            }
-//        }
 
-        res.addAll(this.staticModels);
+        res.addAll(this.diagramDataModel.getStaticDataTypes());
         return res;
     }
 
@@ -75,6 +69,10 @@ public class ClassModelGraph extends JGraph {
         return res;
     }
 
+    public DiagramType getDiagramType() {
+        return this.diagramDataModel.getDiagramType();
+    }
+
     public void insertCell(Point p) {
         LOG.fine("adding new cell");
         ToolChooserModel.Tool tool = this.selectedTool.getSelectedTool();
@@ -92,20 +90,6 @@ public class ClassModelGraph extends JGraph {
         if (cell != null) {
             this.setSelectionCell(cell);
         }
-    }
-
-    /**
-     * TODO - this will be loaded from a XML. Only temporary
-     */
-    private void initStaticTypes() {
-        this.staticModels = new HashSet<TypeModel>();
-        this.staticModels.add(new TypeModel("String"));
-        this.staticModels.add(new TypeModel("int"));
-        this.staticModels.add(new TypeModel("char"));
-        this.staticModels.add(new TypeModel("boolean"));
-        this.staticModels.add(new TypeModel("long"));
-        this.staticModels.add(new TypeModel("double"));
-        this.staticModels.add(new TypeModel("float"));
     }
 
     private void initActions() {

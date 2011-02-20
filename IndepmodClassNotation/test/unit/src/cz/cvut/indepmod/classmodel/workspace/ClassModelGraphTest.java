@@ -12,6 +12,7 @@ import java.awt.Rectangle;
 import java.util.HashMap;
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
+import cz.cvut.indepmod.classmodel.modelFactory.ClassModelDiagramModelFactory;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
 import org.jgraph.graph.DefaultGraphCell;
@@ -31,7 +32,10 @@ public class ClassModelGraphTest {
 
     @Before
     public void setUp() {
-        this.graph = new ClassModelGraph(new HashMap<String, ClassModelAbstractAction>(), new ToolChooserModel());
+        this.graph = new ClassModelGraph(
+                new HashMap<String, ClassModelAbstractAction>(),
+                new ToolChooserModel(),
+                ClassModelDiagramModelFactory.getInstance().createNewDiagramModel());
 
         DefaultGraphCell cell = new DefaultGraphCell();
         cell.setUserObject(new ClassModel(Common.CLASS_NAME));

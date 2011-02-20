@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.modelFactory;
 
-import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramModel;
+import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramDataModel;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,7 +17,7 @@ public class ClassModelDiagramModelFactory {
     }
 
 
-    public ClassModelDiagramModel createEmptyDiagramModel() {
-        return new ClassModelDiagramModel();
+    public ClassModelDiagramDataModel createNewDiagramModel() {
+        return new ClassModelDiagramDataModel();
     }
 }

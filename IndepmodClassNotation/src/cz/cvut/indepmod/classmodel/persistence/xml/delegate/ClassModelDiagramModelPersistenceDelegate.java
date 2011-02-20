@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.persistence.xml.delegate;
 
-import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramModel;
+import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramDataModel;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Expression;
@@ -14,7 +14,7 @@ public class ClassModelDiagramModelPersistenceDelegate extends DefaultPersistenc
 
     @Override
     protected Expression instantiate(Object oldInstance, Encoder out) {
-        ClassModelDiagramModel c = (ClassModelDiagramModel)oldInstance;
+        ClassModelDiagramDataModel c = (ClassModelDiagramDataModel)oldInstance;
         return new Expression(
                 oldInstance,
                 oldInstance.getClass(),

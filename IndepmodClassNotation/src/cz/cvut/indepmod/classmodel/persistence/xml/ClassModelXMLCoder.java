@@ -33,9 +33,8 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -92,32 +91,22 @@ public class ClassModelXMLCoder {
     private ClassModelXMLCoder() {
     }
 
-    
-
-    public void encode(ClassModelDiagramModel diagramModel, String fileName) {
-        XMLEncoder encoder;
-        try {
-            encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(fileName)));
-        } catch (FileNotFoundException ex) {
-            LOG.severe(ex.getMessage());
-            return;
-        }
+    public void encode(ClassModelDiagramModel diagramModel, OutputStream stream) {
+        XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(stream));
 
         this.initEncoder(encoder);
         encoder.writeObject(diagramModel);
         encoder.close();
     }
 
-    public ClassModelDiagramModel decode(String fileName) {
+    public ClassModelDiagramModel decode(InputStream stream) {
         try {
-            XMLDecoder dec = new XMLDecoder(new BufferedInputStream(new FileInputStream(fileName)));
+            XMLDecoder dec = new XMLDecoder(new BufferedInputStream(stream));
             if (dec != null) {
                 Object obj = dec.readObject();
                 dec.close();
                 return (ClassModelDiagramModel) obj;
             }
-        } catch (FileNotFoundException ex) {
-            LOG.severe(ex.getMessage());
         } catch (NoSuchElementException ex) {
             LOG.severe(ex.getMessage());
         }
@@ -130,7 +119,7 @@ public class ClassModelXMLCoder {
 
             @Override
             public void exceptionThrown(Exception e) {
-                e.printStackTrace();
+                LOG.severe(e.getMessage());
             }
         });
 

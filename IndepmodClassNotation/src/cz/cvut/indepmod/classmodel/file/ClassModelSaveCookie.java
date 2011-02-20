@@ -2,10 +2,10 @@ package cz.cvut.indepmod.classmodel.file;
 
 import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramModel;
 import cz.cvut.indepmod.classmodel.persistence.xml.ClassModelXMLCoder;
-import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelWorkspace;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import org.openide.cookies.SaveCookie;
 import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataObject;
@@ -29,8 +29,8 @@ public class ClassModelSaveCookie implements SaveCookie {
     public void save() throws IOException {
         DataObject dataObj = this.workspace.getLookup().lookup(DataObject.class);
         if (dataObj != null) {
-            File f = FileUtil.toFile(dataObj.getPrimaryFile());
-            ClassModelXMLCoder.getInstance().encode(this.diagramModel, f.getPath());
+            OutputStream outputStream = dataObj.getPrimaryFile().getOutputStream();
+            ClassModelXMLCoder.getInstance().encode(this.diagramModel, outputStream);
             this.workspace.setModified(false);
         } else {
             

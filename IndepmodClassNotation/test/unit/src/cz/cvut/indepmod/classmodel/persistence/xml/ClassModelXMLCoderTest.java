@@ -22,7 +22,9 @@ import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
 import java.awt.Rectangle;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
@@ -76,10 +78,13 @@ public class ClassModelXMLCoderTest {
         this.initEdge(edge, p1, p2);
         this.graph.getGraphLayoutCache().insert(edge);
 
+        File file = new File(FILE_NAME);
+        FileOutputStream fos = new FileOutputStream(file);
         ClassModelXMLCoder encoder = ClassModelXMLCoder.getInstance();
-        encoder.encode(this.diagramModel, FILE_NAME);
+        encoder.encode(this.diagramModel, fos);
 
-        this.graph.setGraphLayoutCache(encoder.decode(FILE_NAME).getLayoutCache());
+        FileInputStream fis = new FileInputStream(file);
+        this.graph.setGraphLayoutCache(encoder.decode(fis).getLayoutCache());
 
         assertEquals(3, this.graph.getModel().getRootCount());
 

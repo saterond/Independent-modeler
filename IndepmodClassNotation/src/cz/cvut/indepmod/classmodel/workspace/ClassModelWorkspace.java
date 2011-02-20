@@ -12,8 +12,12 @@ import cz.cvut.indepmod.classmodel.file.ClassModelXMLDataObject;
 import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramModel;
 import cz.cvut.indepmod.classmodel.persistence.xml.ClassModelXMLCoder;
 import java.awt.GridLayout;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import org.jgraph.event.GraphModelEvent;
@@ -28,6 +32,8 @@ import org.openide.windows.TopComponent;
  * @author Lucky
  */
 public class ClassModelWorkspace extends CloneableTopComponent implements GraphModelListener {
+
+    private static final Logger LOG = Logger.getLogger(ClassModelWorkspace.class.getName());
 
     private ClassModelDiagramModel diagramModel;
     
@@ -46,8 +52,12 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
     }
 
     public ClassModelWorkspace(ClassModelXMLDataObject dataObject) {
-        String fileName = dataObject.getPrimaryFile().getPath();
-        this.diagramModel = ClassModelXMLCoder.getInstance().decode(fileName);
+        try {
+            InputStream inStream = dataObject.getPrimaryFile().getInputStream();
+            this.diagramModel = ClassModelXMLCoder.getInstance().decode(inStream);
+        } catch (FileNotFoundException ex) {
+            LOG.log(Level.SEVERE, "File could not be opened: {0}", ex.getMessage());
+        }
 
         if (this.diagramModel != null) {
             this.init();

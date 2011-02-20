@@ -10,3 +10,4 @@ documentation/*/*.aux
 documentation/*/*.dvi
 documentation/*/*.blg
 documentation/*/*.bbl
+documentation/*/*.out

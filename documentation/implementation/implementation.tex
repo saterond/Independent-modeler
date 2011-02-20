@@ -74,7 +74,7 @@ This module consists of Interfaces which implementations can be found in the loo
 
 \subsection{ClassModel API (cz.cvut.indepmod.classmodel.api.model)}
 
-In this package there are interfaces which can be used to read the Class Model Notation Model. There is an implementation of the IClassModelModel interface in the workspace lookup. This object provides the list of Classes from a model. Classes provides the list of annotations, attributes, methods and relations to other classes. And so on with the attributes, etc. 
+In this package there are interfaces which can be used to read the Class Model Notation Model. There is an implementation of the IClassModelModel interface in the workspace lookup. This object provides the information about the type of model (business model / class model) and list of Classes from a model. Classes provides the list of annotations, attributes, methods and relations to other classes. And so on with the attributes, etc. 
 
 Relation between (two) classes is represented by instance of IRelation interface. IClass returns the list of IRelations that belongs to it. IRelation holds information about its type (simple relation, composition, agregation, generalization, implementation) and about what class is at the beginning and at the end of the relation, including cardinalities. 
 
@@ -151,9 +151,8 @@ This is the fundamental module whose purpose is to create a workspace where user
 Main class (part of the cz.cvut.indepmod.classmodel.workspace package), which comprises the workspace, is the ClassModelWorkspace. Thus, if you want to study the code, you should start right here. ClassModelWorkspace is extended from the TopComponent. This class is responsible for whole initialisation. It creates:
 \begin{itemize}
     \item ClassModelGraph - this class is extended from JGraph and represents the class model graph to the user. Instance of this class is situated inside the ClassModelWorkspace component (JGraph is also derived from JComponent)
-    \item ClassModelModel - Implementation of IClassModelModel which returns the list of classes that are in the class model.
+    \item ClassModelModel - Implementation of IClassModelModel which returns the list of classes that are in the class model and the type of the diagram (class or business model).
     \item ClassModelMarqueeHandler - this class is responsible for handling of user inputs that are made inside the ClassModelGraph.
-    \item JPopupMenu - this popup menu is used inside the ClassModelGraph
 \end{itemize}
 
 ClassModelWorkspace is simply JComponent (TopComponent) which has the JGraph inside. JGraph presents the class model to the user. There are cells (representing classes) which are related together by edges (representing relations).
@@ -162,15 +161,15 @@ In next section I will try to describe the implementation of the Editor Module. 
 
 \subsection{Editor Module Initialisation}
 
-As I have already said before, the ClassModelWorkspace class do the initialization of the whole module. There are two cases of initialization. The first case, when user creates new class diagram, and the second, when user opens an existing file. Both cases are very similar. They differ only in the way of GraphLayoutCache initialization. For this purpose there are two constructor variants.
+As I have already said before, the ClassModelWorkspace class do the initialization of the whole module. There are two cases of initialization. The first case, when user creates new class diagram, and the second, when user opens an existing file. Both cases are very similar. They differ only in the way of ClassModelDiagramDataModel initialization. For this purpose there are two constructor variants.
 
-The first, non parametric, is used when the new class diagram (with no associated file) is created. This constructor creates new instance of GraphLayoutCache by ClassModelDiagramModelFactory.
+The first, non parametric, is used when the new class diagram (with no associated file) is created. This constructor creates new instance of ClassModelDiagramDataModel by ClassModelDiagramModelFactory.
 
-The second constructor is used when the user opens a file with a class model. It accepts an instance of ClassModelXMLDataObject (one parameter). This object represents the file in which is the class model saved (more in the chapter \ref{subsection:fileAssociation}). The constructor gets the name (path) of that file and asks the ClassModelXMLCoder to decode its content. ClassModelXMLCoder decodes it and returns GraphLayoutCache instance filled according to that file's content. ClassModelXMLCoder is part of the persistence layer and will be discussed in the chapter \ref{subsection:persistence}.
+The second constructor is used when the user opens a file with a class model. It accepts an instance of ClassModelXMLDataObject (one parameter). This object represents the file in which is the class model saved (more in the chapter \ref{subsection:fileAssociation}). The constructor gets the input stream of that file and asks the ClassModelXMLCoder to decode its content. ClassModelXMLCoder decodes it and returns ClassModelDiagramDataModel instance filled according to that file's content. ClassModelXMLCoder is part of the persistence layer and will be discussed in the chapter \ref{subsection:persistence}.
 
-%The second, which accepts ClassModelXMLDataObject instance, is used when there is a class model saved in a file. It finds out the name (path) of associated file and ask ClassModelXMLCoder for decoding. ClassModelXMLCoder decodes the file and returns loaded GraphLayoutCache (with all data).
+ClassModelDiagramDataModel class represents the data which has to be persisted when user want to save his class diagram. At present, instance of this class holds the GraphLayoutCache instance (class of JGraph framework which holds the information about cells in the graph), list of static data types (default list of data types for certain language which is chosen during new class diagram file creation) and the type of the diagram (class or business model, it is also chosen during new file creation).
 
-After the GraphLayoutCache is gained (created or loaded) the initialization is the same. What the ClassModelWorkspace creates have been already written up. For better understanding you can see the sequence diagram in the Figure \ref{f-ClassModelWorkspaceInicializationSimple} which shows the initialisation of new ClassModelWorkspace. For simplicity there is only what ClassModelWorkspace creates. The processes inside these classes are not shown (Sequence diagram would have been really big) but it will be discussed later.
+After the ClassModelDiagramDataModel is gained (created or loaded) the initialization is the same. What the ClassModelWorkspace creates have been already written up. For better understanding you can see the sequence diagram in the Figure \ref{f-ClassModelWorkspaceInicializationSimple} which shows the initialisation of new ClassModelWorkspace. For simplicity there is only what ClassModelWorkspace creates. The processes inside these classes are not shown (Sequence diagram would have been really big) but it will be discussed later.
 
 \begin{figure}[!ht]
 \begin{center}
@@ -185,9 +184,7 @@ After the GraphLayoutCache is gained (created or loaded) the initialization is t
 
 Netbeans platform allows its plug-ins to recognize new types of files. So when you want to associate new file type with your plugin, you can do it easily. If you are not familiar with this, you can find it in the \cite{netbeans6.9DevGuide} in the chapter called Data System.
 
-%When user wants to create new class diagram, he has to have an opened project. Then he simply adds new class diagram file (Other \ding{221} Empty ClassModelXML file) into this project.
-
-The file type association settings can be found in layer.xml file. This file is used for settings of Netbeans module. At present there is settings of action that opens new class diagram without associated file, file type association and settings of template that can be used to create new class diagram file. Files that are associated with this plugin are xml files with .cls suffix. Content of the file will be discussed later.
+The file type association settings can be found in layer.xml file. This file is used for settings of Netbeans module. At present there is settings of file type association and settings of wizard that can be used to create new class diagram file. In this wizard user sets the name of the file, type of the diagram and the language (Java, C++, etc.). Files that are associated with this plugin are xml files with .cls suffix. Content of the file will be discussed later.
 
 \subsection{ClassModelGraph implementation}
 
@@ -200,7 +197,7 @@ ClassModelGraph is extended from JGraph and adds some functionality for Class ma
     \item getAllTypes() - returns the list of all data types in the diagram. In addition to the classes (the class is a data type) there are also static data types (like String or int in Java).
 \end{itemize} 
 
-For event handling in the graph (ClassModelGraph) there is the ClassModelMarqueeHandler. Instance of this class is created in the ClassModelWorkspace and is added into the ClassModelGraph instance. Purpose of this class is to handle all user inputs in the ClassModelGraph (in the canvas of the graph). When user does an action (e.g. click with mouse), the ClassModelMarqueeHandler will find out if it is a control click (e.g. cell selection), new cell addition, edge (line between cells) addition and so on. This class is also responsible for rendering of the temporary line when user creates new edge.
+For event handling in the graph (ClassModelGraph) there is the ClassModelMarqueeHandler. Instance of this class is created in the ClassModelWorkspace and is added into the ClassModelGraph instance. Purpose of this class is to handle all user inputs in the ClassModelGraph (in the canvas of the graph) and control the popup menu (JPopupMenu and its content). When user does an action (e.g. click with mouse), the ClassModelMarqueeHandler will find out if it is a control click (e.g. cell selection), new cell addition, edge (line between cells) addition and so on. This class is also responsible for rendering of the temporary line when user creates new edge.
 
 \subsection{ClassModel API implementation}
 \label{subsection:apiImplementation}
@@ -221,15 +218,9 @@ So problem is solved. Some information like the name are stored inside the User 
 
 \subsection{JGraph class cell rendering}
 
-%In this section I will explain how I render the class (the rectangle with the class name and lists of annotations, attributes and methods) into the JGraph workspace. JGraph basically supports rendering of basic shapes like rectangles, ovals and so on. When you want to render your own shape, you have to create your own CellViewFactory implementation which will create your own VertexView. VertexView provides, among other things, the CellViewRenderer and it returns a Component (java.awt) which can be printed into the JGraph workspace. More on this theme can be found in \cite{jgraphmanual}.
-
 In this section I will explain how I render the class (the rectangle with the class name and lists of annotations, attributes and methods) into the JGraph workspace. But first a little theory remind. JGraph uses MVC pattern for cell rendering. Cells (the model of cell) in JGraph are represented by DefaultGraphCell (or its subclasses). DefaultGraphCell implementation stores the user object and an attribute map inside which is used when you want to set the appearance of that cell. All graph cell has an associated view (VertexView implementation). This VertexView implementation associates the renderer, editor and cell handle together for an cell (DefaultGraphCell implementation). The cell and view is associated together by CellViewFactory which returns a cell view for a particular cell. More on this theme can be found in \cite{jgraphmanual}.
 
 JGraph basically supports rendering of basic shapes like rectangles, ovals and so on. When you want to render your own shape, you have to create your own cell view (VertexView), renderer (CellViewRenderer) and CellViewFactory implementation.
-
-% JGraph VertexView provides, among other things, the CellViewRenderer and it returns a Component (java.awt) which can be printed into the JGraph workspace. More on this theme can be found in \cite{jgraphmanual}.
-
-%So this is exactly what I did. I created ClassModelCellViewFactory which is derived from JGraph's DefaultCellViewFactory and overrides it's method createVertexView(Object o). This method returns new instance of ClassModelVertexView (derived from JGraph's VertexView). ClassModelVertexView returns statically instantiated ClassModelVertexRenderer which is derived from VertexRenderer and overrides method getRendererComponent(...). This method returns new instance of ClassComponent if the User Object of the cellView (argument) is of ClassModel type. ClassComponent is extended from JComponent and renders the class according to the ClassModel user object.
 
 So this is exactly what I did. I created ClassModelCellViewFactory which is derived from JGraph's DefaultCellViewFactory and overrides it's method createVertexView(Object o). If the object in the parameter is instance of ClassModelClassCell class, the method returns new instance of ClassModelVertexView (derived from JGraph's VertexView). Otherwise the method returns the default view (calls its parent's method). ClassModelVertexView returns statically instantiated ClassModelVertexRenderer which is derived from VertexRenderer and overrides its method getRendererComponent(...). This method returns new instance of ClassComponent if the User Object of the cellView (argument) is of ClassModel type. ClassComponent is extended from JComponent and renders the class according to the ClassModel user object.
 
@@ -246,7 +237,7 @@ These classes can be found in the package cz.cvut.indepmod.classmodel.workspace.
 \subsection{Persistence}
 \label{subsection:persistence}
 
-Persistence layer implementation is situated in the cz.cvut.indepmod.classmodel.persistence.xml package. There is a ClassModelXMLCoder class that is created as a singleton. Instance of this class is responsible for encoding and decoding the GraphLayoutCache instance into or from a file. Its method for encoding, encode(GraphLayoutCache cache, String filename), is called by SaveCookie (discussed in the section \ref{subsection:lookup}).
+Persistence layer implementation is situated in the cz.cvut.indepmod.classmodel.persistence.xml package. There is a ClassModelXMLCoder class that is created as a singleton. Instance of this class is responsible for encoding and decoding the ClassModelDiagramDataModel instance into or from a stream (InputStream or OutputStream). Its method for encoding, encode(ClassModelDiagramDataModel model, OutputStream stream), is called by SaveCookie (discussed in the section \ref{subsection:lookup}).
 
 ClassModelXMLCoder uses java.beans.XMLEncoder and java.beans.XMLDecoder. This creates the xml file that represents the steps to create the exactly same object that was encoded. Because XMLEncoder can encode in default only some types of objects, there are some persistence delegates that allow to encode particular object I use. These persistence delegates can be found in the cz.cvut.indepmod.classmodel.persistence.xml.delegate package.
 
@@ -274,6 +265,7 @@ You can see the package structure in this directory tree:
 .1 cz.cvut.indepmod.classmodel.
 .1 actions\DTcomment{Actions for buttons etc.}.
 .1 file\DTcomment{SaveCookie and file type association support}.
+.2 wizard\DTcomment{Wizard for creation of new class model file}.
 .1 frames.
 .2 dialogs.
 .1 modelfactory.
@@ -282,6 +274,7 @@ You can see the package structure in this directory tree:
 .2 xml\DTcomment{implementation of persistence for saving into a XML file}.
 .3 delegate\DTcomment{XML Delegates for mapping into xml}.
 .1 resources.
+.1 util.
 .1 workspace\DTcomment{Main package containing the TopComponent with JGraph}.
 .2 cell\DTcomment{Cells, renderers, VertexViews, etc. for JGraph}.
 .3 components\DTcomment{Component for JGraph}.
@@ -299,7 +292,7 @@ You can see the package structure in this directory tree:
 
 \bibitem{netbeansWebNewFileTemplate}{http://platform.netbeans.org/tutorials/60/nbm-filetemplates.html}
 
-\bibitem{netbeansWebWizardNewFile}{http://blogs.sun.com/geertjan/entry/creating_a_better_java_class} %Wizard for creation of new file
+\bibitem{netbeansWebWizardNewFile}{http://blogs.sun.com/geertjan/entry/creating\_a\_better\_java\_class} %Wizard for creation of new file
 \end{thebibliography}
 
 \end{document}

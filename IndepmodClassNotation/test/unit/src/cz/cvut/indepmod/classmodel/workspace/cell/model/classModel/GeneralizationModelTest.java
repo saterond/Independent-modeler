@@ -46,10 +46,10 @@ public class GeneralizationModelTest {
         cell1.add(p1);
         cell2.add(p2);
 
-        ClassModelRelation edge = new ClassModelRelation(new GeneralizationModel());
+        ClassModelRelation edge = new ClassModelRelation(new HierarchyRelationModel(RelationType.GENERALIZATION));
         this.initEdge(edge, p1, p2);
 
-        GeneralizationModel rel = (GeneralizationModel) edge.getUserObject();
+        HierarchyRelationModel rel = (HierarchyRelationModel) edge.getUserObject();
         assertEquals(RelationType.GENERALIZATION, rel.getRelationType());
         assertEquals(model1, rel.getStartingClass());
         assertEquals(model2, rel.getEndingClass());

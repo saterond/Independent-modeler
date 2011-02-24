@@ -73,7 +73,7 @@ public class ClassModelEditAction extends ClassModelAbstractAction {
                     relation,
                     model);
         } catch (ClassCastException ex) {
-            throw new ClassCastException("User Object of cell is not ClassModel instance!");
+            throw new ClassCastException("User Object of cell is not RelationModel instance!");
         }
     }
 }

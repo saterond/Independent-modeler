@@ -8,10 +8,7 @@ import org.jgraph.graph.GraphConstants;
  * Time: 19:20:47
  * @author Lucky
  *
- * Model of the relation. Instance of this class is used as an User Object of
- * the Edge (Edge in the JGraph...). Cell which owns this instance should
- * set the pointer to itself - information about Classes and Cardinalities
- * are gathered from the Edge...
+ * Model of the relation.
  */
 public class RelationModel extends AbstractRelationModel {
 

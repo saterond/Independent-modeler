@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
+import javax.swing.Action;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
@@ -160,6 +161,33 @@ public class ToolChooser extends ToolChooserView {
                 model.setSelectedTool(ToolChooserModel.Tool.TOOL_ADD_GENERALIZATION);
             }
         });
+
+        this.addRealisationButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LOG.fine("add realisation choosed");
+                model.setSelectedTool(ToolChooserModel.Tool.TOOL_ADD_REALISATION);
+            }
+        });
+
+        this.addCompositionButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LOG.fine("add composition choosed");
+                model.setSelectedTool(ToolChooserModel.Tool.TOOL_ADD_COMPOSITION);
+            }
+        });
+
+        this.addAgregationButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LOG.fine("add agregation choosed");
+                model.setSelectedTool(ToolChooserModel.Tool.TOOL_ADD_AGREGATION);
+            }
+        });
     }
 
     private class ToolChooserModelLookupListener implements LookupListener {
@@ -202,6 +230,16 @@ public class ToolChooser extends ToolChooserView {
                 case TOOL_ADD_RELATION:
                     addRelationButton.doClick();
                     break;
+                case TOOL_ADD_COMPOSITION:
+                    addCompositionButton.doClick();
+                    break;
+                case TOOL_ADD_AGREGATION:
+                    addAgregationButton.doClick();
+                    break;
+                case TOOL_ADD_GENERALIZATION:
+                    addGeneralizationButton.doClick();
+                case TOOL_ADD_REALISATION:
+                    addRealisationButton.doClick();
                 default:
                     LOG.severe("Unknown tool was selected!");
             }

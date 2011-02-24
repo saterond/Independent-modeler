@@ -23,6 +23,9 @@ public class ToolChooserView extends TopComponent {
     protected JToggleButton addClassButton = new JToggleButton(ToolChooserModel.TOOL_ADD_CLASS_NAME);
     protected JToggleButton addRelationButton = new JToggleButton(ToolChooserModel.TOOL_ADD_RELATION);
     protected JToggleButton addGeneralizationButton = new JToggleButton(ToolChooserModel.TOOL_ADD_GENERALIZATION);
+    protected JToggleButton addRealisationButton = new JToggleButton(ToolChooserModel.TOOL_ADD_REALISATION);
+    protected JToggleButton addCompositionButton = new JToggleButton(ToolChooserModel.TOOL_ADD_COMPOSITION);
+    protected JToggleButton addAgregationButton = new JToggleButton(ToolChooserModel.TOOL_ADD_AGREGATION);
 
     public ToolChooserView() {
         this.setLayout(new GridLayout(20, 1));
@@ -35,6 +38,9 @@ public class ToolChooserView extends TopComponent {
         this.addClassButton.setEnabled(false);
         this.addRelationButton.setEnabled(false);
         this.addGeneralizationButton.setEnabled(false);
+        this.addRealisationButton.setEnabled(false);
+        this.addCompositionButton.setEnabled(false);
+        this.addAgregationButton.setEnabled(false);
     }
 
     public void enableToolChooser() {
@@ -42,6 +48,9 @@ public class ToolChooserView extends TopComponent {
         this.addClassButton.setEnabled(true);
         this.addRelationButton.setEnabled(true);
         this.addGeneralizationButton.setEnabled(true);
+        this.addRealisationButton.setEnabled(true);
+        this.addCompositionButton.setEnabled(true);
+        this.addAgregationButton.setEnabled(true);
     }
 
 
@@ -50,10 +59,16 @@ public class ToolChooserView extends TopComponent {
         this.add(this.addClassButton);
         this.add(this.addRelationButton);
         this.add(this.addGeneralizationButton);
+        this.add(this.addRealisationButton);
+        this.add(this.addCompositionButton);
+        this.add(this.addAgregationButton);
 
         this.buttonGroup.add(this.controllButton);
         this.buttonGroup.add(this.addClassButton);
         this.buttonGroup.add(this.addRelationButton);
         this.buttonGroup.add(this.addGeneralizationButton);
+        this.buttonGroup.add(this.addRealisationButton);
+        this.buttonGroup.add(this.addCompositionButton);
+        this.buttonGroup.add(this.addAgregationButton);
     }
 }

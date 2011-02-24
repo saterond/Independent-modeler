@@ -4,7 +4,7 @@ import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.api.model.RelationType;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.GeneralizationModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.HierarchyRelationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.RelationModel;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
@@ -59,18 +59,33 @@ public class ClassModelCellFactory {
 
         switch (selectedTool) {
             case TOOL_ADD_RELATION:
-                edge = new ClassModelRelation();
-                edge.setUserObject(new RelationModel(RelationType.RELATION));
-                Cardinality[] labels = {Cardinality.ONE, Cardinality.ONE};
-                Point2D[] labPos = {new Point2D.Double(GraphConstants.PERMILLE / 8, 20), new Point2D.Double(GraphConstants.PERMILLE * 7/8, 20)};
-                GraphConstants.setExtraLabelPositions(edge.getAttributes(), labPos);
-                GraphConstants.setExtraLabels(edge.getAttributes(), labels);
+                edge = new ClassModelRelation(new RelationModel(RelationType.RELATION));
+                setDefaultCardinality(edge);
                 break;
             case TOOL_ADD_GENERALIZATION:
-                edge = new ClassModelRelation();
-                edge.setUserObject(new GeneralizationModel());
+                edge = new ClassModelRelation(new HierarchyRelationModel(RelationType.GENERALIZATION));
                 GraphConstants.setLineEnd(edge.getAttributes(), GraphConstants.ARROW_TECHNICAL);
                 GraphConstants.setEndFill(edge.getAttributes(), false);
+                break;
+            case TOOL_ADD_REALISATION:
+                edge = new ClassModelRelation(new HierarchyRelationModel((RelationType.REALISATION)));
+                GraphConstants.setLineEnd(edge.getAttributes(), GraphConstants.ARROW_TECHNICAL);
+                GraphConstants.setEndFill(edge.getAttributes(), false);
+                GraphConstants.setDashPattern(edge.getAttributes(), new float[]{10, 5});
+                break;
+            case TOOL_ADD_COMPOSITION:
+                edge = new ClassModelRelation(new RelationModel(RelationType.COMPOSITION));
+                setDefaultCardinality(edge);
+                GraphConstants.setLineBegin(edge.getAttributes(), GraphConstants.ARROW_DIAMOND);
+                GraphConstants.setBeginSize(edge.getAttributes(), 20);
+                GraphConstants.setBeginFill(edge.getAttributes(), true);
+                break;
+            case TOOL_ADD_AGREGATION:
+                edge = new ClassModelRelation(new RelationModel(RelationType.AGREGATION));
+                setDefaultCardinality(edge);
+                GraphConstants.setLineBegin(edge.getAttributes(), GraphConstants.ARROW_DIAMOND);
+                GraphConstants.setBeginSize(edge.getAttributes(), 20);
+                GraphConstants.setBeginFill(edge.getAttributes(), false);
                 break;
             default:
                 LOG.severe("Unknown selected tool");
@@ -84,5 +99,12 @@ public class ClassModelCellFactory {
         GraphConstants.setDisconnectable(edge.getAttributes(), false);
 
         return edge;
+    }
+
+    private static void setDefaultCardinality(DefaultEdge edge) {
+        Cardinality[] labels = {Cardinality.ONE, Cardinality.ONE};
+        Point2D[] labPos = {new Point2D.Double(GraphConstants.PERMILLE / 8, 20), new Point2D.Double(GraphConstants.PERMILLE * 7 / 8, 20)};
+        GraphConstants.setExtraLabelPositions(edge.getAttributes(), labPos);
+        GraphConstants.setExtraLabels(edge.getAttributes(), labels);
     }
 }

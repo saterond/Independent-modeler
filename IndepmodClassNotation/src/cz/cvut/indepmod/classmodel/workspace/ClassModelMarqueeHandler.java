@@ -5,6 +5,10 @@ import cz.cvut.indepmod.classmodel.actions.ClassModelDeleteAction;
 import cz.cvut.indepmod.classmodel.actions.ClassModelEditAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelCellFactory;
+import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelClassCell;
+import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelRelation;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.HierarchyRelationModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.RelationModel;
 import org.jgraph.graph.BasicMarqueeHandler;
 import org.jgraph.graph.PortView;
 
@@ -19,19 +23,17 @@ import org.jgraph.graph.DefaultEdge;
 public class ClassModelMarqueeHandler extends BasicMarqueeHandler {
 
     private static final Logger LOG = Logger.getLogger(ClassModelMarqueeHandler.class.getName());
-
     private final ClassModelGraph graph;
     private final ToolChooserModel selectedToolModel;
     private Map<String, ClassModelAbstractAction> actions;
-
     private PortView actualPort;
     private Point2D actualPoint;
     private PortView startingPort;
     private Point2D startingPoint;
 
     public ClassModelMarqueeHandler(ClassModelGraph graph,
-                                    ToolChooserModel selectedToolModel,
-                                    Map<String, ClassModelAbstractAction> actions) {
+            ToolChooserModel selectedToolModel,
+            Map<String, ClassModelAbstractAction> actions) {
         this.graph = graph;
         this.selectedToolModel = selectedToolModel;
         this.actions = actions;
@@ -138,8 +140,7 @@ public class ClassModelMarqueeHandler extends BasicMarqueeHandler {
                     (int) this.startingPoint.getX(),
                     (int) this.startingPoint.getY(),
                     (int) this.actualPoint.getX(),
-                    (int) this.actualPoint.getY()
-            );
+                    (int) this.actualPoint.getY());
         }
     }
 
@@ -147,13 +148,34 @@ public class ClassModelMarqueeHandler extends BasicMarqueeHandler {
         Object c = this.graph.getFirstCellForLocation(e.getX(), e.getY());
         this.graph.selectCell(c);
 
-        if (this.graph.getSelectionCell() != null) {
-            JPopupMenu res = new JPopupMenu();
-
-            res.add(this.actions.get(ClassModelEditAction.ACTION_NAME));
-            res.add(this.actions.get(ClassModelDeleteAction.ACTION_NAME));
-
-            res.show(this.graph, e.getX(), e.getY());
+        if (this.graph.getSelectionCell() == null) {
+            return;
         }
+
+        if (c instanceof ClassModelClassCell) {
+            showPopupMenu(e,
+                    this.actions.get(ClassModelEditAction.ACTION_NAME),
+                    this.actions.get(ClassModelDeleteAction.ACTION_NAME));
+        } else if (c instanceof ClassModelRelation) {
+            Object userObject = ((ClassModelRelation) c).getUserObject();
+            if (userObject instanceof RelationModel) {
+                showPopupMenu(e,
+                    this.actions.get(ClassModelEditAction.ACTION_NAME),
+                    this.actions.get(ClassModelDeleteAction.ACTION_NAME));
+            } else if (userObject instanceof HierarchyRelationModel) {
+                showPopupMenu(e,
+                        this.actions.get(ClassModelDeleteAction.ACTION_NAME));
+            }
+        }
+    }
+
+    private void showPopupMenu(final MouseEvent e, ClassModelAbstractAction... actions) {
+        JPopupMenu popup = new JPopupMenu();
+
+        for (ClassModelAbstractAction act : actions) {
+            popup.add(act);
+        }
+
+        popup.show(this.graph, e.getX(), e.getY());
     }
 }

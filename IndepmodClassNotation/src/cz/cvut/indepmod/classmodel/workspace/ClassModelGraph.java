@@ -114,6 +114,9 @@ public class ClassModelGraph extends JGraph {
                 switch (tool) {
                     case TOOL_ADD_RELATION:
                     case TOOL_ADD_GENERALIZATION:
+                    case TOOL_ADD_REALISATION:
+                    case TOOL_ADD_COMPOSITION:
+                    case TOOL_ADD_AGREGATION:
                         showPorts = true;
                 }
 

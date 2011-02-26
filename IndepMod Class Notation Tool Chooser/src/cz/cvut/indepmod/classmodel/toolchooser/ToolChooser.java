@@ -238,8 +238,10 @@ public class ToolChooser extends ToolChooserView {
                     break;
                 case TOOL_ADD_GENERALIZATION:
                     addGeneralizationButton.doClick();
+                    break;
                 case TOOL_ADD_REALISATION:
                     addRealisationButton.doClick();
+                    break;
                 default:
                     LOG.severe("Unknown tool was selected!");
             }

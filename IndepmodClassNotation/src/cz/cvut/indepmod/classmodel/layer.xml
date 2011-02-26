@@ -64,6 +64,7 @@
                 </folder>
                 <folder name="Factories">
                     <file name="ClassModelXMLDataLoader.instance">
+                        <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/cz/cvut/indepmod/classmodel/file/class-diagram.gif"/>
                         <attr name="dataObjectClass" stringvalue="cz.cvut.indepmod.classmodel.file.ClassModelXMLDataObject"/>
                         <attr name="instanceCreate" methodvalue="org.openide.loaders.DataLoaderPool.factory"/>
                         <attr name="mimeType" stringvalue="text/IndepModClassNotation"/>

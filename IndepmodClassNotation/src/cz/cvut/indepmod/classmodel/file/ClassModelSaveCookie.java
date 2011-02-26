@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import org.openide.cookies.SaveCookie;
-import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataObject;
 
 /**

@@ -81,9 +81,11 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
         if (!this.modified && modified) {
             this.modified = modified;
             this.lookupContent.add(this.saveCookie);
+            this.setHtmlDisplayName("<html><b>"+ this.getName() +"</b></html>");
         } else if (this.modified && !modified) {
             this.modified = modified;
             this.lookupContent.remove(this.saveCookie);
+            this.setHtmlDisplayName("<html>"+ this.getName() +"</html>");
         }
     }
 

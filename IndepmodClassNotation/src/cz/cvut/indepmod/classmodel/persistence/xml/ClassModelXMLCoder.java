@@ -1,11 +1,13 @@
 package cz.cvut.indepmod.classmodel.persistence.xml;
 
 import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramDataModel;
+import cz.cvut.indepmod.classmodel.persistence.xml.delegate.AnotationAtributeModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.AnotationModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.AttributeModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.CardinalityPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.ClassModelDiagramModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.ClassModelPersistenceDelegate;
+import cz.cvut.indepmod.classmodel.persistence.xml.delegate.HierarchyRelationModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.MethodModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.RelationModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.TypeModelPersistenceDelegate;
@@ -13,10 +15,12 @@ import cz.cvut.indepmod.classmodel.workspace.ClassModelGraphModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelClassCell;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelRelation;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelVertexView;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.HierarchyRelationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.MethodModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.RelationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
@@ -158,17 +162,10 @@ public class ClassModelXMLCoder {
                 new DefaultPersistenceDelegate(
                 new String[]{USER_OBJECT_PROPERTY}));
 
-        encoder.setPersistenceDelegate(ClassModelRelation.class,
-                new DefaultPersistenceDelegate(
-                new String[]{USER_OBJECT_PROPERTY}));
+//        encoder.setPersistenceDelegate(ClassModelRelation.class,
+//                new DefaultPersistenceDelegate(
+//                new String[]{USER_OBJECT_PROPERTY}));
 
-//        encoder.setPersistenceDelegate(DefaultEdge.class,
-//                new DefaultPersistenceDelegate(
-//                new String[]{USER_OBJECT_PROPERTY}));
-//
-//        encoder.setPersistenceDelegate(DefaultPort.class,
-//                new DefaultPersistenceDelegate(
-//                new String[]{USER_OBJECT_PROPERTY}));
 
         //USER OBJECTS AND ITS SUBOBJECTS=======================================
         encoder.setPersistenceDelegate(ClassModel.class, new ClassModelPersistenceDelegate());
@@ -176,7 +173,9 @@ public class ClassModelXMLCoder {
         encoder.setPersistenceDelegate(MethodModel.class, new MethodModelPersistenceDelegate());
         encoder.setPersistenceDelegate(TypeModel.class, new TypeModelPersistenceDelegate());
         encoder.setPersistenceDelegate(RelationModel.class, new RelationModelPersistenceDelegate());
+        encoder.setPersistenceDelegate(HierarchyRelationModel.class, new HierarchyRelationModelPersistenceDelegate());
         encoder.setPersistenceDelegate(AnotationModel.class, new AnotationModelPersistenceDelegate());
+        encoder.setPersistenceDelegate(AnotationAttributeModel.class, new AnotationAtributeModelPersistenceDelegate());
         encoder.setPersistenceDelegate(Cardinality.class, new CardinalityPersistenceDelegate());
 
         //GRAPH VIEWS===========================================================

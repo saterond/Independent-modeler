@@ -1,5 +1,7 @@
 package cz.cvut.indepmod.classmodel.persistence.xml;
 
+import java.util.Iterator;
+import java.util.Set;
 import java.awt.geom.Point2D;
 import cz.cvut.indepmod.classmodel.Common;
 import cz.cvut.indepmod.classmodel.api.model.IClass;
@@ -12,13 +14,18 @@ import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.RelationModel
 import org.jgraph.graph.DefaultPort;
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
+import cz.cvut.indepmod.classmodel.api.model.IAnotationValue;
 import cz.cvut.indepmod.classmodel.api.model.IRelation;
 import cz.cvut.indepmod.classmodel.modelFactory.ClassModelDiagramModelFactory;
 import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramDataModel;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelClassCell;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttributeModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.MethodModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
 import java.awt.Rectangle;
 import java.io.File;
@@ -26,6 +33,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.HashMap;
+import java.util.HashSet;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.junit.After;
@@ -80,6 +88,21 @@ public class ClassModelXMLCoderTest {
         this.initEdge(edge, p1, p2);
         this.graph.getGraphLayoutCache().insert(edge);
 
+        AnotationModel anot = new AnotationModel(Common.ANOT2);
+        AnotationAttributeModel anotAtr = new AnotationAttributeModel(Common.ATTRIBUTE_NAME2);
+        anotAtr.addValue(Common.VAL2);
+        anotAtr.addValue(Common.VAL3);
+        anot.addAttribute(anotAtr);
+        mod1.addAnotation(anot);
+
+        AttributeModel atr = new AttributeModel(mod1, Common.ATTRIBUTE_NAME);
+        mod1.addAttribute(atr);
+
+        Set<AttributeModel> atrList = new HashSet<AttributeModel>();
+        atrList.add(new AttributeModel(mod2, Common.ATTRIBUTE_NAME2));
+        MethodModel method = new MethodModel(mod1, Common.METHOD_NAME, atrList);
+        mod1.addMethod(method);
+
         File file = new File(FILE_NAME);
         FileOutputStream fos = new FileOutputStream(file);
         ClassModelXMLCoder encoder = ClassModelXMLCoder.getInstance();
@@ -107,8 +130,26 @@ public class ClassModelXMLCoderTest {
         DefaultGraphCell root = (DefaultGraphCell) this.graph.getRoots()[0];
         ClassModel model = (ClassModel) root.getUserObject();
         assertEquals(Common.CLASS_NAME, model.getTypeName());
-        assertTrue(model.getAttributeModels().isEmpty());
-        assertTrue(model.getMethodModels().isEmpty());
+        assertEquals(1, model.getAttributeModels().size());
+        assertEquals(1, model.getMethodModels().size());
+        assertEquals(1, model.getAnotations().size());
+        assertEquals(Common.ANOT2, model.getAnotations().iterator().next().getName());
+        assertEquals(1, model.getAnotations().iterator().next().getAttributes().size());
+        assertEquals(Common.ATTRIBUTE_NAME2, model.getAnotations().iterator().next().getAttributes().iterator().next().getName());
+        assertEquals(2, model.getAnotations().iterator().next().getAttributes().iterator().next().getValues().size());
+        Iterator<String> it = model.getAnotations().iterator().next().getAttributes().iterator().next().getValues().iterator();
+        assertEquals(Common.VAL2, it.next());
+        assertEquals(Common.VAL3, it.next());
+
+        assertEquals(1, model.getAttributeModels().size());
+        assertEquals(Common.ATTRIBUTE_NAME, model.getAttributeModels().iterator().next().getName());
+        assertEquals(model, model.getAttributeModels().iterator().next().getType());
+
+        assertEquals(1, model.getMethodModels().size());
+        assertEquals(Common.METHOD_NAME, model.getMethodModels().iterator().next().getName());
+        assertEquals(model, model.getMethodModels().iterator().next().getType());
+        assertEquals(1, model.getMethodModels().iterator().next().getAttributeModels().size());
+        assertEquals(Common.ATTRIBUTE_NAME2, model.getMethodModels().iterator().next().getAttributeModels().iterator().next().getName());
 
         root = (DefaultGraphCell) this.graph.getRoots()[1];
         model = (ClassModel) root.getUserObject();

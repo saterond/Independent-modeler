@@ -15,6 +15,7 @@ public class HierarchyRelationModel extends AbstractRelationModel {
 
     public HierarchyRelationModel(RelationType type) {
         this.type = type;
+        this.cell = null;
     }
 
     @Override

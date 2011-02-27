@@ -28,6 +28,10 @@ public abstract class AbstractRelationModel extends AbstractModel implements IRe
         this.cell = cell;
     }
 
+    public DefaultEdge getCell() {
+        return cell;
+    }
+
     @Override
     public IClass getStartingClass() {
         this.verifyCell();

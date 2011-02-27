@@ -1,5 +1,6 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
+import cz.cvut.indepmod.classmodel.resources.Resources;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import javax.swing.JButton;
@@ -13,12 +14,12 @@ import javax.swing.JLabel;
  */
 public class ClassModelEditRelationDialogView extends ClassModelAbstractDialog {
     
-    public static final String TITLE = "Relation Edit";
+    public static final String TITLE = Resources.getString("dialog_edit_relation_title");
 
-    public static final String SOURCE_CARD_LABEL_TEXT = "Source Cardinality";
-    public static final String TARGET_CARD_LABEL_TEXT = "Target Cardinality";
-    public static final String SAVE_TEXT = "Save";
-    public static final String CANCEL_TEXT = "Cancel";
+    public static final String SOURCE_CARD_LABEL_TEXT = Resources.getString("dialog_edit_relation_source_card");
+    public static final String TARGET_CARD_LABEL_TEXT = Resources.getString("dialog_edit_relation_target_card");
+    public static final String SAVE_TEXT = Resources.getString("dialog_edit_relation_save");
+    public static final String CANCEL_TEXT = Resources.getString("dialog_edit_relation_cancel");
 
     protected JLabel sourceCardinLab;
     protected JLabel targetCardinLab;

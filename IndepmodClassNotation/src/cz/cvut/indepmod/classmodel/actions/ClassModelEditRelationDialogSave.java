@@ -1,6 +1,7 @@
 package cz.cvut.indepmod.classmodel.actions;
 
 import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditRelationDialog;
+import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import java.awt.event.ActionEvent;
@@ -16,7 +17,7 @@ import org.jgraph.graph.GraphConstants;
  */
 public class ClassModelEditRelationDialogSave extends ClassModelAbstractAction {
 
-    public static final String ACTION_NAME = "Save";
+    public static final String ACTION_NAME = Resources.getString("action_edit_relation_dialog_save");
 
     private DefaultEdge edge;
     private ClassModelEditRelationDialog dialog;

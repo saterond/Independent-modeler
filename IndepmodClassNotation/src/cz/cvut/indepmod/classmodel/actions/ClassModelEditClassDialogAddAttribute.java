@@ -2,6 +2,7 @@ package cz.cvut.indepmod.classmodel.actions;
 
 import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelAttributeCreatorDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditClassDialog;
+import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import java.awt.Frame;
@@ -19,7 +20,7 @@ import org.openide.windows.WindowManager;
  */
 public class ClassModelEditClassDialogAddAttribute extends ClassModelAbstractAction {
 
-    public static final String ACTION_NAME = "Add attribute";
+    public static final String ACTION_NAME = Resources.getString("action_edit_class_dialog_add_attr");
     private ClassModel model;
     private ClassModelEditClassDialog dialog;
 

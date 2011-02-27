@@ -1,6 +1,7 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
 
+import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.util.GridBagConstraintsUtils;
 import javax.swing.*;
 import java.awt.*;
@@ -16,20 +17,19 @@ import java.awt.*;
 //TODO - static string data should be loaded by resource bundle
 public class ClassModelEditClassDialogView extends ClassModelAbstractDialog {
 
-    public static final String TITLE = "Class Edit";
-    public static final String NAME_LABEL = "Name";
-    public static final String ANOT_LABEL = "Anotations";
-    public static final String ATTRIBUTES_LABEL = "Attributes";
-    public static final String METHODS_LABEL = "Methods";
-    public static final String SAVE_BUTTON = "Edit";
-    public static final String CANCEL_BUTTON = "Cancel";
-    public static final String ADD_ATTRIBUTE_BUTTON = "Add Atribute";
-    public static final String ADD_ANOT_BUTTON = "Add Anotation";
-    public static final String ADD_METHOD_BUTTON = "Add Method";
-    public static final String REMOVE_ATTRIBUTE_BUTTON = "Del Atribute";
-    public static final String REMOVE_METHOD_BUTTON = "Del Method";
-    public static final String REMOVE_ANOT_BUTTON = "Del Anotation";
-    //public static final String EDIT_ATTRIBUTE_BUTTON = "Edit Attribute";
+    public static final String TITLE = Resources.getString("dialog_edit_class_title");
+    public static final String NAME_LABEL = Resources.getString("dialog_edit_class_name");
+    public static final String ANOT_LABEL = Resources.getString("dialog_edit_class_anot_list");
+    public static final String ATTRIBUTES_LABEL = Resources.getString("dialog_edit_class_attribute_list");
+    public static final String METHODS_LABEL = Resources.getString("dialog_edit_class_method_list");
+    public static final String SAVE_BUTTON = Resources.getString("dialog_edit_class_save");
+    public static final String CANCEL_BUTTON = Resources.getString("dialog_edit_class_cancel");
+    public static final String ADD_ATTRIBUTE_BUTTON = Resources.getString("dialog_edit_class_add_attribute");
+    public static final String ADD_ANOT_BUTTON = Resources.getString("dialog_edit_class_add_anotation");
+    public static final String ADD_METHOD_BUTTON = Resources.getString("dialog_edit_class_add_method");
+    public static final String REMOVE_ATTRIBUTE_BUTTON = Resources.getString("dialog_edit_class_rem_attribute");
+    public static final String REMOVE_METHOD_BUTTON = Resources.getString("dialog_edit_class_rem_method");
+    public static final String REMOVE_ANOT_BUTTON = Resources.getString("dialog_edit_class_rem_anotation");
 
     protected JLabel classNameLabel = new JLabel(NAME_LABEL);
     protected JLabel anotationsLabel = new JLabel(ANOT_LABEL);

@@ -1,5 +1,6 @@
 package cz.cvut.indepmod.classmodel.actions;
 
+import cz.cvut.indepmod.classmodel.resources.Resources;
 import java.awt.event.ActionEvent;
 import java.util.logging.Logger;
 
@@ -13,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class ClassModelRedoAction extends ClassModelAbstractAction {
 
-    public static final String ACTION_NAME = "Redo";
+    public static final String ACTION_NAME = Resources.getString("action_redo");
 
     private static final Logger LOG = Logger.getLogger(ClassModelRedoAction.class.getName());
 

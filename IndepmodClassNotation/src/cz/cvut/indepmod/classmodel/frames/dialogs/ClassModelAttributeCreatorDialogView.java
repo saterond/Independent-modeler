@@ -1,10 +1,10 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
+import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.util.GridBagConstraintsUtils;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -20,14 +20,14 @@ import javax.swing.JTextField;
  */
 public class ClassModelAttributeCreatorDialogView extends ClassModelAbstractDialog {
 
-    public static final String TITLE = "Create Attribute Dialog";
+    public static final String TITLE = Resources.getString("dialog_attribute_creator_title");
 
-    public static final String ADD_ANOT_BUTTON_TITLE = "Add Anotation";
-    public static final String CREATE_BUTTON_TITLE = "Create";
-    public static final String REM_ANOT_BUTTON_TITLE = "Rem Anotation";
-    public static final String ATTRIBUTE_TYPE_LABEL = "Data Type: ";
-    public static final String ATTRIBUTE_NAME_LABEL = "Name: ";
-    public static final String ANOTATION_LIST_LABEL = "Anotations: ";
+    public static final String ADD_ANOT_BUTTON_TITLE = Resources.getString("dialog_attribute_creator_add_anot");
+    public static final String CREATE_BUTTON_TITLE = Resources.getString("dialog_attribute_creator_create");
+    public static final String REM_ANOT_BUTTON_TITLE = Resources.getString("dialog_attribute_creator_rem_anot");
+    public static final String ATTRIBUTE_TYPE_LABEL = Resources.getString("dialog_attribute_creator_attribute_type");
+    public static final String ATTRIBUTE_NAME_LABEL = Resources.getString("dialog_attribute_creator_name");
+    public static final String ANOTATION_LIST_LABEL = Resources.getString("dialog_attribute_creator_anot_list");
 
     protected JLabel attributeTypeLabel = new JLabel(ATTRIBUTE_TYPE_LABEL);
     protected JLabel attributeNameLabel = new JLabel(ATTRIBUTE_NAME_LABEL);

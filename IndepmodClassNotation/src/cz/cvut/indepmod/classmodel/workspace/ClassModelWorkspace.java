@@ -34,7 +34,7 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
     
     private ClassModelGraph graph;
     private ClassModelModel classModelAPI;
-    private Map<String, ClassModelAbstractAction> actions;
+    private Map<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction> actions;
     private ToolChooserModel selectedTool;
     private ClassModelSaveCookie saveCookie;
     private InstanceContent lookupContent = new InstanceContent();
@@ -91,7 +91,7 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
 
 //===========================PRIVATE METHODS====================================
     private void init() {
-        this.actions = new HashMap<String, ClassModelAbstractAction>();
+        this.actions = new HashMap<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction>();
         this.selectedTool = new ToolChooserModel();
         this.graph = new ClassModelGraph(this.actions, this.selectedTool, this.diagramDataModel);
         this.classModelAPI = new ClassModelModel(this.graph);

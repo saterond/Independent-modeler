@@ -1,5 +1,6 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
+import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.util.GridBagConstraintsUtils;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -19,15 +20,15 @@ import javax.swing.JTextField;
  */
 public class ClassModelMethodCreatorDialogView extends ClassModelAbstractDialog {
 
-    public static final String TITLE = "Create Method Dialog";
+    public static final String TITLE = Resources.getString("dialog_method_creator_title");
 
-    public static final String ADD_ATTR_BUTTON = "Add Attribute";
-    public static final String CANCEL_BUTTON = "Cancel";
-    public static final String LABEL_ATTRIBUTE = "Attributes: ";
-    public static final String LABEL_NAME = "Name: ";
-    public static final String LABEL_TYPE = "Data Type: ";
-    public static final String REM_ATTR_BUTTON = "Remove Attribute";
-    public static final String SAVE_BUTTON = "Save";
+    public static final String ADD_ATTR_BUTTON = Resources.getString("dialog_method_creator_add_attr");
+    public static final String CANCEL_BUTTON = Resources.getString("dialog_method_creator_cancel");
+    public static final String LABEL_ATTRIBUTE = Resources.getString("dialog_method_creator_attr_list");
+    public static final String LABEL_NAME = Resources.getString("dialog_method_creator_name");
+    public static final String LABEL_TYPE = Resources.getString("dialog_method_creator_type");
+    public static final String REM_ATTR_BUTTON = Resources.getString("dialog_method_creator_rem_attr");
+    public static final String SAVE_BUTTON = Resources.getString("dialog_method_creator_save");
 
     protected JLabel nameLabel = new JLabel(LABEL_NAME);
     protected JLabel typeLabel = new JLabel(LABEL_TYPE);
@@ -96,6 +97,4 @@ public class ClassModelMethodCreatorDialogView extends ClassModelAbstractDialog 
         c.anchor = GridBagConstraints.LINE_START;
         this.add(this.cancelButton, c);
     }
-    
-
 }

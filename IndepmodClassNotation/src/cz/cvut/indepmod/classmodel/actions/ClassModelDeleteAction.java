@@ -1,5 +1,6 @@
 package cz.cvut.indepmod.classmodel.actions;
 
+import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import org.jgraph.graph.DefaultEdge;
@@ -25,7 +26,7 @@ import org.jgraph.graph.DefaultPort;
  */
 public class ClassModelDeleteAction extends ClassModelAbstractAction {
 
-    public static final String ACTION_NAME = "Delete";
+    public static final String ACTION_NAME = Resources.getString("action_delete_name");
 
     private static final Logger LOG = Logger.getLogger(ClassModelDeleteAction.class.getName());
 

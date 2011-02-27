@@ -2,6 +2,7 @@ package cz.cvut.indepmod.classmodel.actions;
 
 import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelAnotationCreatorDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditClassDialog;
+import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import java.awt.Frame;
@@ -16,7 +17,7 @@ import org.openide.windows.WindowManager;
  */
 public class ClassModelEditClassDialogAddAnotation extends ClassModelAbstractAction {
 
-    public static final String ACTION_NAME = "Add attribute";
+    public static final String ACTION_NAME = Resources.getString("action_edit_class_dialog_add_anot");
     private static final Logger LOG = Logger.getLogger(ClassModelEditClassDialogAddAnotation.class.getName());
     private ClassModel model;
     private ClassModelEditClassDialog dialog;

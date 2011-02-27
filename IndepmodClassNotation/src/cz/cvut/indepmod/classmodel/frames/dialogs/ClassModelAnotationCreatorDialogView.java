@@ -1,11 +1,10 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
+import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.util.GridBagConstraintsUtils;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -20,13 +19,13 @@ import javax.swing.JTextField;
  */
 public class ClassModelAnotationCreatorDialogView extends ClassModelAbstractDialog {
     
-    public static final String TITLE = "Create Attribute Dialog";
+    public static final String TITLE = Resources.getString("dialog_anotation_creator_title");
 
-    public static final String ANOTATION_NAME_LABEL = "Name: ";
-    public static final String CREATE_BUTTON_TITLE = "Create";
-    public static final String VALUE_LIST_LABEL_TITLE = "Values";
-    public static final String ADD_VALUE_NAME = "Add Value";
-    public static final String REMOVE_VALUE_NAME = "Remove Value";
+    public static final String ANOTATION_NAME_LABEL = Resources.getString("dialog_anotation_creator_anotation_name");
+    public static final String CREATE_BUTTON_TITLE = Resources.getString("dialog_anotation_creator_create_button");
+    public static final String VALUE_LIST_LABEL_TITLE = Resources.getString("dialog_anotation_creator_value_list");
+    public static final String ADD_VALUE_NAME = Resources.getString("dialog_anotation_creator_add_value");
+    public static final String REMOVE_VALUE_NAME = Resources.getString("dialog_anotation_creator_remove_value");
 
     protected JLabel anotationNameLabel = new JLabel(ANOTATION_NAME_LABEL);
     protected JTextField anotationName = new JTextField();

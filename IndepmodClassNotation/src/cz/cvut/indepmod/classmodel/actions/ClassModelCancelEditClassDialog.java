@@ -1,5 +1,6 @@
 package cz.cvut.indepmod.classmodel.actions;
 
+import cz.cvut.indepmod.classmodel.resources.Resources;
 import java.awt.event.ActionEvent;
 import javax.swing.JDialog;
 
@@ -12,7 +13,7 @@ import javax.swing.JDialog;
  */
 public class ClassModelCancelEditClassDialog extends ClassModelAbstractAction {
 
-    public static final String ACTION_NAME = "Cancel";
+    public static final String ACTION_NAME = Resources.getString("action_cancel_edit_class_name");
 
     private JDialog dialog;
 

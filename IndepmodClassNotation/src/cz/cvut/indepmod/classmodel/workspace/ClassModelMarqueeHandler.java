@@ -25,7 +25,7 @@ public class ClassModelMarqueeHandler extends BasicMarqueeHandler {
     private static final Logger LOG = Logger.getLogger(ClassModelMarqueeHandler.class.getName());
     private final ClassModelGraph graph;
     private final ToolChooserModel selectedToolModel;
-    private Map<String, ClassModelAbstractAction> actions;
+    private Map<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction> actions;
     private PortView actualPort;
     private Point2D actualPoint;
     private PortView startingPort;
@@ -33,7 +33,7 @@ public class ClassModelMarqueeHandler extends BasicMarqueeHandler {
 
     public ClassModelMarqueeHandler(ClassModelGraph graph,
             ToolChooserModel selectedToolModel,
-            Map<String, ClassModelAbstractAction> actions) {
+            Map<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction> actions) {
         this.graph = graph;
         this.selectedToolModel = selectedToolModel;
         this.actions = actions;
@@ -154,17 +154,17 @@ public class ClassModelMarqueeHandler extends BasicMarqueeHandler {
 
         if (c instanceof ClassModelClassCell) {
             showPopupMenu(e,
-                    this.actions.get(ClassModelEditAction.ACTION_NAME),
-                    this.actions.get(ClassModelDeleteAction.ACTION_NAME));
+                    this.actions.get(ClassModelEditAction.class),
+                    this.actions.get(ClassModelDeleteAction.class));
         } else if (c instanceof ClassModelRelation) {
             Object userObject = ((ClassModelRelation) c).getUserObject();
             if (userObject instanceof RelationModel) {
                 showPopupMenu(e,
-                    this.actions.get(ClassModelEditAction.ACTION_NAME),
-                    this.actions.get(ClassModelDeleteAction.ACTION_NAME));
+                    this.actions.get(ClassModelEditAction.class),
+                    this.actions.get(ClassModelDeleteAction.class));
             } else if (userObject instanceof HierarchyRelationModel) {
                 showPopupMenu(e,
-                        this.actions.get(ClassModelDeleteAction.ACTION_NAME));
+                        this.actions.get(ClassModelDeleteAction.class));
             }
         }
     }

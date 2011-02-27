@@ -26,13 +26,13 @@ public class ClassModelGraph extends JGraph {
 
     private static final Logger LOG = Logger.getLogger(ClassModelGraph.class.getName());
 
-    private Map<String, ClassModelAbstractAction> actions;
+    private Map<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction> actions;
     private ToolChooserModel selectedTool;
     private ClassModelDiagramDataModel diagramDataModel;
 
 
     public ClassModelGraph(
-            Map<String, ClassModelAbstractAction> actions,
+            Map<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction> actions,
             ToolChooserModel selectedTool,
             ClassModelDiagramDataModel diagramDataModel) {
         this.actions = actions;
@@ -94,12 +94,12 @@ public class ClassModelGraph extends JGraph {
 
     private void initActions() {
         this.actions.put(
-                ClassModelEditAction.ACTION_NAME,
+                ClassModelEditAction.class,
                 new ClassModelEditAction(this)
         );
 
         this.actions.put(
-                ClassModelDeleteAction.ACTION_NAME,
+                ClassModelDeleteAction.class,
                 new ClassModelDeleteAction(this));
     }
 
@@ -128,7 +128,7 @@ public class ClassModelGraph extends JGraph {
         this.addGraphSelectionListener(new GraphSelectionListener() {
             @Override
             public void valueChanged(GraphSelectionEvent graphSelectionEvent) {
-                actions.get(ClassModelEditAction.ACTION_NAME).setEnabled(getSelectionCell() != null);
+                actions.get(ClassModelEditAction.class).setEnabled(getSelectionCell() != null);
             }
         });
     }

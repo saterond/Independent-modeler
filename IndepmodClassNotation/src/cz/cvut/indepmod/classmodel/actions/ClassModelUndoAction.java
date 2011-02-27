@@ -1,5 +1,6 @@
 package cz.cvut.indepmod.classmodel.actions;
 
+import cz.cvut.indepmod.classmodel.resources.Resources;
 import java.awt.event.ActionEvent;
 import java.util.logging.Logger;
 
@@ -13,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class ClassModelUndoAction extends ClassModelAbstractAction {
 
-    public static final String ACTION_NAME = "Undo";
+    public static final String ACTION_NAME = Resources.getString("action_undo");
 
     private static final Logger LOG = Logger.getLogger(ClassModelUndoAction.class.getName());
 

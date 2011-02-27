@@ -2,6 +2,7 @@ package cz.cvut.indepmod.classmodel.actions;
 
 import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditClassDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditRelationDialog;
+import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelClassCell;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelRelation;
@@ -22,7 +23,7 @@ import org.openide.windows.WindowManager;
  */
 public class ClassModelEditAction extends ClassModelAbstractAction {
 
-    public static final String ACTION_NAME = "Edit";
+    public static final String ACTION_NAME = Resources.getString("action_edit_name");
     private static final Logger LOG = Logger.getLogger(ClassModelEditAction.class.getName());
     private ClassModelGraph graph;
 

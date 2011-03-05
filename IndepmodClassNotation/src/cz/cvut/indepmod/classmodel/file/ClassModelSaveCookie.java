@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.file;
 
-import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramDataModel;
+import cz.cvut.indepmod.classmodel.diagramdata.ClassModelDiagramDataModel;
 import cz.cvut.indepmod.classmodel.persistence.xml.ClassModelXMLCoder;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelWorkspace;
 import java.io.File;

@@ -41,7 +41,4 @@ public class ClassModelEditClassDialogAddAnotation extends ClassModelAbstractAct
             LOG.info("Anotation was not added");
         }
     }
-
-
-
 }

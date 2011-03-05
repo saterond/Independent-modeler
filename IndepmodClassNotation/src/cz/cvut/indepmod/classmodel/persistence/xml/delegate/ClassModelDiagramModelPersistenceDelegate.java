@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.persistence.xml.delegate;
 
-import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramDataModel;
+import cz.cvut.indepmod.classmodel.diagramdata.ClassModelDiagramDataModel;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Expression;

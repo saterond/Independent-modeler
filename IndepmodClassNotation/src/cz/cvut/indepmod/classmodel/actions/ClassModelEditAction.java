@@ -1,7 +1,9 @@
 package cz.cvut.indepmod.classmodel.actions;
 
+import cz.cvut.indepmod.classmodel.api.model.DiagramType;
 import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditClassDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditRelationDialog;
+import cz.cvut.indepmod.classmodel.frames.dialogs.factory.AbstractDialogFactory;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelClassCell;
@@ -54,11 +56,10 @@ public class ClassModelEditAction extends ClassModelAbstractAction {
         LOG.info("edit of Class");
         try {
             ClassModel model = (ClassModel) cell.getUserObject();
-            ClassModelEditClassDialog dialog = new ClassModelEditClassDialog(
-                    WindowManager.getDefault().getMainWindow(),
-                    graph,
-                    cell,
-                    model);
+            AbstractDialogFactory factory = AbstractDialogFactory.getFactory(
+                    graph.getDiagramType());
+            
+            factory.createEditClassDialog(graph, cell, model);
         } catch (ClassCastException ex) {
             throw new ClassCastException("User Object of cell is not ClassModel instance!");
         }

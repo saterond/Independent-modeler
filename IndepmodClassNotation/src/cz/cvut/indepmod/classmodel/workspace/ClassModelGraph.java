@@ -6,7 +6,7 @@ import cz.cvut.indepmod.classmodel.actions.ClassModelEditAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModelListener;
 import cz.cvut.indepmod.classmodel.api.model.DiagramType;
-import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramDataModel;
+import cz.cvut.indepmod.classmodel.diagramdata.ClassModelDiagramDataModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelCellFactory;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
@@ -28,27 +28,28 @@ public class ClassModelGraph extends JGraph {
 
     private Map<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction> actions;
     private ToolChooserModel selectedTool;
-    private ClassModelDiagramDataModel diagramDataModel;
+    private ClassModelDiagramDataModel diagramData;
 
 
     public ClassModelGraph(
             Map<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction> actions,
             ToolChooserModel selectedTool,
-            ClassModelDiagramDataModel diagramDataModel) {
+            ClassModelDiagramDataModel diagramData) {
+        super(diagramData.getLayoutCache());
+        
         this.actions = actions;
         this.selectedTool = selectedTool;
-        this.diagramDataModel = diagramDataModel;
+        this.diagramData = diagramData;
 
         this.initActions();
         this.initEventHandling();
         this.setDoubleBuffered(true);
     }
 
-    //TODO - this could be saved (and updated when model id changed)
     public Collection<TypeModel> getAllTypes() {
         Collection<TypeModel> res = new LinkedList<TypeModel>(this.getAllClasses());
 
-        res.addAll(this.diagramDataModel.getStaticDataTypes());
+        res.addAll(this.diagramData.getStaticDataTypes());
         return res;
     }
 
@@ -70,7 +71,7 @@ public class ClassModelGraph extends JGraph {
     }
 
     public DiagramType getDiagramType() {
-        return this.diagramDataModel.getDiagramType();
+        return this.diagramData.getDiagramType();
     }
 
     public void insertCell(Point p) {

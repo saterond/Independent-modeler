@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.swing.Action;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;

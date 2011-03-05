@@ -2,10 +2,10 @@ package cz.cvut.indepmod.classmodel.workspace;
 
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
-import cz.cvut.indepmod.classmodel.modelFactory.ClassModelDiagramModelFactory;
+import cz.cvut.indepmod.classmodel.diagramdata.ClassModelDiagramModelFactory;
 import cz.cvut.indepmod.classmodel.file.ClassModelSaveCookie;
 import cz.cvut.indepmod.classmodel.file.ClassModelXMLDataObject;
-import cz.cvut.indepmod.classmodel.modelFactory.diagramModel.ClassModelDiagramDataModel;
+import cz.cvut.indepmod.classmodel.diagramdata.ClassModelDiagramDataModel;
 import cz.cvut.indepmod.classmodel.persistence.xml.ClassModelXMLCoder;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import java.awt.GridLayout;
@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 import javax.swing.JScrollPane;
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
-import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.util.lookup.AbstractLookup;
@@ -34,7 +33,7 @@ import org.openide.windows.TopComponent;
 public class ClassModelWorkspace extends CloneableTopComponent implements GraphModelListener {
 
     private static final Logger LOG = Logger.getLogger(ClassModelWorkspace.class.getName());
-    private ClassModelDiagramDataModel diagramDataModel;
+    private ClassModelDiagramDataModel diagramData;
     private ClassModelGraph graph;
     private ClassModelModel classModelAPI;
     private Map<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction> actions;
@@ -44,29 +43,29 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
     private boolean modified;
 
     public ClassModelWorkspace() {
-        this.diagramDataModel = ClassModelDiagramModelFactory.getInstance().createNewDiagramModel();
+        this.diagramData = ClassModelDiagramModelFactory.getInstance().createNewDiagramModel();
         this.init();
     }
 
     public ClassModelWorkspace(ClassModelXMLDataObject dataObject) {
         try {
             InputStream inStream = dataObject.getPrimaryFile().getInputStream();
-            this.diagramDataModel = ClassModelXMLCoder.getInstance().decode(inStream);
+            this.diagramData = ClassModelXMLCoder.getInstance().decode(inStream);
         } catch (FileNotFoundException ex) {
             LOG.log(Level.SEVERE, "File could not be opened: {0}", ex.getMessage());
         }
 
-        if (this.diagramDataModel != null) {
+        if (this.diagramData != null) {
             this.init();
         } else {
-            this.diagramDataModel = ClassModelDiagramModelFactory.getInstance().createNewDiagramModel();
+            this.diagramData = ClassModelDiagramModelFactory.getInstance().createNewDiagramModel();
             this.init();
         }
         this.lookupContent.add(dataObject);
     }
 
     public ClassModelWorkspace(ClassModelDiagramDataModel diagramModel) {
-        this.diagramDataModel = diagramModel;
+        this.diagramData = diagramModel;
         this.init();
     }
 
@@ -89,6 +88,12 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
         }
     }
 
+    @Override
+    protected void componentActivated() {
+        super.componentActivated();
+        LOG.log(Level.INFO, "Component {0} activated.", this.getName());
+    }
+
     public void setModified(boolean modified) {
         if (!this.modified && modified) {
             this.modified = modified;
@@ -105,18 +110,15 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
     private void init() {
         this.actions = new HashMap<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction>();
         this.selectedTool = new ToolChooserModel();
-        this.graph = new ClassModelGraph(this.actions, this.selectedTool, this.diagramDataModel);
+        this.graph = new ClassModelGraph(this.actions, this.selectedTool, this.diagramData);
         this.classModelAPI = new ClassModelModel(this.graph);
-        this.saveCookie = new ClassModelSaveCookie(this, this.diagramDataModel);
+        this.saveCookie = new ClassModelSaveCookie(this, this.diagramData);
         this.modified = false;
 
         this.graph.setMarqueeHandler(new ClassModelMarqueeHandler(this.graph, this.selectedTool, this.actions));
-        this.graph.setGraphLayoutCache(this.diagramDataModel.getLayoutCache()); //TODO: THIS SHOULD BE ADDED THROUGH CONSTRUCTOR
         this.graph.getModel().addGraphModelListener(this);
 
         this.initLookup();
-        //this.initActions();
-        //this.initPopupMenu();
         this.initLayout();
     }
 
@@ -128,27 +130,6 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
         this.add(new JScrollPane(this.graph));
     }
 
-//    /**
-//     * This method inititalizes actions
-//     */
-//    private void initActions() {
-//        this.actions.put(
-//                ClassModelUndoAction.ACTION_NAME,
-//                new ClassModelUndoAction());
-//
-//        this.actions.put(
-//                ClassModelRedoAction.ACTION_NAME,
-//                new ClassModelRedoAction());
-//    }
-//    private void initPopupMenu() {
-//        ClassModelAbstractAction deleteAction = this.actions.get(ClassModelDeleteAction.ACTION_NAME);
-//        deleteAction.setEnabled(true);
-//
-//        ClassModelAbstractAction editAction = this.actions.get(ClassModelEditAction.ACTION_NAME);
-//
-//        this.popupMenu.add(deleteAction);
-//        this.popupMenu.add(editAction);
-//    }
     private void initLookup() {
         this.associateLookup(new AbstractLookup(this.lookupContent));
         this.lookupContent.add(this.selectedTool);

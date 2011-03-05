@@ -2,10 +2,10 @@ package cz.cvut.indepmod.classmodel.workspace;
 
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
-import cz.cvut.indepmod.classmodel.diagramdata.ClassModelDiagramModelFactory;
+import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModelFactory;
 import cz.cvut.indepmod.classmodel.file.ClassModelSaveCookie;
 import cz.cvut.indepmod.classmodel.file.ClassModelXMLDataObject;
-import cz.cvut.indepmod.classmodel.diagramdata.ClassModelDiagramDataModel;
+import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModel;
 import cz.cvut.indepmod.classmodel.persistence.xml.ClassModelXMLCoder;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import java.awt.GridLayout;
@@ -33,7 +33,7 @@ import org.openide.windows.TopComponent;
 public class ClassModelWorkspace extends CloneableTopComponent implements GraphModelListener {
 
     private static final Logger LOG = Logger.getLogger(ClassModelWorkspace.class.getName());
-    private ClassModelDiagramDataModel diagramData;
+    private DiagramDataModel diagramData;
     private ClassModelGraph graph;
     private ClassModelModel classModelAPI;
     private Map<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction> actions;
@@ -43,7 +43,7 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
     private boolean modified;
 
     public ClassModelWorkspace() {
-        this.diagramData = ClassModelDiagramModelFactory.getInstance().createNewDiagramModel();
+        this.diagramData = DiagramDataModelFactory.getInstance().createNewDiagramModel();
         this.init();
     }
 
@@ -58,13 +58,13 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
         if (this.diagramData != null) {
             this.init();
         } else {
-            this.diagramData = ClassModelDiagramModelFactory.getInstance().createNewDiagramModel();
+            this.diagramData = DiagramDataModelFactory.getInstance().createNewDiagramModel();
             this.init();
         }
         this.lookupContent.add(dataObject);
     }
 
-    public ClassModelWorkspace(ClassModelDiagramDataModel diagramModel) {
+    public ClassModelWorkspace(DiagramDataModel diagramModel) {
         this.diagramData = diagramModel;
         this.init();
     }

@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.actions;
 
-import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditRelationDialog;
+import cz.cvut.indepmod.classmodel.frames.dialogs.EditRelationDialog;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
@@ -15,15 +15,15 @@ import org.jgraph.graph.GraphConstants;
  * Time: 18:08:40
  * @author Lucky
  */
-public class ClassModelEditRelationDialogSave extends ClassModelAbstractAction {
+public class EditRelationDialogSave extends ClassModelAbstractAction {
 
     public static final String ACTION_NAME = Resources.getString("action_edit_relation_dialog_save");
 
     private DefaultEdge edge;
-    private ClassModelEditRelationDialog dialog;
+    private EditRelationDialog dialog;
     private ClassModelGraph graph;
 
-    public ClassModelEditRelationDialogSave(DefaultEdge edge, ClassModelEditRelationDialog dialog, ClassModelGraph graph) {
+    public EditRelationDialogSave(DefaultEdge edge, EditRelationDialog dialog, ClassModelGraph graph) {
         super(ACTION_NAME, null);
 
         this.edge = edge;

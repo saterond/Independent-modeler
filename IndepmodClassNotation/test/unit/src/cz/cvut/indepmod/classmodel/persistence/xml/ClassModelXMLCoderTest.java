@@ -15,8 +15,8 @@ import org.jgraph.graph.DefaultPort;
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.api.model.IRelation;
-import cz.cvut.indepmod.classmodel.diagramdata.ClassModelDiagramModelFactory;
-import cz.cvut.indepmod.classmodel.diagramdata.ClassModelDiagramDataModel;
+import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModelFactory;
+import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModel;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelClassCell;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttributeModel;
@@ -48,14 +48,14 @@ public class ClassModelXMLCoderTest {
 
     public static final String FILE_NAME = "TestClass";
     private ClassModelGraph graph;
-    private ClassModelDiagramDataModel diagramModel;
+    private DiagramDataModel diagramModel;
 
     public ClassModelXMLCoderTest() {
     }
 
     @Before
     public void setUp() {
-        this.diagramModel = ClassModelDiagramModelFactory.getInstance().createNewDiagramModel();
+        this.diagramModel = DiagramDataModelFactory.getInstance().createNewDiagramModel();
         this.graph = new ClassModelGraph(
                 new HashMap<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction>(),
                 new ToolChooserModel(), this.diagramModel);

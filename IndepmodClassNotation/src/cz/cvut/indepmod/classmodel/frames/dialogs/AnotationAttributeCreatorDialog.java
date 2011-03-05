@@ -10,11 +10,11 @@ import java.awt.event.ActionListener;
  * Time: 17:33:28
  * @author Lucky
  */
-public class ClassModelAnotationAttributeCreatorDialog extends ClassModelAnotationAttributeCreatorDialogView {
+public class AnotationAttributeCreatorDialog extends AnotationAttributeCreatorDialogView {
 
     private AnotationAttributeModel returnValue;
 
-    public ClassModelAnotationAttributeCreatorDialog(Frame owner) {
+    public AnotationAttributeCreatorDialog(Frame owner) {
         super(owner);
 
         this.returnValue = null;

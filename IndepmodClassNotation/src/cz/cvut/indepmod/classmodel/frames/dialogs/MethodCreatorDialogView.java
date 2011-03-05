@@ -18,7 +18,7 @@ import javax.swing.JTextField;
  * Time: 16:41:13
  * @author Lucky
  */
-public class ClassModelMethodCreatorDialogView extends ClassModelAbstractDialog {
+public class MethodCreatorDialogView extends AbstractClassModelDialog {
 
     public static final String TITLE = Resources.getString("dialog_method_creator_title");
 
@@ -43,7 +43,7 @@ public class ClassModelMethodCreatorDialogView extends ClassModelAbstractDialog 
     protected JList attrList = new JList(this.attributeListModel);
 
 
-    public ClassModelMethodCreatorDialogView(Frame owner) {
+    public MethodCreatorDialogView(Frame owner) {
         super(owner, TITLE);
 
         this.initLayout();

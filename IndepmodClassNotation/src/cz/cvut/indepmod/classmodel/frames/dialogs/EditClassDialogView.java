@@ -15,7 +15,7 @@ import java.awt.*;
  * This class represents a dialog view which will be used for editing of a class (class in a notation's diagram)
  */
 //TODO - static string data should be loaded by resource bundle
-public class ClassModelEditClassDialogView extends ClassModelAbstractDialog {
+public class EditClassDialogView extends AbstractClassModelDialog {
 
     public static final String TITLE = Resources.getString("dialog_edit_class_title");
     public static final String NAME_LABEL = Resources.getString("dialog_edit_class_name");
@@ -50,7 +50,7 @@ public class ClassModelEditClassDialogView extends ClassModelAbstractDialog {
     protected JList methodList = new JList();
 
 
-    public ClassModelEditClassDialogView(Frame owner) {
+    public EditClassDialogView(Frame owner) {
         super(owner, TITLE);
 
         this.initLayout();

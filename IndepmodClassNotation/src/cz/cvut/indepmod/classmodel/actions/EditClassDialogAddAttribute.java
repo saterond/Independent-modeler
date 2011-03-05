@@ -1,7 +1,7 @@
 package cz.cvut.indepmod.classmodel.actions;
 
-import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelAttributeCreatorDialog;
-import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditClassDialog;
+import cz.cvut.indepmod.classmodel.frames.dialogs.AttributeCreatorDialog;
+import cz.cvut.indepmod.classmodel.frames.dialogs.EditClassDialog;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
@@ -18,13 +18,13 @@ import org.openide.windows.WindowManager;
  * When this action is performed, it will open next dialog for attribute creation.
  * After the attribute is created, this action will insert the attribute into the class.
  */
-public class ClassModelEditClassDialogAddAttribute extends ClassModelAbstractAction {
+public class EditClassDialogAddAttribute extends ClassModelAbstractAction {
 
     public static final String ACTION_NAME = Resources.getString("action_edit_class_dialog_add_attr");
     private ClassModel model;
-    private ClassModelEditClassDialog dialog;
+    private EditClassDialog dialog;
 
-    public ClassModelEditClassDialogAddAttribute(ClassModel model, ClassModelEditClassDialog dialog) {
+    public EditClassDialogAddAttribute(ClassModel model, EditClassDialog dialog) {
         super(ACTION_NAME, null);
         this.model = model;
         this.dialog = dialog;
@@ -33,7 +33,7 @@ public class ClassModelEditClassDialogAddAttribute extends ClassModelAbstractAct
     @Override
     public void actionPerformed(ActionEvent e) {
         Frame window = WindowManager.getDefault().getMainWindow();
-        AttributeModel attr = new ClassModelAttributeCreatorDialog(
+        AttributeModel attr = new AttributeCreatorDialog(
                 window,
                 this.dialog.getAllTypeModel()).getAttribute();
 

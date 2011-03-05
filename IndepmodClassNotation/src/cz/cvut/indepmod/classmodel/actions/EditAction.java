@@ -1,8 +1,8 @@
 package cz.cvut.indepmod.classmodel.actions;
 
 import cz.cvut.indepmod.classmodel.api.model.DiagramType;
-import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditClassDialog;
-import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditRelationDialog;
+import cz.cvut.indepmod.classmodel.frames.dialogs.EditClassDialog;
+import cz.cvut.indepmod.classmodel.frames.dialogs.EditRelationDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.factory.AbstractDialogFactory;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
@@ -23,13 +23,13 @@ import org.openide.windows.WindowManager;
  * <p/>
  * This action will be used for editing of the class or relation vertices
  */
-public class ClassModelEditAction extends ClassModelAbstractAction {
+public class EditAction extends ClassModelAbstractAction {
 
     public static final String ACTION_NAME = Resources.getString("action_edit_name");
-    private static final Logger LOG = Logger.getLogger(ClassModelEditAction.class.getName());
+    private static final Logger LOG = Logger.getLogger(EditAction.class.getName());
     private ClassModelGraph graph;
 
-    public ClassModelEditAction(ClassModelGraph graph) {
+    public EditAction(ClassModelGraph graph) {
         super(ACTION_NAME, null);
         this.graph = graph;
     }
@@ -69,7 +69,7 @@ public class ClassModelEditAction extends ClassModelAbstractAction {
         LOG.info("edit of Relation");
         try {
             RelationModel model = (RelationModel) relation.getUserObject();
-            ClassModelEditRelationDialog dialog = new ClassModelEditRelationDialog(
+            EditRelationDialog dialog = new EditRelationDialog(
                     WindowManager.getDefault().getMainWindow(),
                     graph,
                     relation,

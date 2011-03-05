@@ -12,7 +12,7 @@ import javax.swing.JLabel;
  * Time: 17:44:45
  * @author Lucky
  */
-public class ClassModelEditRelationDialogView extends ClassModelAbstractDialog {
+public class EditRelationDialogView extends AbstractClassModelDialog {
     
     public static final String TITLE = Resources.getString("dialog_edit_relation_title");
 
@@ -28,7 +28,7 @@ public class ClassModelEditRelationDialogView extends ClassModelAbstractDialog {
     protected JButton saveButton;
     protected JButton cancelButton;
 
-    public ClassModelEditRelationDialogView(Frame owner) {
+    public EditRelationDialogView(Frame owner) {
         super(owner, TITLE);
 
         this.initLayout();

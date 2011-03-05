@@ -1,8 +1,8 @@
 package cz.cvut.indepmod.classmodel.workspace;
 
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
-import cz.cvut.indepmod.classmodel.actions.ClassModelDeleteAction;
-import cz.cvut.indepmod.classmodel.actions.ClassModelEditAction;
+import cz.cvut.indepmod.classmodel.actions.DeleteAction;
+import cz.cvut.indepmod.classmodel.actions.EditAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelCellFactory;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelClassCell;
@@ -154,17 +154,17 @@ public class ClassModelMarqueeHandler extends BasicMarqueeHandler {
 
         if (c instanceof ClassModelClassCell) {
             showPopupMenu(e,
-                    this.actions.get(ClassModelEditAction.class),
-                    this.actions.get(ClassModelDeleteAction.class));
+                    this.actions.get(EditAction.class),
+                    this.actions.get(DeleteAction.class));
         } else if (c instanceof ClassModelRelation) {
             Object userObject = ((ClassModelRelation) c).getUserObject();
             if (userObject instanceof RelationModel) {
                 showPopupMenu(e,
-                    this.actions.get(ClassModelEditAction.class),
-                    this.actions.get(ClassModelDeleteAction.class));
+                    this.actions.get(EditAction.class),
+                    this.actions.get(DeleteAction.class));
             } else if (userObject instanceof HierarchyRelationModel) {
                 showPopupMenu(e,
-                        this.actions.get(ClassModelDeleteAction.class));
+                        this.actions.get(DeleteAction.class));
             }
         }
     }

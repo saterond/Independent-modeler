@@ -10,9 +10,9 @@ import javax.swing.JDialog;
  * Time: 12:10:02
  * @author Lucky
  */
-public class ClassModelAbstractDialog extends JDialog {
+public class AbstractClassModelDialog extends JDialog {
 
-    public ClassModelAbstractDialog(Frame owner, String title) {
+    public AbstractClassModelDialog(Frame owner, String title) {
         super(owner, title, true);
     }
 

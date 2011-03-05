@@ -1,7 +1,7 @@
 package cz.cvut.indepmod.classmodel.actions;
 
-import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelAnotationCreatorDialog;
-import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditClassDialog;
+import cz.cvut.indepmod.classmodel.frames.dialogs.AnotationCreatorDialog;
+import cz.cvut.indepmod.classmodel.frames.dialogs.EditClassDialog;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
@@ -15,14 +15,14 @@ import org.openide.windows.WindowManager;
  * Time: 17:57:34
  * @author Lucky
  */
-public class ClassModelEditClassDialogAddAnotation extends ClassModelAbstractAction {
+public class EditClassDialogAddAnotation extends ClassModelAbstractAction {
 
     public static final String ACTION_NAME = Resources.getString("action_edit_class_dialog_add_anot");
-    private static final Logger LOG = Logger.getLogger(ClassModelEditClassDialogAddAnotation.class.getName());
+    private static final Logger LOG = Logger.getLogger(EditClassDialogAddAnotation.class.getName());
     private ClassModel model;
-    private ClassModelEditClassDialog dialog;
+    private EditClassDialog dialog;
 
-    public ClassModelEditClassDialogAddAnotation(ClassModel model, ClassModelEditClassDialog dialog) {
+    public EditClassDialogAddAnotation(ClassModel model, EditClassDialog dialog) {
         super(ACTION_NAME, null);
         this.model = model;
         this.dialog = dialog;
@@ -31,7 +31,7 @@ public class ClassModelEditClassDialogAddAnotation extends ClassModelAbstractAct
     @Override
     public void actionPerformed(ActionEvent e) {
         Frame window = WindowManager.getDefault().getMainWindow();
-        AnotationModel anot = new ClassModelAnotationCreatorDialog(window).getAnotation();
+        AnotationModel anot = new AnotationCreatorDialog(window).getAnotation();
 
         if (anot != null) {
             this.model.addAnotation(anot);

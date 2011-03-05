@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.persistence.xml;
 
-import cz.cvut.indepmod.classmodel.diagramdata.ClassModelDiagramDataModel;
+import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModel;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.AnotationAtributeModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.AnotationModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.AttributeModelPersistenceDelegate;
@@ -95,7 +95,7 @@ public class ClassModelXMLCoder {
     private ClassModelXMLCoder() {
     }
 
-    public void encode(ClassModelDiagramDataModel diagramModel, OutputStream stream) {
+    public void encode(DiagramDataModel diagramModel, OutputStream stream) {
         XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(stream));
 
         this.initEncoder(encoder);
@@ -103,13 +103,13 @@ public class ClassModelXMLCoder {
         encoder.close();
     }
 
-    public ClassModelDiagramDataModel decode(InputStream stream) {
+    public DiagramDataModel decode(InputStream stream) {
         try {
             XMLDecoder dec = new XMLDecoder(new BufferedInputStream(stream));
             if (dec != null) {
                 Object obj = dec.readObject();
                 dec.close();
-                return (ClassModelDiagramDataModel) obj;
+                return (DiagramDataModel) obj;
             }
         } catch (NoSuchElementException ex) {
             LOG.severe(ex.getMessage());
@@ -127,7 +127,7 @@ public class ClassModelXMLCoder {
             }
         });
 
-        encoder.setPersistenceDelegate(ClassModelDiagramDataModel.class,
+        encoder.setPersistenceDelegate(DiagramDataModel.class,
                 new ClassModelDiagramModelPersistenceDelegate());
 
         //GRAPH LAYOUT CACHE====================================================

@@ -1,12 +1,12 @@
 package cz.cvut.indepmod.classmodel.workspace;
 
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
-import cz.cvut.indepmod.classmodel.actions.ClassModelDeleteAction;
-import cz.cvut.indepmod.classmodel.actions.ClassModelEditAction;
+import cz.cvut.indepmod.classmodel.actions.DeleteAction;
+import cz.cvut.indepmod.classmodel.actions.EditAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModelListener;
 import cz.cvut.indepmod.classmodel.api.model.DiagramType;
-import cz.cvut.indepmod.classmodel.diagramdata.ClassModelDiagramDataModel;
+import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelCellFactory;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
@@ -28,13 +28,13 @@ public class ClassModelGraph extends JGraph {
 
     private Map<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction> actions;
     private ToolChooserModel selectedTool;
-    private ClassModelDiagramDataModel diagramData;
+    private DiagramDataModel diagramData;
 
 
     public ClassModelGraph(
             Map<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction> actions,
             ToolChooserModel selectedTool,
-            ClassModelDiagramDataModel diagramData) {
+            DiagramDataModel diagramData) {
         super(diagramData.getLayoutCache());
         
         this.actions = actions;
@@ -95,13 +95,13 @@ public class ClassModelGraph extends JGraph {
 
     private void initActions() {
         this.actions.put(
-                ClassModelEditAction.class,
-                new ClassModelEditAction(this)
+                EditAction.class,
+                new EditAction(this)
         );
 
         this.actions.put(
-                ClassModelDeleteAction.class,
-                new ClassModelDeleteAction(this));
+                DeleteAction.class,
+                new DeleteAction(this));
     }
 
 
@@ -129,7 +129,7 @@ public class ClassModelGraph extends JGraph {
         this.addGraphSelectionListener(new GraphSelectionListener() {
             @Override
             public void valueChanged(GraphSelectionEvent graphSelectionEvent) {
-                actions.get(ClassModelEditAction.class).setEnabled(getSelectionCell() != null);
+                actions.get(EditAction.class).setEnabled(getSelectionCell() != null);
             }
         });
     }

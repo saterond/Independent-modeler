@@ -1,13 +1,13 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
-import cz.cvut.indepmod.classmodel.actions.ClassModelCancelEditClassDialog;
-import cz.cvut.indepmod.classmodel.actions.ClassModelEditClassDialogAddAnotation;
-import cz.cvut.indepmod.classmodel.actions.ClassModelEditClassDialogAddAttribute;
-import cz.cvut.indepmod.classmodel.actions.ClassModelEditClassDialogAddMethod;
-import cz.cvut.indepmod.classmodel.actions.ClassModelEditClassDialogRemoveAnotation;
-import cz.cvut.indepmod.classmodel.actions.ClassModelEditClassDialogRemoveAttribute;
-import cz.cvut.indepmod.classmodel.actions.ClassModelEditClassDialogRemoveMethod;
-import cz.cvut.indepmod.classmodel.actions.ClassModelSaveEditClassDialog;
+import cz.cvut.indepmod.classmodel.actions.CancelEditClassDialog;
+import cz.cvut.indepmod.classmodel.actions.EditClassDialogAddAnotation;
+import cz.cvut.indepmod.classmodel.actions.EditClassDialogAddAttribute;
+import cz.cvut.indepmod.classmodel.actions.EditClassDialogAddMethod;
+import cz.cvut.indepmod.classmodel.actions.EditClassDialogRemoveAnotation;
+import cz.cvut.indepmod.classmodel.actions.EditClassDialogRemoveAttribute;
+import cz.cvut.indepmod.classmodel.actions.EditClassDialogRemoveMethod;
+import cz.cvut.indepmod.classmodel.actions.SaveEditClassDialog;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
@@ -34,9 +34,9 @@ import org.jgraph.graph.GraphConstants;
  *
  * This class represents dialog which is used for editing of a class.
  */
-public class ClassModelEditClassDialog extends ClassModelEditClassDialogView implements ModelListener {
+public class EditClassDialog extends EditClassDialogView implements ModelListener {
 
-    private static final Logger LOG = Logger.getLogger(ClassModelEditClassDialog.class.getName());
+    private static final Logger LOG = Logger.getLogger(EditClassDialog.class.getName());
     private ClassModel classModel;
     private ClassModelGraph graph;
     private DefaultGraphCell cell;
@@ -45,7 +45,7 @@ public class ClassModelEditClassDialog extends ClassModelEditClassDialogView imp
     private DefaultListModel methodListModel;
     private DefaultListModel anotationListModel;
 
-    public ClassModelEditClassDialog(Frame owner, ClassModelGraph graph, DefaultGraphCell cell, ClassModel cellModel) {
+    public EditClassDialog(Frame owner, ClassModelGraph graph, DefaultGraphCell cell, ClassModel cellModel) {
         super(owner);
         this.classModel = cellModel;
         this.graph = graph;
@@ -178,14 +178,14 @@ public class ClassModelEditClassDialog extends ClassModelEditClassDialogView imp
      */
     private void initAction() {
         //this.editAttributeButton.addActionListener(new ClassModelEditClassDialogEditAttribute(this));
-        this.removeAttributeButton.addActionListener(new ClassModelEditClassDialogRemoveAttribute(this.classModel, this));
-        this.addAnotationButton.addActionListener(new ClassModelEditClassDialogAddAnotation(classModel, this));
-        this.addAttributeButton.addActionListener(new ClassModelEditClassDialogAddAttribute(this.classModel, this));
-        this.addMethodButton.addActionListener(new ClassModelEditClassDialogAddMethod(this.classModel, this));
-        this.removeAnotationButton.addActionListener(new ClassModelEditClassDialogRemoveAnotation(this.classModel, this));
-        this.removeMethodButton.addActionListener(new ClassModelEditClassDialogRemoveMethod(this.classModel, this));
-        this.saveButton.addActionListener(new ClassModelSaveEditClassDialog(this.classModel, this));
-        this.cancelButton.addActionListener(new ClassModelCancelEditClassDialog(this));
+        this.removeAttributeButton.addActionListener(new EditClassDialogRemoveAttribute(this.classModel, this));
+        this.addAnotationButton.addActionListener(new EditClassDialogAddAnotation(classModel, this));
+        this.addAttributeButton.addActionListener(new EditClassDialogAddAttribute(this.classModel, this));
+        this.addMethodButton.addActionListener(new EditClassDialogAddMethod(this.classModel, this));
+        this.removeAnotationButton.addActionListener(new EditClassDialogRemoveAnotation(this.classModel, this));
+        this.removeMethodButton.addActionListener(new EditClassDialogRemoveMethod(this.classModel, this));
+        this.saveButton.addActionListener(new SaveEditClassDialog(this.classModel, this));
+        this.cancelButton.addActionListener(new CancelEditClassDialog(this));
     }
 
     @Override

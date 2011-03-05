@@ -15,15 +15,15 @@ import org.openide.windows.WindowManager;
  * Time: 14:32:19
  * @author Lucky
  */
-public class ClassModelAttributeCreatorDialog extends ClassModelAttributeCreatorDialogView {
+public class AttributeCreatorDialog extends AttributeCreatorDialogView {
     private Collection<TypeModel> availableTypes;
     private AttributeModel returnValue;
 
-    public ClassModelAttributeCreatorDialog(Frame owner) {
+    public AttributeCreatorDialog(Frame owner) {
         this(owner, new ArrayList<TypeModel>(0));
     }
 
-    public ClassModelAttributeCreatorDialog(Frame owner, Collection<TypeModel> types) {
+    public AttributeCreatorDialog(Frame owner, Collection<TypeModel> types) {
         super(owner);
 
         this.availableTypes = types;
@@ -62,7 +62,7 @@ public class ClassModelAttributeCreatorDialog extends ClassModelAttributeCreator
             @Override
             public void actionPerformed(ActionEvent e) {
                 Frame window = WindowManager.getDefault().getMainWindow();
-                AnotationModel anot = new ClassModelAnotationCreatorDialog(window).getAnotation();
+                AnotationModel anot = new AnotationCreatorDialog(window).getAnotation();
 
                 if (anot != null) {
                     anotationListModel.addElement(anot);

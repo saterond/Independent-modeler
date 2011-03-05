@@ -11,13 +11,13 @@ import javax.swing.JDialog;
  *
  * This action is used for Closing of the class edit dialog
  */
-public class ClassModelCancelEditClassDialog extends ClassModelAbstractAction {
+public class CancelEditClassDialog extends ClassModelAbstractAction {
 
     public static final String ACTION_NAME = Resources.getString("action_cancel_edit_class_name");
 
     private JDialog dialog;
 
-    public ClassModelCancelEditClassDialog(JDialog dialog) {
+    public CancelEditClassDialog(JDialog dialog) {
         super(ACTION_NAME, null);
 
         this.dialog = dialog;

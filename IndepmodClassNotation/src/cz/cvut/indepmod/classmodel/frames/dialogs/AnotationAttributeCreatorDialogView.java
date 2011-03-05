@@ -17,7 +17,7 @@ import javax.swing.JTextField;
  * Time: 10:51:17
  * @author Lucky
  */
-public class ClassModelAnotationAttributeCreatorDialogView extends ClassModelAbstractDialog {
+public class AnotationAttributeCreatorDialogView extends AbstractClassModelDialog {
 
     public static final String DIALOG_TITLE = Resources.getString("dialog_anotation_attribute_creator_title");
     public static final String ANOTATION_ATRIBUTE_NAME_LABEL = Resources.getString("dialog_anotation_attribute_creator_atribute_name");
@@ -40,7 +40,7 @@ public class ClassModelAnotationAttributeCreatorDialogView extends ClassModelAbs
     protected JList valueList = new JList(this.valueListModel);
     
 
-    public ClassModelAnotationAttributeCreatorDialogView(Frame owner) {
+    public AnotationAttributeCreatorDialogView(Frame owner) {
         super(owner, DIALOG_TITLE);
 
         this.initLayout();

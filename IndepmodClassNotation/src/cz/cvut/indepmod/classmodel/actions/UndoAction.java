@@ -8,17 +8,17 @@ import java.util.logging.Logger;
  * Created by IntelliJ IDEA.
  * User: Lucky
  * Date: 3.10.2010
- * Time: 19:06:03
+ * Time: 19:02:30
  * <p/>
- * This action makes REDO in Class Model diagram
+ * This action makes UNDO action in Class model diagram
  */
-public class ClassModelRedoAction extends ClassModelAbstractAction {
+public class UndoAction extends ClassModelAbstractAction {
 
-    public static final String ACTION_NAME = Resources.getString("action_redo");
+    public static final String ACTION_NAME = Resources.getString("action_undo");
 
-    private static final Logger LOG = Logger.getLogger(ClassModelRedoAction.class.getName());
+    private static final Logger LOG = Logger.getLogger(UndoAction.class.getName());
 
-    public ClassModelRedoAction() {
+    public UndoAction() {
         super(ACTION_NAME, null);
     }
 
@@ -26,7 +26,7 @@ public class ClassModelRedoAction extends ClassModelAbstractAction {
     public void actionPerformed(ActionEvent event) {
 //        ProjectDiagram diagram = ModelerSession.getProjectControlService().getSelectedDiagram();
 //        if (diagram.getDiagramModel() instanceof ClassModelDiagramModel) {
-//            ((ClassModelDiagramModel) diagram.getDiagramModel()).getUndoManager().redo();
+//            ((ClassModelDiagramModel) diagram.getDiagramModel()).getUndoManager().undo();
 //        } else {
 //            LOG.error("Diagram Model is not instance of ClassModelDiagramModel");
 //        }

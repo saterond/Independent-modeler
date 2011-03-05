@@ -16,12 +16,12 @@ import org.openide.windows.WindowManager;
  * Time: 13:23:01
  * @author Lucky
  */
-public class ClassModelMethodCreatorDialog extends ClassModelMethodCreatorDialogView {
+public class MethodCreatorDialog extends MethodCreatorDialogView {
     private MethodModel returnValue = null;
     private Collection<TypeModel> availableTypes;
     
 
-    public ClassModelMethodCreatorDialog(Frame owner, Collection<TypeModel> types) {
+    public MethodCreatorDialog(Frame owner, Collection<TypeModel> types) {
         super(owner);
 
         this.availableTypes = types;
@@ -62,7 +62,7 @@ public class ClassModelMethodCreatorDialog extends ClassModelMethodCreatorDialog
             @Override
             public void actionPerformed(ActionEvent e) {
                 Frame window = WindowManager.getDefault().getMainWindow();
-                AttributeModel attr = new ClassModelAttributeCreatorDialog(
+                AttributeModel attr = new AttributeCreatorDialog(
                         window,
                         availableTypes).getAttribute();
 

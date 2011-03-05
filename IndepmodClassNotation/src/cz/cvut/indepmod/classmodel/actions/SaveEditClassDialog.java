@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.actions;
 
-import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditClassDialog;
+import cz.cvut.indepmod.classmodel.frames.dialogs.EditClassDialog;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import java.awt.event.ActionEvent;
@@ -14,16 +14,16 @@ import java.util.logging.Logger;
  * This action saves an edit dialog of the class (and changes the name of the
  * class)
  */
-public class ClassModelSaveEditClassDialog extends ClassModelAbstractAction {
+public class SaveEditClassDialog extends ClassModelAbstractAction {
 
     public static final String ACTION_NAME = Resources.getString("action_edit_class_dialog_save");
     
-    private static final Logger LOG = Logger.getLogger(ClassModelSaveEditClassDialog.class.getName());
+    private static final Logger LOG = Logger.getLogger(SaveEditClassDialog.class.getName());
 
     private ClassModel model;
-    private ClassModelEditClassDialog dialog;
+    private EditClassDialog dialog;
 
-    public ClassModelSaveEditClassDialog(ClassModel model, ClassModelEditClassDialog dialog) {
+    public SaveEditClassDialog(ClassModel model, EditClassDialog dialog) {
         super(ACTION_NAME, null);
         this.model = model;
         this.dialog = dialog;

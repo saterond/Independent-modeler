@@ -24,15 +24,15 @@ import org.jgraph.graph.DefaultPort;
  * This action deletes selected cell in class model diagram (in JGraph) if a cel to delete is a vertex, delete its
  * relations as well
  */
-public class ClassModelDeleteAction extends ClassModelAbstractAction {
+public class DeleteAction extends ClassModelAbstractAction {
 
     public static final String ACTION_NAME = Resources.getString("action_delete_name");
 
-    private static final Logger LOG = Logger.getLogger(ClassModelDeleteAction.class.getName());
+    private static final Logger LOG = Logger.getLogger(DeleteAction.class.getName());
 
     private ClassModelGraph graph;
 
-    public ClassModelDeleteAction(ClassModelGraph graph) {
+    public DeleteAction(ClassModelGraph graph) {
         super(ACTION_NAME, null);
         this.graph = graph;
     }

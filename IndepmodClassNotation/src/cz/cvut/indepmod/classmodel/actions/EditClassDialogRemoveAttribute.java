@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.actions;
 
-import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditClassDialog;
+import cz.cvut.indepmod.classmodel.frames.dialogs.EditClassDialog;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
@@ -13,13 +13,13 @@ import java.awt.event.ActionEvent;
  *
  * This action is used for removing of an attribute from the class.
  */
-public class ClassModelEditClassDialogRemoveAttribute extends ClassModelAbstractAction {
+public class EditClassDialogRemoveAttribute extends ClassModelAbstractAction {
 
     public static final String ACTION_NAME = Resources.getString("action_edit_class_dialog_rem_attr");
     private ClassModel model;
-    private ClassModelEditClassDialog dialog;
+    private EditClassDialog dialog;
 
-    public ClassModelEditClassDialogRemoveAttribute(ClassModel model, ClassModelEditClassDialog dialog) {
+    public EditClassDialogRemoveAttribute(ClassModel model, EditClassDialog dialog) {
         super(ACTION_NAME, null);
         this.model = model;
         this.dialog = dialog;

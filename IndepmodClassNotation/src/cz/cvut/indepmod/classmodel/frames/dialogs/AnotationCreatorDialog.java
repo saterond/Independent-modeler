@@ -13,17 +13,17 @@ import org.openide.windows.WindowManager;
  * Time: 18:00:07
  * @author Lucky
  */
-public class ClassModelAnotationCreatorDialog extends ClassModelAnotationCreatorDialogView {
+public class AnotationCreatorDialog extends AnotationCreatorDialogView {
 
-    private static final Logger LOG = Logger.getLogger(ClassModelAnotationCreatorDialog.class.getName());
+    private static final Logger LOG = Logger.getLogger(AnotationCreatorDialog.class.getName());
 
     private AnotationModel returnValue;
 
-    public ClassModelAnotationCreatorDialog(Frame owner) {
+    public AnotationCreatorDialog(Frame owner) {
         this(owner, null);
     }
 
-    public ClassModelAnotationCreatorDialog(Frame owner, AnotationModel returnValue) {
+    public AnotationCreatorDialog(Frame owner, AnotationModel returnValue) {
         super(owner);
 
         this.returnValue = returnValue;
@@ -57,7 +57,7 @@ public class ClassModelAnotationCreatorDialog extends ClassModelAnotationCreator
             @Override
             public void actionPerformed(ActionEvent e) {
                 Frame window = WindowManager.getDefault().getMainWindow();
-                AnotationAttributeModel atr = new ClassModelAnotationAttributeCreatorDialog(window).getReturnValue();
+                AnotationAttributeModel atr = new AnotationAttributeCreatorDialog(window).getReturnValue();
 
                 if (atr != null) {
                     valueListModel.addElement(atr);

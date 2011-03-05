@@ -1,7 +1,7 @@
 package cz.cvut.indepmod.classmodel.actions;
 
+import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AnotationCreatorDialog;
-import cz.cvut.indepmod.classmodel.frames.dialogs.EditClassDialog;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
@@ -20,9 +20,9 @@ public class EditClassDialogAddAnotation extends ClassModelAbstractAction {
     public static final String ACTION_NAME = Resources.getString("action_edit_class_dialog_add_anot");
     private static final Logger LOG = Logger.getLogger(EditClassDialogAddAnotation.class.getName());
     private ClassModel model;
-    private EditClassDialog dialog;
+    private AbstractEditClassDialog dialog;
 
-    public EditClassDialogAddAnotation(ClassModel model, EditClassDialog dialog) {
+    public EditClassDialogAddAnotation(ClassModel model, AbstractEditClassDialog dialog) {
         super(ACTION_NAME, null);
         this.model = model;
         this.dialog = dialog;

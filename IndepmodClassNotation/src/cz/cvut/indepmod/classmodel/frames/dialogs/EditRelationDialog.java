@@ -19,7 +19,7 @@ import org.jgraph.graph.DefaultEdge;
  */
 public class EditRelationDialog extends EditRelationDialogView implements ItemListener {
 
-    private static final Logger LOG = Logger.getLogger(EditClassDialog.class.getName());
+    private static final Logger LOG = Logger.getLogger(EditRelationDialog.class.getName());
 
     private ClassModelGraph graph;
     private DefaultEdge edge;

@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.actions;
 
-import cz.cvut.indepmod.classmodel.frames.dialogs.EditClassDialog;
+import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.MethodCreatorDialog;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
@@ -19,9 +19,9 @@ public class EditClassDialogAddMethod extends ClassModelAbstractAction {
     public static final String ACTION_NAME = Resources.getString("action_edit_class_dialog_add_method");
 
     private ClassModel model;
-    private EditClassDialog dialog;
+    private AbstractEditClassDialog dialog;
 
-    public EditClassDialogAddMethod(ClassModel model, EditClassDialog dialog) {
+    public EditClassDialogAddMethod(ClassModel model, AbstractEditClassDialog dialog) {
         super(ACTION_NAME, null);
         this.model = model;
         this.dialog = dialog;

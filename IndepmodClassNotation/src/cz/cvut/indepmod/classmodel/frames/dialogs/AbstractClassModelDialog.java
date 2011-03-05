@@ -13,16 +13,26 @@ import javax.swing.JDialog;
 public class AbstractClassModelDialog extends JDialog {
 
     public AbstractClassModelDialog(Frame owner, String title) {
-        super(owner, title, true);
+        this(owner, title, true);
+    }
+
+    public AbstractClassModelDialog(Frame owner, String title, boolean modal) {
+        super(owner, title, modal);
     }
 
     public void setSizes() {
         this.pack();
 
-        Dimension dim = getToolkit().getScreenSize();
         Rectangle abounds = getBounds();
-        setLocation((dim.width - abounds.width) / 2,
-                (dim.height - abounds.height) / 2);
+        this.setSizes(abounds.width, abounds.height);
+    }
+
+    public void setSizes(int width, int height) {
+        this.setSize(width, height);
+        
+        Dimension dim = getToolkit().getScreenSize();
+        setLocation((dim.width - width) / 2,
+                (dim.height - height) / 2);
 
         this.setMinimumSize(this.getSize());
         this.setVisible(true);

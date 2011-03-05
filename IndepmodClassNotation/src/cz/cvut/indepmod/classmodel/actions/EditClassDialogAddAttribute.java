@@ -1,7 +1,7 @@
 package cz.cvut.indepmod.classmodel.actions;
 
+import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AttributeCreatorDialog;
-import cz.cvut.indepmod.classmodel.frames.dialogs.EditClassDialog;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
@@ -22,9 +22,9 @@ public class EditClassDialogAddAttribute extends ClassModelAbstractAction {
 
     public static final String ACTION_NAME = Resources.getString("action_edit_class_dialog_add_attr");
     private ClassModel model;
-    private EditClassDialog dialog;
+    private AbstractEditClassDialog dialog;
 
-    public EditClassDialogAddAttribute(ClassModel model, EditClassDialog dialog) {
+    public EditClassDialogAddAttribute(ClassModel model, AbstractEditClassDialog dialog) {
         super(ACTION_NAME, null);
         this.model = model;
         this.dialog = dialog;

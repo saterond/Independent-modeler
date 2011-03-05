@@ -27,5 +27,4 @@ public class ClassModelModel implements IClassModelModel {
     public DiagramType getDiagramType() {
         return this.graph.getDiagramType();
     }
-
 }

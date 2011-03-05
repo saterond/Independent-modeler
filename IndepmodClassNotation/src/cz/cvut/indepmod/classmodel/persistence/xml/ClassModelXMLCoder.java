@@ -13,7 +13,6 @@ import cz.cvut.indepmod.classmodel.persistence.xml.delegate.RelationModelPersist
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.TypeModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraphModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelClassCell;
-import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelRelation;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelVertexView;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;

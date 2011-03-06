@@ -10,6 +10,7 @@
 \usepackage{xcolor}
 \usepackage{pifont}
 \usepackage{url}
+\usepackage{aeguill}
 
 \def\refname{Reference}
 
@@ -31,7 +32,36 @@
 
 \section{Introduction}
 
-This document describes the structure of Indepmod Class Notation plugin for Netbeans. The plugin is created in Netbeans platform so if you are not familiar with it, please take a look at \cite{netbeans6.9DevGuide}.
+This bachelor thesis deals with an implementation of Netbeans plugin which will be used for a class modeling. I chose this theme because of two main reasons. The first reason is that it is not a standard information system (or something similar) that can be created with no need to learn new technologies (these systems are often created within the scope of a semestral work). The second reason is that it could be an useful system which can be extended e.g. within the scope of another thesis. Of course, the result of one bachelor thesis cannot produce more sophisticated system than the existing (paid) ones, but it is a good basis for further expansion. 
+
+A class diagram is a basic UML\footnote{UML - Unified Modeling Language} diagram. It is probably the best known of all UML diagrams. The class diagram is used for description of system's (or program's) structure by showing its classes. In a computer engineering, class diagram is used for both conceptual modeling (business modeling) and detailed class modeling, which is consequently translated into a programming language (into the programming code).
+
+Despite the fact that the diagram is called class diagram, it does not describe only the classes of the system. It describes all the data types like interfaces, enumeration types, etc. All these data types are in the class diagram displayed as rectangles. These rectangles can be divided into three parts: 
+\begin{itemize}
+    \item The first part contains the name of the class (or interface, enumeration, etc.) and eventually the stereotype (a text in \guillemotleft angle quotes\guillemotright) which describes a special property (interface, enumeration, or something else).
+    \item The second part contains the list of attributes. Every attribute defines its scope (public, private, protected), name and the data type. There don't have to be all the attributes, but only the important ones.
+    \item The last, third part, contains the list of methods. Every method defines its scope, name, list of parameters and the return value. Again, there can be only methods which are important to depict a concrete problem.
+\end{itemize}
+
+At the beginning I would like to point out that this work is not a recherche one. I didn't try to compare several possible solutions of the problem but I tried to explain a solution, which I chose. Despite the fact that I have been inspiring by several existing systems, these systems are not described in a detail. This means that this thesis is wrote in an implementation style and thus it should be easy to implement such a system according to it.
+
+The structure of this thesis is divided into two main parts. The first part is called Analysis. This part contains the information about the functionality of the program from the view of the user, a little info of existing solutions that inspired me, used frameworks and some of used design patterns.
+
+The second part is called Application and consists of implementation documentation. In this part there is a description of how the system works inside and about some interesting subsystems.
+
+\section{Analysis}
+
+\subsection{Environment}
+
+\subsection{Desired Functionality}
+
+\subsection{Used Frameworks}
+
+\subsubsection{Netbeans API}
+
+\subsubsection{JGraph}
+
+\subsection{Used Design Patterns}
 
 \section{Application}
 
@@ -81,7 +111,7 @@ Relation between (two) classes is represented by instance of IRelation interface
 
 Cardinalities are represented by instance of ICardinality interface. The ICardinality interface has two methods (getFrom() and getTo()) which return from and to value (both are of integer type). Sign of infinity (e.g. in the 1..* or * cardinality) is treated as -1. In the Table \ref{tab:cardinalityExamples} you can see examples of return values of some cardinalities.
 
-\begin{table}[h]
+\begin{table}[!ht]
 \begin{center}
 \begin{tabular}{|l|c|c|}
 	\hline
@@ -156,7 +186,7 @@ Main class (part of the cz.cvut.indepmod.classmodel.workspace package), which co
 \begin{itemize}
     \item ClassModelGraph - this class is extended from JGraph and represents the class model graph to the user. Instance of this class is situated inside the ClassModelWorkspace component (JGraph is also derived from JComponent)
     \item ClassModelModel - Implementation of IClassModelModel which returns the list of classes that are in the class model and the type of the diagram (class or business model).
-    \item ClassModelMarqueeHandler - this class is responsible for handling of user inputs that are made inside the ClassModelGraph.
+    \item ClassModelMarqueeHandler - this class is responsible for user input handling which is made inside the ClassModelGraph.
 \end{itemize}
 
 ClassModelWorkspace is simply JComponent (TopComponent) which has the JGraph inside. JGraph presents the class model to the user. There are cells (representing classes) which are related together by edges (representing relations).
@@ -203,23 +233,6 @@ ClassModelGraph is extended from JGraph, which provides a lot of useful function
 
 To handle events in the graph (ClassModelGraph) there is the ClassModelMarqueeHandler. Instance of this class is created in the ClassModelWorkspace and is added into the ClassModelGraph instance. Purpose of this class is to handle all user inputs in the ClassModelGraph (in the canvas of the graph) and control the popup menu (JPopupMenu and its content). When user does an action (e.g. click with mouse), the ClassModelMarqueeHandler will find out if it is a control click (e.g. cell selection), new cell addition, edge (line between cells) addition and so on. This class is also responsible for rendering of the temporary line when user creates new edge.
 
-\subsubsection{ClassModel API implementation}
-\label{subsection:apiImplementation}
-
-Implementation classes of ClassModel API (its interfaces are in the API Module) are situated in the cz.cvut.indepmod.classmodel.cell.model.classmodel package. Main problem I had to deal with was to design where to store the data of the ClassModel.
-
-Basically, ClassModel class is used as a User Object for JGraph cells. User Object (Class Model instance) does not have normally the pointer to its cell (only cell has the pointer to it's User Object). ClassModel holds information like name of the class and list of its attributes, methods and annotations. But where to store the information about relations with other cells (classes)? This information is stored in the JGraph (in its model). So the first idea was to copy this information into the ClassModel instance when an relation is created. But this is not very nice because of data duplication. The second purpose was to add an pointer to cell into the ClassModel instance. But how? The answer is quite simple. I created the ClassModelClassCell which extends DefaultGraphCell of JGraph. The extension of this class is that it adds an pointer to itself into the User Object if this User Object is instance of ClassModel.
-
-So problem is solved. Some information like the name are stored inside the User object and some like the relations are gained from the JGraph cell. In the Figure \ref{f-ClassCreationSequenceDiagram} you can see how is created a class when user selects new class tool in the ToolChooser and clicks somewhere in the ClassModelGraph (JGraph) workspace.
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics[width=\textwidth]{img/ClassCreationSequenceDiagram.png}
-\caption{Sequence Diagram of class creation}
-\label{f-ClassCreationSequenceDiagram}
-\end{center}
-\end{figure}
-
 \subsubsection{JGraph class cell rendering}
 
 In this section I will explain how I render the class (the rectangle with the class name and lists of annotations, attributes and methods) into the JGraph workspace. But first a little theory remind. JGraph uses MVC pattern for cell rendering. Cells (the model of cell) in JGraph are represented by DefaultGraphCell (or its subclasses). DefaultGraphCell implementation stores the user object and an attribute map. This map is used when you want to set the appearance of that cell. All graph cell has an associated view (VertexView implementation). This VertexView implementation associates the renderer, editor and cell handle\footnote{Cell handle is what appears when the cell is selected (e.g mouse click) and what allows to resize it.} together for a cell (DefaultGraphCell implementation). The cell and the view is associated together by CellViewFactory which returns a cell view for a particular cell. More on this theme can be found in \cite{jgraphmanual}.
@@ -235,6 +248,23 @@ These classes can be found in the package cz.cvut.indepmod.classmodel.workspace.
 \includegraphics[width=\textwidth]{img/ClassModelVertexStructure.png}
 \caption{Structure of classes which render the class cell}
 \label{f-ClassModelVertexStructure}
+\end{center}
+\end{figure}
+
+\subsubsection{ClassModel API implementation}
+\label{subsection:apiImplementation}
+
+Implementation classes of ClassModel API (its interfaces are in the API Module) are situated in the cz.cvut.indepmod.classmodel.cell.model.classmodel package. Main problem I had to deal with was to design where to store the data of the ClassModel.
+
+Basically, ClassModel class is used as a User Object for JGraph cells. User Object (Class Model instance) does not have normally the pointer to its cell (only cell has the pointer to it's User Object). ClassModel holds information like name of the class and list of its attributes, methods and annotations. But where to store the information about relations with other cells (classes)? This information is stored in the JGraph (in its model). So the first idea was to copy this information into the ClassModel instance when an relation is created. But this is not very nice because of data duplication. The second purpose was to add an pointer to cell into the ClassModel instance. But how? The answer is quite simple. I created the ClassModelClassCell which extends DefaultGraphCell of JGraph. The extension of this class is that it adds an pointer to itself into the User Object if this User Object is instance of ClassModel.
+
+So problem is solved. Some information like the name are stored inside the User object and some like the relations are gained from the JGraph cell. In the Figure \ref{f-ClassCreationSequenceDiagram} you can see how is created a class when user selects new class tool in the ToolChooser and clicks somewhere in the ClassModelGraph (JGraph) workspace.
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[width=\textwidth]{img/ClassCreationSequenceDiagram.png}
+\caption{Sequence Diagram of class creation}
+\label{f-ClassCreationSequenceDiagram}
 \end{center}
 \end{figure}
 

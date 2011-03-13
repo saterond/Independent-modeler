@@ -62,7 +62,7 @@ public class MethodCreatorDialog extends MethodCreatorDialogView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Frame window = WindowManager.getDefault().getMainWindow();
-                AttributeModel attr = new AttributeCreatorDialog(
+                AttributeModel attr = new AbstractAttrCreatorDialog(
                         window,
                         availableTypes).getAttribute();
 

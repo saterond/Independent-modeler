@@ -56,16 +56,24 @@ public class AttributeModel extends AbstractModel implements IAttribute {
         res.append(this.name);
         res.append(" : ");
         res.append(this.type.getTypeName());
+
+        if (!this.anotations.isEmpty()) {
+            res.append(" [");
+            for (AnotationModel anot : this.anotations) {
+                res.append(anot.toString());
+            }
+            res.append("]");
+        }
         return res.toString();
     }
 
     @Override
-    public Collection<IAnotation> getAnotations() {
-        return new ArrayList<IAnotation>(this.anotations);
+    public Collection<AnotationModel> getAnotations() {
+        return new ArrayList<AnotationModel>(this.anotations);
     }
 
     public void addAnotation(AnotationModel anot) {
-        if (anot != null && ! this.anotations.contains(anot)) {
+        if (anot != null && !this.anotations.contains(anot)) {
             this.anotations.add(anot);
         }
     }

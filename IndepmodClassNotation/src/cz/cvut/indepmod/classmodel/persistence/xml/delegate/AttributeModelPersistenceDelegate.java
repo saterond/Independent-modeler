@@ -1,9 +1,11 @@
 package cz.cvut.indepmod.classmodel.persistence.xml.delegate;
 
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Expression;
+import java.beans.Statement;
 
 /**
  * Date: 31.10.2010
@@ -13,6 +15,17 @@ import java.beans.Expression;
  * This class is XML Persistence delegate for AttributeModel objects
  */
 public class AttributeModelPersistenceDelegate extends DefaultPersistenceDelegate {
+
+    @Override
+    protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder out) {
+        AttributeModel attr = (AttributeModel)oldInstance;
+
+        for (AnotationModel a : attr.getAnotations()) {
+            out.writeStatement(new Statement(oldInstance, "addAnotation", new Object[] {a}));
+        }
+    }
+
+
 
     @Override
     protected Expression instantiate(Object oldInstance, Encoder out) {

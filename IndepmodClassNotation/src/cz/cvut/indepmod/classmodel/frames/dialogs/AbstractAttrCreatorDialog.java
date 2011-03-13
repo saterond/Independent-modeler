@@ -15,15 +15,15 @@ import org.openide.windows.WindowManager;
  * Time: 14:32:19
  * @author Lucky
  */
-public class AttributeCreatorDialog extends AttributeCreatorDialogView {
+public class AbstractAttrCreatorDialog extends AbstractAttrCreatorDialogView {
     private Collection<TypeModel> availableTypes;
     private AttributeModel returnValue;
 
-    public AttributeCreatorDialog(Frame owner) {
+    public AbstractAttrCreatorDialog(Frame owner) {
         this(owner, new ArrayList<TypeModel>(0));
     }
 
-    public AttributeCreatorDialog(Frame owner, Collection<TypeModel> types) {
+    public AbstractAttrCreatorDialog(Frame owner, Collection<TypeModel> types) {
         super(owner);
 
         this.availableTypes = types;

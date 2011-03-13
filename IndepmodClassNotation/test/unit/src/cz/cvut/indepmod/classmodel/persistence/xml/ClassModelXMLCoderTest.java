@@ -96,6 +96,8 @@ public class ClassModelXMLCoderTest {
 
         AttributeModel atr = new AttributeModel(mod1, Common.ATTRIBUTE_NAME);
         mod1.addAttribute(atr);
+        AnotationModel anot2 = new AnotationModel(Common.ANOT3);
+        atr.addAnotation(anot);
 
         Set<AttributeModel> atrList = new HashSet<AttributeModel>();
         atrList.add(new AttributeModel(mod2, Common.ATTRIBUTE_NAME2));
@@ -143,6 +145,7 @@ public class ClassModelXMLCoderTest {
         assertEquals(1, model.getAttributeModels().size());
         assertEquals(Common.ATTRIBUTE_NAME, model.getAttributeModels().iterator().next().getName());
         assertEquals(model, model.getAttributeModels().iterator().next().getType());
+        assertEquals(1, model.getAttributeModels().iterator().next().getAnotations().size());
 
         assertEquals(1, model.getMethodModels().size());
         assertEquals(Common.METHOD_NAME, model.getMethodModels().iterator().next().getName());

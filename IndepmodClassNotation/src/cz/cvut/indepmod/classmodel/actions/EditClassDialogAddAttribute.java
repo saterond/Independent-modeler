@@ -1,7 +1,8 @@
 package cz.cvut.indepmod.classmodel.actions;
 
+import cz.cvut.indepmod.classmodel.api.model.DiagramType;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
-import cz.cvut.indepmod.classmodel.frames.dialogs.AttributeCreatorDialog;
+import cz.cvut.indepmod.classmodel.frames.dialogs.factory.AbstractDialogFactory;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
@@ -23,18 +24,23 @@ public class EditClassDialogAddAttribute extends ClassModelAbstractAction {
     public static final String ACTION_NAME = Resources.getString("action_edit_class_dialog_add_attr");
     private ClassModel model;
     private AbstractEditClassDialog dialog;
+    private DiagramType diagramType;
 
-    public EditClassDialogAddAttribute(ClassModel model, AbstractEditClassDialog dialog) {
+    public EditClassDialogAddAttribute(
+            ClassModel model,
+            AbstractEditClassDialog dialog,
+            DiagramType diagramType) {
         super(ACTION_NAME, null);
         this.model = model;
         this.dialog = dialog;
+        this.diagramType = diagramType;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Frame window = WindowManager.getDefault().getMainWindow();
-        AttributeModel attr = new AttributeCreatorDialog(
-                window,
+        AbstractDialogFactory factory = AbstractDialogFactory.getFactory(this.diagramType);
+        AttributeModel attr = factory.createAttributeCreatorDialog(
                 this.dialog.getAllTypeModel()).getAttribute();
 
         if (attr != null) {

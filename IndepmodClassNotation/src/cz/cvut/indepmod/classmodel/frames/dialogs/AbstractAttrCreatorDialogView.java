@@ -10,15 +10,17 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 
 /**
  * Date: 12.2.2011
  * Time: 16:18:40
  * @author Lucky
  */
-public class AttributeCreatorDialogView extends AbstractClassModelDialog {
+public class AbstractAttrCreatorDialogView extends AbstractClassModelDialog {
 
     public static final String TITLE = Resources.getString("dialog_attribute_creator_title");
 
@@ -41,54 +43,82 @@ public class AttributeCreatorDialogView extends AbstractClassModelDialog {
     protected JList anotationList = new JList(anotationListModel);
 
 
-    public AttributeCreatorDialogView(Frame owner) {
+    public AbstractAttrCreatorDialogView(Frame owner) {
         super(owner, TITLE);
 
         this.initLayout();
+    }
+
+    protected JPanel initAttrNamePanel() {
+        JPanel res = new JPanel(new GridBagLayout());
+        GridBagConstraints c = null;
+
+        c = GridBagConstraintsUtils.createNewConstraints(0, 0, 1, 1);
+        c.anchor = GridBagConstraints.LINE_START;
+        res.add(this.attributeNameLabel, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(1, 0, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        res.add(this.attributeName, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(0, 1, 1, 1);
+        c.anchor = GridBagConstraints.LINE_START;
+        res.add(this.attributeTypeLabel, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(1, 1, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        res.add(this.attributeType, c);
+
+        return res;
+    }
+
+    protected JPanel initAnotationPanel() {
+        JPanel res = new JPanel(new GridBagLayout());
+        res.setBorder(new TitledBorder(ANOTATION_LIST_LABEL));
+        GridBagConstraints c = null;
+
+        c = GridBagConstraintsUtils.createNewConstraints(0, 0, 1, 3);
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        res.add(new JScrollPane(this.anotationList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(1, 0, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        res.add(this.addAnotationButton, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(1, 1, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        res.add(this.removeAnotationButton, c);
+
+        return res;
     }
 
     private void initLayout() {
         this.setLayout(new GridBagLayout());
         GridBagConstraints c = null;
 
-        c = GridBagConstraintsUtils.createNewConstraints(0, 0, 1, 1);
-        c.anchor = GridBagConstraints.LINE_START;
-        this.add(attributeNameLabel, c);
+        JPanel attrNamePanel = this.initAttrNamePanel();
+        if (attrNamePanel != null) {
+            c = GridBagConstraintsUtils.createNewConstraints(0, 0, 2, 1);
+            c.fill = GridBagConstraints.HORIZONTAL;
+            c.weightx = 0.5;
+            this.add(attrNamePanel, c);
+        }
 
-        c = GridBagConstraintsUtils.createNewConstraints(1, 0, 2, 1);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.5;
-        this.add(this.attributeName, c);
-
-        c = GridBagConstraintsUtils.createNewConstraints(0, 1, 1, 1);
-        c.anchor = GridBagConstraints.LINE_START;
-        this.add(this.attributeTypeLabel, c);
-
-        c = GridBagConstraintsUtils.createNewConstraints(1, 1, 2, 1);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.5;
-        this.add(this.attributeType, c);
-
-        c = GridBagConstraintsUtils.createNewConstraints(0, 2, 1, 1);
-        c.anchor = GridBagConstraints.LINE_START;
-        this.add(this.anotationListLabel, c);
-
-        c = GridBagConstraintsUtils.createNewConstraints(1, 2, 1, 3);
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 0.5;
-        c.weighty = 0.5;
-        this.add(new JScrollPane(this.anotationList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), c);
-
-        c = GridBagConstraintsUtils.createNewConstraints(2, 2, 1, 1);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        this.add(this.addAnotationButton, c);
-
-        c = GridBagConstraintsUtils.createNewConstraints(2, 3, 1, 1);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        this.add(this.removeAnotationButton, c);
-
-        c = GridBagConstraintsUtils.createNewConstraints(2, 5, 1, 1);
-        c.anchor = GridBagConstraints.LINE_START;
+        JPanel anotPanel = this.initAnotationPanel();
+        if (anotPanel != null) {
+            c = GridBagConstraintsUtils.createNewConstraints(0, 1, 2, 1);
+            c.fill = GridBagConstraints.BOTH;
+            c.weightx = 0.5;
+            c.weighty = 0.5;
+            this.add(anotPanel, c);
+        }
+        
+        c = GridBagConstraintsUtils.createNewConstraints(1, 2, 1, 1);
+        c.anchor = GridBagConstraints.LINE_END;
         this.add(this.createButton, c);
     }
 

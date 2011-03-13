@@ -196,7 +196,7 @@ public class AbstractEditClassDialog extends AbstractEditClassDialogView impleme
         //this.editAttributeButton.addActionListener(new ClassModelEditClassDialogEditAttribute(this));
         this.removeAttributeButton.addActionListener(new EditClassDialogRemoveAttribute(this.classModel, this));
         this.addAnotationButton.addActionListener(new EditClassDialogAddAnotation(classModel, this));
-        this.addAttributeButton.addActionListener(new EditClassDialogAddAttribute(this.classModel, this));
+        this.addAttributeButton.addActionListener(new EditClassDialogAddAttribute(this.classModel, this, this.graph.getDiagramType()));
         this.addMethodButton.addActionListener(new EditClassDialogAddMethod(this.classModel, this));
         this.removeAnotationButton.addActionListener(new EditClassDialogRemoveAnotation(this.classModel, this));
         this.removeMethodButton.addActionListener(new EditClassDialogRemoveMethod(this.classModel, this));

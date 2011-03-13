@@ -37,6 +37,6 @@ public interface IAttribute {
      * Returns a collection of annotations that are related to this attribute
      * @return A collection of annotations
      */
-    public Collection<IAnotation> getAnotations();
+    public Collection<? extends IAnotation> getAnotations();
 
 }

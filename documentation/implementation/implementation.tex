@@ -55,7 +55,7 @@ The analysis is a very important part of whole project. It helps us to understan
 
 \subsection{Environment}
 
-Because this thesis is about the Netbeans plugin creation and Netbeans platform is based on the Java language, there wasn't any other option than use the Java language.
+Because this thesis is about the Netbeans plugin creation and Netbeans platform is based on the Java language, there wasn't any other option than use the Java language. But it is not bad at all. Java is widely used object oriented programming language and thanks to its portability, the resulting application can run on a lot of operating systems like Windows, Linux and so on.
 
 As a programming enviroment I use the Netbeans IDE. The Netbeans IDE is the best choice because it is created on the same platform as the plugin is. Netbeans IDE provides the full support (Wizards, etc.) for the Netbeans plugin (or module and whole applications based on this platform) creation. The Netbeans platform is described in section \ref{section:netbeansAPI}.
 
@@ -68,9 +68,23 @@ As a programming enviroment I use the Netbeans IDE. The Netbeans IDE is the best
 \subsubsection{Netbeans API}
 \label{section:netbeansAPI}
 
+All desktop applications have several common things. They use for example windows, menus (file, edit, etc.), docking panels, help system, online update system, etc. This functionality can be created over and over again for each new desktop application but it takes a lot of time and effort to create it.
+
+The Netbeans platform is an open source application framework based on well known Swing technology. It can be used to simplify the desktop application development by providing many techniques and design patterns. The Netbeans platform gives the developer a tool to create a robust desktop application much faster and better. Thus, he (or she) can focus on the application's business logic creation instead of dealing with the work that has been already done.
+
+The Netbeans platform can be used either to create the whole desktop application or to create a plugin for yet existing one. Both whole applications and plugins can be consisted of several (or of many) independent modules. The Netbeans platform provides a lot of functionality and if you want to know more about it, please take look at \cite{netbeans6.9DevGuide}.
+
 \subsubsection{JGraph}
 
-\subsection{Used Design Patterns}
+JGraph is an opensource graph visualisation library which is based on Java Swing technology. It gives the developer great means to create a generic diagram, which is consisted of nodes and edges. JGraph provides several prefabricated components for graph nodes shapes or for edges shapes that connect these nodes. Of course, there is the possibility to create your own shapes too.
+
+Except the diagram visualisation, JGraph provides some other functionality like zooming of the drawing area, undo/redo support, drag\&drop of nodes and edges and many other. More information about this framework can be found in \cite{jgraphmanual}.
+
+\subsection{Design Patterns}
+
+Indepmod Class Notation is created to fulfil the expectations of object oriented programming (OOP) like e.g. encapsulation, separation of interface and implementation and using of design patterns.
+
+TODO: special MVC modification (like in original Indepmod/Promod) for dialogs? AbstractFactory for Dialog Creation???
 
 \section{Application}
 

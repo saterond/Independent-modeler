@@ -8,23 +8,30 @@ import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.BeanTreeView;
 import org.openide.nodes.Node;
-import org.openide.windows.Mode;
+import org.openide.util.ImageUtilities;
+import org.openide.util.NbBundle;
 
 public final class Navigator extends TopComponent implements
         ExplorerManager.Provider {
 
     private static Navigator instance;
     private static final String PREFERRED_ID = "Navigator";
+    static final String ICON_PATH =
+            "cz/cvut/fel/indepmod/independentmodeler/navigator.png";
     private ExplorerManager mgr = new ExplorerManager();
 
     private Navigator() {
+        initTopComponent();
         initComponents();
         associateLookup(ExplorerUtils.createLookup(mgr, getActionMap()));
+        this.setDisplayName("Navigator");
+        setIcon(ImageUtilities.loadImage(ICON_PATH, true));
+        ((BeanTreeView) jScrollPane1).setRootVisible(false);
 
-        Mode mode = WindowManager.getDefault().findMode("navigator");
-        if (mode != null) {
-            mode.dockInto(this);
-        }
+//        Mode mode = WindowManager.getDefault().findMode("navigator");
+//        if (mode != null) {
+//            mode.dockInto(this);
+//        }
     }
 
     public static synchronized Navigator getDefault() {
@@ -53,6 +60,15 @@ public final class Navigator extends TopComponent implements
                 "There seem to be multiple components with the '" + PREFERRED_ID
                 + "' ID. That is a potential source of errors and unexpected behavior.");
         return getDefault();
+    }
+
+    private void initTopComponent() {
+        setName(NbBundle.getMessage(ProjectTopComponent.class,
+                "CTL_NavigatorTopComponent"));
+        setToolTipText(NbBundle.getMessage(ProjectTopComponent.class,
+                "HINT_NavigatorTopComponent"));
+        putClientProperty(TopComponent.PROP_KEEP_PREFERRED_SIZE_WHEN_SLIDED_IN,
+                Boolean.TRUE);
     }
 
     @Override
@@ -87,6 +103,7 @@ public final class Navigator extends TopComponent implements
 
     public void setRoot(Node node) {
         this.mgr.setRootContext(node);
+        ((BeanTreeView) jScrollPane1).setRootVisible(true);
     }
 
     public void setSelectedNodes(Node[] nodes) throws PropertyVetoException {

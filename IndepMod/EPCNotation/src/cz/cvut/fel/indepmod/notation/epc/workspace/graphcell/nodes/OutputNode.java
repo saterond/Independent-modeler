@@ -12,7 +12,7 @@ import org.openide.nodes.Children;
  */
 public class OutputNode extends CellNode {
 
-    private OutputCell cell;
+    private transient OutputCell cell;
 
     public OutputNode(OutputCell _cell) {
         super(Children.LEAF);

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.cvut.fel.indepmod.independentmodeler;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.Editor;
@@ -16,7 +12,8 @@ public final class EditorOpenAction implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Editor editor = new Editor("Test Editor", 
                                     new CategoryChildrenFactory(),
-                                    new IndependentModelerTransferHandler());
+                                    new IndependentModelerTransferHandler(),
+                                    null);
         editor.open();
         editor.requestActive();
     }

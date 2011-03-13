@@ -1,21 +1,28 @@
 package cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells;
 
+import cz.cvut.fel.indepmod.independentmodeler.workspace.GraphObject;
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import javax.swing.Action;
+import javax.swing.JPopupMenu;
 import org.jgraph.JGraph;
+import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.VertexView;
-import org.openide.nodes.Node;
 
 /**
  *
  * @author Petr Vales
  */
-abstract public class Cell extends DefaultGraphCell implements MouseListener {
+abstract public class Cell extends DefaultGraphCell implements GraphObject,
+        Externalizable {
 
     private JGraph graph;
 
@@ -24,40 +31,24 @@ abstract public class Cell extends DefaultGraphCell implements MouseListener {
     }
 
     public Cell() {
+        super();
     }
 
     abstract public VertexView getVertexView();
 
     abstract public boolean canConnectTo(Cell cell);
 
-    abstract public Node getNode();
-
     @Override
-    public void mouseClicked(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
-
     public void setGraph(JGraph _graph) {
         this.graph = _graph;
     }
 
     public JGraph getGraph() {
         return this.graph;
+    }
+
+    public void setPort(DefaultPort port) {
+        this.add(port);
     }
 
     public void startEditing() {
@@ -160,5 +151,38 @@ abstract public class Cell extends DefaultGraphCell implements MouseListener {
         this.startEditing();
         GraphConstants.setBorderColor(this.getAttributes(), _color);
         this.stopEditing();
+    }
+
+    @Override
+    public JPopupMenu getPopupMenu() {
+        JPopupMenu menu = new JPopupMenu();
+        if (this.getNavigatorNode() != null) {
+            Action[] actions = this.getNavigatorNode().getActions(true);
+            if (actions != null) {
+                for (Action action : actions) {
+                    menu.add(action);
+                }
+            }
+        }
+        if (this.getProjectNode() != null) {
+            Action[] actions = this.getProjectNode().getActions(true);
+            if (actions != null) {
+                for (Action action : actions) {
+                    menu.add(action);
+                }
+            }
+        }
+        return menu;
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeObject(this.getAttributes());
+    }
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException,
+            ClassNotFoundException {
+        this.setAttributes((AttributeMap) in.readObject());
     }
 }

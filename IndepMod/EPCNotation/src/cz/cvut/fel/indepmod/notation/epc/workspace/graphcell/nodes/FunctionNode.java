@@ -12,7 +12,7 @@ import org.openide.nodes.Children;
  */
 public class FunctionNode extends CellNode {
 
-    private FunctionCell cell;
+    private transient FunctionCell cell;
 
     public FunctionNode(FunctionCell _cell) {
         super(Children.LEAF);

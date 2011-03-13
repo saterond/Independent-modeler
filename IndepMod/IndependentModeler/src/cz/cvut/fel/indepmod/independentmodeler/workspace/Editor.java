@@ -4,6 +4,7 @@ import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteListener
 import cz.cvut.fel.indepmod.independentmodeler.workspace.actions.IndependentModelerPaletteActions;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.CategoryChildrenFactory;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.transferhandler.IndependentModelerTransferHandler;
+import cz.cvut.fel.indepmod.notationidentifikatorapi.GraphNode;
 import java.awt.BorderLayout;
 import javax.swing.JScrollPane;
 import org.jgraph.graph.DefaultCellViewFactory;
@@ -21,33 +22,68 @@ import org.openide.windows.TopComponent;
  *
  * @author Petr Vales
  */
-public class Editor extends TopComponent{
+public class Editor extends TopComponent {
 
     private PaletteController palette;
     private JScrollPane scenePane = new JScrollPane();
     private Graph graph;
     private IndependentModelerTransferHandler transferHandler;
     private PaletteListener paletteListener;
+    
+//    InstanceContent ic;
+//    SaveCookieImpl impl;
 
     public Editor(String title,
             CategoryChildrenFactory childrenfactory,
-            IndependentModelerTransferHandler transferHandler) {
+            IndependentModelerTransferHandler transferHandler,
+            GraphNode node) {
         super();
         this.transferHandler = transferHandler;
         this.setDisplayName(title);
         this.initPalette(childrenfactory);
-        this.initComponents();
+        this.initComponents(node);
+
+//        impl = new SaveCookieImpl();
+//        ic = new InstanceContent();
+////        ic.add(ExplorerUtils.createLookup(mgr, getActionMap()));
+//        ic.add(impl);
+//        associateLookup(new AbstractLookup(ic));
     }
 
-    private void initComponents() {
+    public Editor(String title, CategoryChildrenFactory factory,
+            IndependentModelerTransferHandler handler, GraphNode node,
+            Graph graph) {
+        super();
+        this.transferHandler = handler;
+        this.setDisplayName(title);
+        this.initPalette(factory);
+        this.initComponents(node, graph);
+    }
+
+    private void initComponents(GraphNode node, Graph graph) {
         this.setLayout(new BorderLayout());
-        this.initJGraph();
+        this.graph = graph;
+        this.add(this.graph);
+        this.add(this.scenePane, BorderLayout.CENTER);
+        this.scenePane.setViewportView(this.graph);
+        initTransferHandler();
+        this.graph.setMarqueeHandler(
+                new MarqueeHandler(graph,
+                this.paletteListener,
+                null));
+        this.graph.setProjectNode(node);
+
+    }
+
+    private void initComponents(GraphNode node) {
+        this.setLayout(new BorderLayout());
+        this.initJGraph(node);
         this.add(this.graph);
         this.add(this.scenePane, BorderLayout.CENTER);
         this.scenePane.setViewportView(this.graph);
     }
 
-    private void initJGraph() {
+    private void initJGraph(GraphNode node) {
         GraphModel model = new DefaultGraphModel();
         GraphLayoutCache view = new GraphLayoutCache(model,
                 new DefaultCellViewFactory());
@@ -57,6 +93,7 @@ public class Editor extends TopComponent{
                 new MarqueeHandler(graph,
                 this.paletteListener,
                 null));
+        this.graph.setProjectNode(node);
     }
 
     private void initTransferHandler() {
@@ -77,9 +114,43 @@ public class Editor extends TopComponent{
 
     @Override
     protected void componentActivated() {
-        Navigator.findInstance().setRoot(this.graph.getGraphNode());
+        Navigator.findInstance().setRoot(this.graph.getNavigatorNode());
     }
 
+    public Graph getGraph() {
+        return graph;
+    }
 
+    public void setGraph(Graph graph) {
+        this.graph = graph;
+    }
 
+//    public class SaveCookieImpl implements SaveCookie {
+//
+//        @Override
+//        public void save() throws IOException {
+//
+//            Confirmation msg = new NotifyDescriptor.Confirmation(
+//                    "Do you want to save?",
+//                    NotifyDescriptor.OK_CANCEL_OPTION,
+//                    NotifyDescriptor.QUESTION_MESSAGE);
+//
+//            Object result = DialogDisplayer.getDefault().notify(msg);
+//
+//
+//            if (NotifyDescriptor.YES_OPTION.equals(result)) {
+//                FileOutputStream fos = null;
+//                ObjectOutputStream oos = null;
+//                try {
+//                    fos = new FileOutputStream("lastProject.imp");
+//                    oos = new ObjectOutputStream(fos);
+//                    oos.writeObject(getGraph());
+//                    oos.close();
+//                } catch (IOException ex) {
+//                    ex.printStackTrace();
+//                }
+//            }
+//
+//        }
+//    }
 }

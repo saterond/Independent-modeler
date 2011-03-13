@@ -4,6 +4,7 @@ import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
 import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.nodes.SupportingSystemNode;
 import org.jgraph.graph.VertexView;
+import org.openide.nodes.Node;
 
 /**
  *
@@ -14,7 +15,8 @@ public class SupportingSystemCell extends EPCCell {
     private SupportingSystemNode node;
 
     public SupportingSystemCell() {
-        this(null);
+        super();
+        this.node = new SupportingSystemNode(this);
     }
 
     public SupportingSystemCell(Object o) {
@@ -68,7 +70,12 @@ public class SupportingSystemCell extends EPCCell {
     }
 
     @Override
-    public CellNode getNode() {
+    public CellNode getNavigatorNode() {
         return this.node;
+    }
+
+    @Override
+    public Node getProjectNode() {
+        return null;
     }
 }

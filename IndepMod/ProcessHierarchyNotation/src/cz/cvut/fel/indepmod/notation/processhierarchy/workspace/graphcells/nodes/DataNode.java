@@ -12,7 +12,7 @@ import org.openide.nodes.Children;
  */
 public class DataNode extends CellNode {
 
-    private DataCell cell;
+    private transient DataCell cell;
 
     public DataNode(DataCell _cell) {
         super(Children.LEAF);
@@ -33,5 +33,9 @@ public class DataNode extends CellNode {
     @Override
     public Cell getCell() {
         return this.cell;
+    }
+
+    public void setCell(DataCell cell) {
+        this.cell = cell;
     }
 }

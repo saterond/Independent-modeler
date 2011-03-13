@@ -12,7 +12,7 @@ import org.openide.nodes.Children;
  */
 public class EventNode extends CellNode {
 
-    private EventCell cell;
+    private transient EventCell cell;
 
     public EventNode(EventCell _cell) {
         super(Children.LEAF);

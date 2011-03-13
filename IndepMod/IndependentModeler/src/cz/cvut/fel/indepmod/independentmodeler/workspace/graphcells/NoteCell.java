@@ -2,8 +2,8 @@ package cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.NoteNode;
-import java.awt.event.MouseEvent;
 import org.jgraph.graph.VertexView;
+import org.openide.nodes.Node;
 
 /**
  *
@@ -33,12 +33,12 @@ public class NoteCell extends Cell {
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        System.out.println("mouse clicked");
+    public CellNode getNavigatorNode() {
+        return this.node;
     }
 
     @Override
-    public CellNode getNode() {
-        return this.node;
+    public Node getProjectNode() {
+        return null;
     }
 }

@@ -2,10 +2,18 @@
 <!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
 <filesystem>
     <folder name="Actions">
-        <folder name="Edit">
-            <file name="cz-cvut-fel-indepmod-independentmodeler-EditorOpenAction.instance">
-                <attr name="delegate" newvalue="cz.cvut.fel.indepmod.independentmodeler.EditorOpenAction"/>
-                <attr name="displayName" bundlevalue="cz.cvut.fel.indepmod.independentmodeler.Bundle#CTL_Editor"/>
+        <folder name="File">
+            <file name="cz-cvut-fel-indepmod-independentmodeler-NewProjectAction.instance">
+                <attr name="delegate" newvalue="cz.cvut.fel.indepmod.independentmodeler.NewProjectAction"/>
+                <attr name="displayName" bundlevalue="cz.cvut.fel.indepmod.independentmodeler.Bundle#CTL_NewProjectAction"/>
+                <attr name="iconBase" stringvalue="cz/cvut/fel/indepmod/independentmodeler/newProject.png"/>
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="noIconInMenu" boolvalue="false"/>
+            </file>
+            <file name="cz-cvut-fel-indepmod-independentmodeler-OpenProjectAction.instance">
+                <attr name="delegate" newvalue="cz.cvut.fel.indepmod.independentmodeler.OpenProjectAction"/>
+                <attr name="displayName" bundlevalue="cz.cvut.fel.indepmod.independentmodeler.Bundle#CTL_OpenProjectAction"/>
+                <attr name="iconBase" stringvalue="cz/cvut/fel/indepmod/independentmodeler/openProject.png"/>
                 <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
                 <attr name="noIconInMenu" boolvalue="false"/>
             </file>
@@ -14,12 +22,16 @@
             <file name="cz-cvut-fel-indepmod-independentmodeler-workspace-NavigatorAction.instance">
                 <attr name="component" methodvalue="cz.cvut.fel.indepmod.independentmodeler.workspace.Navigator.findInstance"/>
                 <attr name="displayName" bundlevalue="cz.cvut.fel.indepmod.independentmodeler.workspace.Bundle#CTL_NavigatorAction"/>
+                <attr name="iconBase" stringvalue="cz/cvut/fel/indepmod/independentmodeler/navigator.png"/>
                 <attr name="instanceCreate" methodvalue="org.openide.windows.TopComponent.openAction"/>
+                <attr name="noIconInMenu" boolvalue="false"/>
             </file>
             <file name="cz-cvut-fel-indepmod-independentmodeler-workspace-ProjectAction.instance">
                 <attr name="component" methodvalue="cz.cvut.fel.indepmod.independentmodeler.workspace.ProjectTopComponent.findInstance"/>
                 <attr name="displayName" bundlevalue="cz.cvut.fel.indepmod.independentmodeler.workspace.Bundle#CTL_ProjectAction"/>
+                <attr name="iconBase" stringvalue="cz/cvut/fel/indepmod/independentmodeler/opened_projects_scope.png"/>
                 <attr name="instanceCreate" methodvalue="org.openide.windows.TopComponent.openAction"/>
+                <attr name="noIconInMenu" boolvalue="false"/>
             </file>
         </folder>
     </folder>
@@ -28,6 +40,14 @@
             <file name="cz-cvut-fel-indepmod-independentmodeler-Editor.shadow">
                 <attr name="originalFile" stringvalue="Actions/Edit/cz-cvut-fel-indepmod-independentmodeler-EditorOpenAction.instance"/>
                 <attr name="position" intvalue="1300"/>
+            </file>
+            <file name="cz-cvut-fel-indepmod-independentmodeler-NewProjectAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/File/cz-cvut-fel-indepmod-independentmodeler-NewProjectAction.instance"/>
+                <attr name="position" intvalue="300"/>
+            </file>
+            <file name="cz-cvut-fel-indepmod-independentmodeler-OpenProjectAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/File/cz-cvut-fel-indepmod-independentmodeler-OpenProjectAction.instance"/>
+                <attr name="position" intvalue="450"/>
             </file>
         </folder>
         <folder name="Window">
@@ -40,17 +60,26 @@
         </folder>
     </folder>
     <folder name="Windows2">
-        <folder name="Components">
-            <file name="NavigatorTopComponent.settings" url="NavigatorTopComponentSettings.xml"/>
-            <file name="ProjectTopComponent.settings" url="ProjectTopComponentSettings.xml"/>
-        </folder>
         <folder name="Modes">
             <folder name="explorer">
                 <file name="ProjectTopComponent.wstcref" url="ProjectTopComponentWstcref.xml"/>
             </folder>
-            <folder name="output">
-                <file name="NavigatorTopComponent.wstcref" url="NavigatorTopComponentWstcref.xml"/>
-            </folder>
+        </folder>
+    </folder>
+    <folder name="Toolbars">
+        <folder name="File">
+            <file name="cz-cvut-fel-indepmod-independentmodeler-NewProjectAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/File/cz-cvut-fel-indepmod-independentmodeler-NewProjectAction.instance"/>
+                <attr name="position" intvalue="0"/>
+            </file>
+            <file name="cz-cvut-fel-indepmod-independentmodeler-OpenProjectAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/File/cz-cvut-fel-indepmod-independentmodeler-OpenProjectAction.instance"/>
+                <attr name="position" intvalue="50"/>
+            </file>
+            <file name="org-openide-actions-SaveAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/System/org-openide-actions-SaveAction.instance"/>
+                <attr name="position" intvalue="444"/>
+            </file>
         </folder>
     </folder>
 </filesystem>

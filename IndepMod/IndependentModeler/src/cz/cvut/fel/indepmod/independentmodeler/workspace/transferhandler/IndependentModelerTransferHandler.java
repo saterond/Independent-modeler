@@ -1,12 +1,16 @@
 package cz.cvut.fel.indepmod.independentmodeler.workspace.transferhandler;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.Graph;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteListener;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteCellNode;
+import java.awt.Point;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import javax.swing.TransferHandler;
 import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.GraphConstants;
 import org.openide.util.Exceptions;
 
 /**
@@ -38,9 +42,14 @@ public class IndependentModelerTransferHandler extends TransferHandler {
     public boolean importData(final TransferSupport support) {
         this.resetPalletListener();
         try {
-            DefaultGraphCell[] cells = new DefaultGraphCell[1];
+            Point dropPoint = support.getDropLocation().getDropPoint();
+            Cell[] cells = new Cell[1];
             cells[0] = this.handleData(support);
-            this.getGraph().createCell(support.getDropLocation().getDropPoint(), cells);
+            GraphConstants.setBounds(cells[0].getAttributes(),
+                    new Rectangle2D.Double(dropPoint.getX(), dropPoint.getY(),
+                    200, 100));
+            GraphConstants.setOpaque(cells[0].getAttributes(), true);
+            this.getGraph().createCell(cells);
             return true;
         } catch (UnsupportedFlavorException ex) {
             Exceptions.printStackTrace(ex);
@@ -50,15 +59,17 @@ public class IndependentModelerTransferHandler extends TransferHandler {
         return false;
     }
 
-    protected DefaultGraphCell handleData(final TransferSupport support) throws UnsupportedFlavorException, IOException {
-        DefaultGraphCell[] cells = new DefaultGraphCell[1];
-        PaletteCellNode myNode = (PaletteCellNode) support.getTransferable().getTransferData(PaletteCellNode.DATA_FLAVOR);
+    protected Cell handleData(final TransferSupport support) throws
+            UnsupportedFlavorException, IOException {
+        Cell[] cells = new Cell[1];
+        PaletteCellNode myNode = (PaletteCellNode) support.getTransferable().
+                getTransferData(PaletteCellNode.DATA_FLAVOR);
         cells[0] = myNode.getCell();
         return cells[0];
     }
 
     private void resetPalletListener() {
-        if(this.getPaletteListener() != null) {
+        if (this.getPaletteListener() != null) {
             this.getPaletteListener().resetPaletteTool();
         }
     }

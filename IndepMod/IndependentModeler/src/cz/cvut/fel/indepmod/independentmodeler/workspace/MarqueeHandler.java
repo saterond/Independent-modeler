@@ -1,12 +1,16 @@
 package cz.cvut.fel.indepmod.independentmodeler.workspace;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.IndependentModelerEdge;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteListener;
 import java.awt.Color;
 import java.beans.PropertyVetoException;
 import org.jgraph.graph.BasicMarqueeHandler;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -14,21 +18,28 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.PortView;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
 
-public class MarqueeHandler extends BasicMarqueeHandler {
+public class MarqueeHandler extends BasicMarqueeHandler implements Serializable {
 
-    private static final Logger LOG = Logger.getLogger(MarqueeHandler.class.
+    private static final transient Logger LOG = Logger.getLogger(MarqueeHandler.class.
             getName());
-    private final Graph graph;
-    private final PaletteListener paletteListener;
+    private transient final Graph graph;
+    private final transient PaletteListener paletteListener;
 //    private final JPopupMenu popupMenu;
-    private PortView actualPort;
-    private Point2D actualPoint;
-    private PortView startingPort;
-    private Point2D startingPoint;
+    private transient PortView actualPort;
+    private transient Point2D actualPoint;
+    private transient PortView startingPort;
+    private transient Point2D startingPoint;
+
+    public MarqueeHandler() {
+        super();
+        this.graph = null;
+        this.paletteListener = null;
+    }
 
     public MarqueeHandler(final Graph _graph,
             final PaletteListener _paletteListener,
@@ -62,16 +73,32 @@ public class MarqueeHandler extends BasicMarqueeHandler {
 
     private void handleLeftButtonPressed(final MouseEvent e) {
         LOG.fine("handleLeftButtonPressed");
-        DefaultGraphCell[] cells = new DefaultGraphCell[1];
+        Cell[] cells = new Cell[1];
         cells[0] = this.getPaletteListener().getCell();
         if (cells[0] != null) {
-            this.getGraph().createCell(e.getPoint(), cells);
+            GraphConstants.setBounds(cells[0].getAttributes(),
+                    new Rectangle2D.Double(e.getX(), e.getY(), 200, 100));
+            GraphConstants.setOpaque(cells[0].getAttributes(), true);
+            this.getGraph().createCell(cells);
         }
         this.resetPaletteTool(e);
     }
 
     private void handleRightButtonPressed(final MouseEvent e) {
         LOG.fine("handleRightButtonPressed");
+        Object firstCellForLocation =
+                this.getGraph().getFirstCellForLocation(e.getX(), e.getY());
+        JPopupMenu popupMenu = null;
+        if (firstCellForLocation != null
+                && firstCellForLocation instanceof GraphObject) {
+            popupMenu =
+                    ((GraphObject) firstCellForLocation).getPopupMenu();
+
+        } else {
+        }
+        if (popupMenu != null) {
+            popupMenu.show(graph, e.getX(), e.getY());
+        }
         this.resetPaletteTool(e);
     }
 
@@ -109,6 +136,14 @@ public class MarqueeHandler extends BasicMarqueeHandler {
                     DefaultEdge edge = this.getPaletteListener().getEdge();
                     edge.setSource(this.getStartingPort().getCell());
                     edge.setTarget(this.getActualPort().getCell());
+                    if (edge instanceof IndependentModelerEdge) {
+                        ((IndependentModelerEdge) edge).setSourceNode(
+                                ((Cell) this.getStartingPort().getParentView().
+                                getCell()).getNavigatorNode());
+                        ((IndependentModelerEdge) edge).setTargetNode(
+                                ((Cell) this.getActualPort().getParentView().
+                                getCell()).getNavigatorNode());
+                    }
                     this.getGraph().addEdge(edge);
                 }
             }
@@ -118,30 +153,31 @@ public class MarqueeHandler extends BasicMarqueeHandler {
             this.setStartingPoint(null);
         } else {
             super.mouseReleased(mouseEvent);
-            try {
-
-                Object[] objects = this.getGraph().getSelectionCells();
-                List<Node> nodes =
-                        new ArrayList<Node>();
-                for (Object object : objects) {
-                    if (object instanceof Cell) {
-                        Cell cell =
-                                (Cell) object;
-                        nodes.add(cell.getNode());
+            Object[] objects = this.getGraph().getSelectionCells();
+            if (objects != null && objects.length != 0) {
+                try {
+                    List<Node> nodes = new ArrayList<Node>();
+                    for (Object object : objects) {
+                        if (object instanceof Cell) {
+                            Cell cell =
+                                    (Cell) object;
+                            nodes.add(cell.getNavigatorNode());
+                        }
                     }
+                    Navigator.findInstance().
+                            setSelectedNodes(nodes.toArray(new Node[0]));
+                } catch (PropertyVetoException ex) {
+                    Exceptions.printStackTrace(ex);
                 }
-                Navigator.findInstance().
-                        setSelectedNodes(nodes.toArray(new Node[0]));
-            } catch (PropertyVetoException ex) {
-                Exceptions.printStackTrace(ex);
             }
         }
         this.resetPaletteTool(mouseEvent);
     }
     //TODO calling selectNodeNavigator should be called elsewhere?
+
     @Override
     public boolean isForceMarqueeEvent(final MouseEvent mouseEvent) {
-        this.bobbleEventToCell(mouseEvent);
+//        this.bobbleEventToCell(mouseEvent);
         this.selectNodeInNavigator(mouseEvent);
         this.handleGraphPorts();
         if (SwingUtilities.isRightMouseButton(mouseEvent) && !mouseEvent.
@@ -158,7 +194,7 @@ public class MarqueeHandler extends BasicMarqueeHandler {
         Cell cell = (Cell) this.getGraph().getFirstCellForLocation(e.getX(), e.
                 getY());
         if (cell != null) {
-            cell.mouseClicked(e);
+//            cell.mouseClicked(e);
             return true;
         } else {
             return false;
@@ -172,13 +208,13 @@ public class MarqueeHandler extends BasicMarqueeHandler {
                 this.getGraph().getFirstCellForLocation(e.getX(), e.getY());
         try {
             if (clickedObject != null) {
-                if (clickedObject instanceof Cell) {
-                    Cell cell = ((Cell) clickedObject);
-                    Node[] node = {cell.getNode()};
+                if (clickedObject instanceof GraphObject) {
+                    GraphObject graphObject = ((GraphObject) clickedObject);
+                    Node[] node = {graphObject.getNavigatorNode()};
                     Navigator.findInstance().setSelectedNodes(node);
                 }
             } else {
-                Node[] node = {this.getGraph().getGraphNode()};
+                Node[] node = {this.getGraph().getNavigatorNode()};
                 Navigator.findInstance().setSelectedNodes(node);
             }
         } catch (PropertyVetoException ex) {

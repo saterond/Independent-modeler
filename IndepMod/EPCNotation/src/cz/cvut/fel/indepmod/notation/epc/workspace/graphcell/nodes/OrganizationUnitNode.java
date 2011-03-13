@@ -12,7 +12,7 @@ import org.openide.nodes.Children;
  */
 public class OrganizationUnitNode extends CellNode {
 
-    private OrganizationUnitCell cell;
+    private transient OrganizationUnitCell cell;
 
     public OrganizationUnitNode(OrganizationUnitCell _cell) {
         super(Children.LEAF);

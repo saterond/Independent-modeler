@@ -1,40 +1,64 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.cvut.fel.indepmod.independentmodeler.workspace;
 
+import cz.cvut.fel.indepmod.independentmodeler.workspace.projectnodes.ProjectNode;
+import java.beans.PropertyVetoException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.logging.Logger;
 import org.openide.util.NbBundle;
 import org.openide.windows.TopComponent;
 import org.openide.windows.WindowManager;
-//import org.openide.util.ImageUtilities;
 import org.netbeans.api.settings.ConvertAsProperties;
+import org.openide.cookies.SaveCookie;
+import org.openide.explorer.ExplorerManager;
+import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.BeanTreeView;
+import org.openide.nodes.Node;
+import org.openide.util.ImageUtilities;
+import org.openide.util.lookup.AbstractLookup;
+import org.openide.util.lookup.InstanceContent;
 
+//TODO clean autogenerate mess
 /**
  * Top component which displays something.
  */
 @ConvertAsProperties(dtd =
 "-//cz.cvut.fel.indepmod.independentmodeler.workspace//Project//EN",
 autostore = false)
-public final class ProjectTopComponent extends TopComponent {
+public final class ProjectTopComponent extends TopComponent implements
+        ExplorerManager.Provider {
 
     private static ProjectTopComponent instance;
-    /** path to the icon used by the component and its open action */
-//    static final String ICON_PATH = "SET/PATH/TO/ICON/HERE";
     private static final String PREFERRED_ID = "ProjectTopComponent";
+    static final String ICON_PATH =
+            "cz/cvut/fel/indepmod/independentmodeler/opened_projects_scope.png";
+    private ExplorerManager mgr = new ExplorerManager();
+    private ProjectNode rootNode;
+    InstanceContent ic;
+    SaveCookieImpl impl;
 
     public ProjectTopComponent() {
+        initTopComponent();
         initComponents();
+        setIcon(ImageUtilities.loadImage(ICON_PATH, true));
+        ((BeanTreeView) jScrollPane1).setRootVisible(false);
+        impl = new SaveCookieImpl();
+        ic = new InstanceContent();
+        ic.add(ExplorerUtils.createLookup(mgr, getActionMap()));
+        ic.add(impl);
+        associateLookup(new AbstractLookup(ic));
+    }
+
+    private void initTopComponent() {
         setName(NbBundle.getMessage(ProjectTopComponent.class,
                 "CTL_ProjectTopComponent"));
         setToolTipText(NbBundle.getMessage(ProjectTopComponent.class,
                 "HINT_ProjectTopComponent"));
-//        setIcon(ImageUtilities.loadImage(ICON_PATH, true));
         putClientProperty(TopComponent.PROP_KEEP_PREFERRED_SIZE_WHEN_SLIDED_IN,
                 Boolean.TRUE);
-
     }
 
     /** This method is called from within the constructor to
@@ -58,10 +82,10 @@ public final class ProjectTopComponent extends TopComponent {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
     /**
      * Gets default instance. Do not use directly: reserved for *.settings files only,
      * i.e. deserialization routines; otherwise you could get a non-deserialized instance.
@@ -133,5 +157,53 @@ public final class ProjectTopComponent extends TopComponent {
     @Override
     protected String preferredID() {
         return PREFERRED_ID;
+    }
+
+    @Override
+    public ExplorerManager getExplorerManager() {
+        return mgr;
+    }
+
+    protected void setRoot(Node node) {
+        this.mgr.setRootContext(node);
+    }
+
+    private ProjectNode getRoot() {
+        return this.rootNode;
+    }
+
+    public void setSelectedNodes(Node[] nodes) throws PropertyVetoException {
+        this.mgr.setSelectedNodes(nodes);
+        this.requestActive();
+    }
+
+    public Node[] getSelectedNodes() {
+        return this.mgr.getSelectedNodes();
+    }
+
+    public void setProject(ProjectNode _node) {
+        this.rootNode = _node;
+        this.setRoot(_node);
+        ((BeanTreeView) jScrollPane1).setRootVisible(true);
+    }
+
+    public void saveProject() throws FileNotFoundException, IOException {
+        File file = this.getRoot().getFile();
+        if (file != null) {
+            FileOutputStream fos = null;
+            ObjectOutputStream oos = null;
+            fos = new FileOutputStream(file);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(getRoot());
+            oos.close();
+        }
+    }
+
+    public class SaveCookieImpl implements SaveCookie {
+
+        @Override
+        public void save() throws IOException {
+            saveProject();
+        }
     }
 }

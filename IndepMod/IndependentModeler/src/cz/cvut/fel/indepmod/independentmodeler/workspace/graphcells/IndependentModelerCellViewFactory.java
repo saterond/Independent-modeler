@@ -1,5 +1,6 @@
 package cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells;
 
+import java.io.Serializable;
 import org.jgraph.graph.DefaultCellViewFactory;
 import org.jgraph.graph.VertexView;
 
@@ -7,7 +8,7 @@ import org.jgraph.graph.VertexView;
  *
  * @author Petr Vales
  */
-public class IndependentModelerCellViewFactory extends DefaultCellViewFactory {
+public class IndependentModelerCellViewFactory extends DefaultCellViewFactory implements Serializable {
 
     /**
      * @param object

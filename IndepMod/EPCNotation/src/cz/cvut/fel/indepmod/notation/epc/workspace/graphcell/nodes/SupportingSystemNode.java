@@ -12,7 +12,7 @@ import org.openide.nodes.Children;
  */
 public class SupportingSystemNode extends CellNode {
 
-    private SupportingSystemCell cell;
+    private transient SupportingSystemCell cell;
 
     public SupportingSystemNode(SupportingSystemCell cell) {
         super(Children.LEAF);

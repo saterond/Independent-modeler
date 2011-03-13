@@ -4,6 +4,7 @@ import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
 import cz.cvut.fel.indepmod.notation.epc.workspace.graphcell.nodes.OrganizationUnitNode;
 import org.jgraph.graph.VertexView;
+import org.openide.nodes.Node;
 
 /**
  *
@@ -14,7 +15,8 @@ public class OrganizationUnitCell extends EPCCell {
     private OrganizationUnitNode node;
 
     public OrganizationUnitCell() {
-        this(null);
+        super();
+        this.node = new OrganizationUnitNode(this);
     }
 
     public OrganizationUnitCell(Object o) {
@@ -31,7 +33,7 @@ public class OrganizationUnitCell extends EPCCell {
     public boolean canConnectTo(Cell cell) {
         boolean ret = false;
         if (cell instanceof EPCCell) {
-            ret = ((EPCCell)cell).canBeEndCellOnEdgeWith(this);
+            ret = ((EPCCell) cell).canBeEndCellOnEdgeWith(this);
         }
         return ret;
     }
@@ -67,7 +69,12 @@ public class OrganizationUnitCell extends EPCCell {
     }
 
     @Override
-    public CellNode getNode() {
+    public CellNode getNavigatorNode() {
         return this.node;
+    }
+
+    @Override
+    public Node getProjectNode() {
+        return null;
     }
 }

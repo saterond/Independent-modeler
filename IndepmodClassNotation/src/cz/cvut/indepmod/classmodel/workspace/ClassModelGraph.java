@@ -16,6 +16,7 @@ import org.jgraph.event.GraphSelectionListener;
 import org.jgraph.graph.DefaultGraphCell;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
@@ -25,18 +26,16 @@ import org.jgraph.graph.CellView;
 public class ClassModelGraph extends JGraph {
 
     private static final Logger LOG = Logger.getLogger(ClassModelGraph.class.getName());
-
     private Map<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction> actions;
     private ToolChooserModel selectedTool;
     private DiagramDataModel diagramData;
-
 
     public ClassModelGraph(
             Map<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction> actions,
             ToolChooserModel selectedTool,
             DiagramDataModel diagramData) {
         super(diagramData.getLayoutCache());
-        
+
         this.actions = actions;
         this.selectedTool = selectedTool;
         this.diagramData = diagramData;
@@ -61,7 +60,7 @@ public class ClassModelGraph extends JGraph {
         Collection<ClassModel> res = new LinkedList<ClassModel>();
         CellView[] cw = this.getGraphLayoutCache().getCellViews();
         for (int i = 0; i < cw.length; i++) {
-            DefaultGraphCell cell = (DefaultGraphCell)cw[i].getCell();
+            DefaultGraphCell cell = (DefaultGraphCell) cw[i].getCell();
             Object userObject = cell.getUserObject();
             if (userObject instanceof ClassModel) {
                 res.add((ClassModel) userObject);
@@ -84,29 +83,43 @@ public class ClassModelGraph extends JGraph {
     }
 
     public void selectCell(Object cell) {
-        for (Object selection : this.getSelectionCells()) {
-            this.removeSelectionCell(selection);
+        boolean isAlreadySelected = false;
+        Object[] selectionCells = this.getSelectionCells();
+        for (int i = 0; i < selectionCells.length; i++) {
+            Object c = selectionCells[i];
+            if (cell.equals(c)) {
+                isAlreadySelected = true;
+                System.arraycopy(selectionCells, i+1, selectionCells, i, selectionCells.length - i - 1);
+                selectionCells[selectionCells.length - 1] = cell;
+                this.setSelectionCells(selectionCells);
+                break;
+            }
         }
 
-        if (cell != null) {
-            this.setSelectionCell(cell);
+        if (!isAlreadySelected) {
+            for (Object selection : this.getSelectionCells()) {
+                this.removeSelectionCell(selection);
+            }
+            
+            if (cell != null) {
+                this.setSelectionCell(cell);
+            }
         }
     }
 
     private void initActions() {
         this.actions.put(
                 EditAction.class,
-                new EditAction(this)
-        );
+                new EditAction(this));
 
         this.actions.put(
                 DeleteAction.class,
                 new DeleteAction(this));
     }
 
-
     private void initEventHandling() {
         this.selectedTool.addListener(new ToolChooserModelListener() {
+
             @Override
             public void selectedToolChanged(ToolChooserModel.Tool newTool) {
                 boolean showPorts = false;
@@ -127,11 +140,11 @@ public class ClassModelGraph extends JGraph {
         });
 
         this.addGraphSelectionListener(new GraphSelectionListener() {
+
             @Override
             public void valueChanged(GraphSelectionEvent graphSelectionEvent) {
                 actions.get(EditAction.class).setEnabled(getSelectionCell() != null);
             }
         });
     }
-
 }

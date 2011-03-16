@@ -34,7 +34,8 @@ public class EditAction extends ClassModelAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        Object o = this.graph.getSelectionCell();
+        Object[] os = this.graph.getSelectionCells();
+        Object o = os[os.length - 1];
         if (o == null) {
             LOG.severe("Edit Action was performed even is no cell was selected!");
         } else if (o instanceof ClassModelClassCell) {

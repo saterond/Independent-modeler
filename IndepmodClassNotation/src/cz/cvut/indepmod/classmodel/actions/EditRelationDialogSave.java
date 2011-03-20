@@ -1,9 +1,10 @@
 package cz.cvut.indepmod.classmodel.actions;
 
+import cz.cvut.indepmod.classmodel.api.model.ICardinality;
+import cz.cvut.indepmod.classmodel.api.model.IRelation;
 import cz.cvut.indepmod.classmodel.frames.dialogs.EditRelationDialog;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import java.awt.event.ActionEvent;
 import java.util.Hashtable;
 import java.util.Map;
@@ -36,11 +37,15 @@ public class EditRelationDialogSave extends ClassModelAbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (this.dialog.isChanged()) {
-            Cardinality startCard = this.dialog.getStartingCardinality();
-            Cardinality endCard = this.dialog.getEndingCardinality();
+            ICardinality startCard = this.dialog.getStartingCardinality();
+            ICardinality endCard = this.dialog.getEndingCardinality();
+            String relationName = this.dialog.getRelationName();
+
+            IRelation userObj = (IRelation) this.edge.getUserObject();
+            userObj.setRelationName(relationName);
 
             Map attrMap = new Hashtable();
-            GraphConstants.setExtraLabels(attrMap, new Cardinality[]{startCard, endCard});
+            GraphConstants.setExtraLabels(attrMap, new ICardinality[]{startCard, endCard});
             this.graph.getGraphLayoutCache().editCell(edge, attrMap);
         }
         this.dialog.dispose();

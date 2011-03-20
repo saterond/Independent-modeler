@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
+import cz.cvut.indepmod.classmodel.api.model.IType;
 import java.awt.Frame;
 import java.util.Collection;
 
@@ -11,7 +11,7 @@ import java.util.Collection;
  */
 public class ClassModelAttrCreatorDialog extends AbstractAttrCreatorDialog {
 
-    public ClassModelAttrCreatorDialog(Frame owner, Collection<TypeModel> types) {
+    public ClassModelAttrCreatorDialog(Frame owner, Collection<IType> types) {
         super(owner, types);
     }
 

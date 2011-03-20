@@ -1,9 +1,12 @@
 package cz.cvut.indepmod.classmodel.diagramdata;
 
 import cz.cvut.indepmod.classmodel.api.model.DiagramType;
+import cz.cvut.indepmod.classmodel.api.model.IType;
+import cz.cvut.indepmod.classmodel.util.ClassModelLibrary;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraphModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelCellViewFactory;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,15 +22,14 @@ public class DiagramDataModel {
 
     private GraphLayoutCache layoutCache;
     private DiagramType diagramType;
-    private Set<TypeModel> staticDataTypes;
+    private Set<IType> staticDataTypes;
+    private Set<IType> dynamicDataTypes;
 
     public DiagramDataModel() {
-        this.layoutCache = new GraphLayoutCache(
+        this(new GraphLayoutCache(
                 new ClassModelGraphModel(),
-                new ClassModelCellViewFactory());
-        this.diagramType = DiagramType.CLASS;
-
-        this.initStaticTypes();
+                new ClassModelCellViewFactory()),
+             DiagramType.CLASS);
     }
 
     public DiagramDataModel(GraphLayoutCache layoutCache, DiagramType diagramType) {
@@ -40,6 +42,8 @@ public class DiagramDataModel {
                     new ClassModelCellViewFactory());
         }
 
+        this.dynamicDataTypes = new HashSet<IType>();
+
         this.initStaticTypes();
     }
 
@@ -51,8 +55,16 @@ public class DiagramDataModel {
         return diagramType;
     }
 
-    public Set<TypeModel> getStaticDataTypes() {
-        return Collections.unmodifiableSet(this.staticDataTypes);
+    public Collection<IType> getStaticDataTypes() {
+        Collection<IType> res = ClassModelLibrary.joinTypeCollections(this.staticDataTypes, this.dynamicDataTypes);
+        return res;
+    }
+
+    public void addDynamicDataType(IType type) {
+        if (this.staticDataTypes.contains(type)) {
+            return;
+        }
+        this.dynamicDataTypes.add(type);
     }
 
 
@@ -60,7 +72,7 @@ public class DiagramDataModel {
      * TODO - this will be loaded from a XML. Only temporary
      */
     private void initStaticTypes() {
-        this.staticDataTypes = new HashSet<TypeModel>();
+        this.staticDataTypes = new HashSet<IType>();
         this.staticDataTypes.add(new TypeModel("Object"));
         this.staticDataTypes.add(new TypeModel("String"));
         this.staticDataTypes.add(new TypeModel("int"));
@@ -69,5 +81,6 @@ public class DiagramDataModel {
         this.staticDataTypes.add(new TypeModel("long"));
         this.staticDataTypes.add(new TypeModel("double"));
         this.staticDataTypes.add(new TypeModel("float"));
+        this.staticDataTypes.add(new TypeModel("void"));
     }
 }

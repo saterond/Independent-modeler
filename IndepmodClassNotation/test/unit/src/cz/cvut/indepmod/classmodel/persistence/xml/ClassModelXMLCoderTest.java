@@ -14,7 +14,10 @@ import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.RelationModel
 import org.jgraph.graph.DefaultPort;
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
+import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IRelation;
+import cz.cvut.indepmod.classmodel.api.model.IType;
+import cz.cvut.indepmod.classmodel.api.model.Visibility;
 import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModelFactory;
 import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModel;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
@@ -25,7 +28,6 @@ import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeMode
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.MethodModel;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,7 +60,7 @@ public class ClassModelXMLCoderTest {
         this.diagramModel = DiagramDataModelFactory.getInstance().createNewDiagramModel();
         this.graph = new ClassModelGraph(
                 new HashMap<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction>(),
-                new ToolChooserModel(), this.diagramModel);
+                new ToolChooserModel(), this.diagramModel.getLayoutCache());
         this.graph.setGraphLayoutCache(this.diagramModel.getLayoutCache());
     }
 
@@ -83,9 +85,13 @@ public class ClassModelXMLCoderTest {
         DefaultPort p2 = new DefaultPort();
         cell1.add(p1);
         cell2.add(p2);
-        ClassModelRelation edge = new ClassModelRelation(new RelationModel(RelationType.RELATION));
+        RelationModel relModel = new RelationModel(RelationType.RELATION);
+        relModel.setRelationName(Common.VAL3);
+        ClassModelRelation edge = new ClassModelRelation(relModel);
         this.initEdge(edge, p1, p2);
         this.graph.getGraphLayoutCache().insert(edge);
+
+        mod1.setStereotype(Common.VAL2);
 
         AnotationModel anot = new AnotationModel(Common.ANOT2);
         AnotationAttributeModel anotAtr = new AnotationAttributeModel(Common.ATTRIBUTE_NAME2);
@@ -94,14 +100,14 @@ public class ClassModelXMLCoderTest {
         anot.addAttribute(anotAtr);
         mod1.addAnotation(anot);
 
-        AttributeModel atr = new AttributeModel(mod1, Common.ATTRIBUTE_NAME);
+        AttributeModel atr = new AttributeModel(mod1, Common.ATTRIBUTE_NAME, Visibility.PROTECTED);
         mod1.addAttribute(atr);
         AnotationModel anot2 = new AnotationModel(Common.ANOT3);
         atr.addAnotation(anot);
 
-        Set<AttributeModel> atrList = new HashSet<AttributeModel>();
+        Set<IAttribute> atrList = new HashSet<IAttribute>();
         atrList.add(new AttributeModel(mod2, Common.ATTRIBUTE_NAME2));
-        MethodModel method = new MethodModel(mod1, Common.METHOD_NAME, atrList);
+        MethodModel method = new MethodModel(mod1, Common.METHOD_NAME, atrList, Visibility.PRIVATE);
         mod1.addMethod(method);
 
         File file = new File(FILE_NAME);
@@ -116,7 +122,7 @@ public class ClassModelXMLCoderTest {
 
         boolean isThereClass1 = false;
         boolean isThereClass2 = false;
-        for (TypeModel m : this.graph.getAllTypes()) {
+        for (IType m : this.graph.getAllClasses()) {
             if (m.getTypeName().equals(Common.CLASS_NAME)) {
                 isThereClass1 = true;
             }
@@ -131,6 +137,7 @@ public class ClassModelXMLCoderTest {
         DefaultGraphCell root = (DefaultGraphCell) this.graph.getRoots()[0];
         ClassModel model = (ClassModel) root.getUserObject();
         assertEquals(Common.CLASS_NAME, model.getTypeName());
+        assertEquals(Common.VAL2, model.getStereotype());
         assertEquals(1, model.getAttributeModels().size());
         assertEquals(1, model.getMethodModels().size());
         assertEquals(1, model.getAnotations().size());
@@ -144,11 +151,13 @@ public class ClassModelXMLCoderTest {
 
         assertEquals(1, model.getAttributeModels().size());
         assertEquals(Common.ATTRIBUTE_NAME, model.getAttributeModels().iterator().next().getName());
+        assertEquals(Visibility.PROTECTED, model.getAttributeModels().iterator().next().getVisibility());
         assertEquals(model, model.getAttributeModels().iterator().next().getType());
         assertEquals(1, model.getAttributeModels().iterator().next().getAnotations().size());
 
         assertEquals(1, model.getMethodModels().size());
         assertEquals(Common.METHOD_NAME, model.getMethodModels().iterator().next().getName());
+        assertEquals(Visibility.PRIVATE, model.getMethodModels().iterator().next().getVisibility());
         assertEquals(model, model.getMethodModels().iterator().next().getType());
         assertEquals(1, model.getMethodModels().iterator().next().getAttributeModels().size());
         assertEquals(Common.ATTRIBUTE_NAME2, model.getMethodModels().iterator().next().getAttributeModels().iterator().next().getName());
@@ -169,6 +178,7 @@ public class ClassModelXMLCoderTest {
         assertEquals(mod2.getTypeName(), c2.getTypeName());
         assertEquals(Cardinality.ONE, r.getStartCardinality());
         assertEquals(Cardinality.ONE, r.getEndCardinality());
+        assertEquals(Common.VAL3, r.getRelationName());
     }
 
     private void initEdge(Edge edge, Port startPort, Port endPort) {

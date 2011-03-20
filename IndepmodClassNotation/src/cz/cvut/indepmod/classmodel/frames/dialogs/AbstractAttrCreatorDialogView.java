@@ -1,5 +1,6 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
+import cz.cvut.indepmod.classmodel.api.model.Visibility;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.util.GridBagConstraintsUtils;
 import java.awt.Frame;
@@ -29,24 +30,43 @@ public class AbstractAttrCreatorDialogView extends AbstractClassModelDialog {
     public static final String REM_ANOT_BUTTON_TITLE = Resources.getString("dialog_attribute_creator_rem_anot");
     public static final String ATTRIBUTE_TYPE_LABEL = Resources.getString("dialog_attribute_creator_attribute_type");
     public static final String ATTRIBUTE_NAME_LABEL = Resources.getString("dialog_attribute_creator_name");
+    public static final String ATTRIBUTE_VISIBILITY_LABEL = Resources.getString("dialog_attribute_creator_visibility");
     public static final String ANOTATION_LIST_LABEL = Resources.getString("dialog_attribute_creator_anot_list");
 
     protected JLabel attributeTypeLabel = new JLabel(ATTRIBUTE_TYPE_LABEL);
     protected JLabel attributeNameLabel = new JLabel(ATTRIBUTE_NAME_LABEL);
     protected JLabel anotationListLabel = new JLabel(ANOTATION_LIST_LABEL);
+    protected JLabel visibilityLabel = new JLabel(ATTRIBUTE_VISIBILITY_LABEL);
     protected JComboBox attributeType = new JComboBox();
+    protected JComboBox attributeVisibility = new JComboBox();
     protected JTextField attributeName = new JTextField();
     protected JButton createButton = new JButton(CREATE_BUTTON_TITLE);
     protected JButton addAnotationButton = new JButton(ADD_ANOT_BUTTON_TITLE);
     protected JButton removeAnotationButton = new JButton(REM_ANOT_BUTTON_TITLE);
-    protected DefaultListModel anotationListModel = new DefaultListModel();
-    protected JList anotationList = new JList(anotationListModel);
+    
+    protected JList anotationList = new JList();
 
 
     public AbstractAttrCreatorDialogView(Frame owner) {
         super(owner, TITLE);
 
         this.initLayout();
+    }
+
+    public Object getSelectedAttributeType() {
+        return this.attributeType.getSelectedItem();
+    }
+
+    public String getAttributeName() {
+        return this.attributeName.getText();
+    }
+
+    public int getSelectedAnotationIndex() {
+        return this.anotationList.getSelectedIndex();
+    }
+
+    public Visibility getSelectedVisibility() {
+        return (Visibility) this.attributeVisibility.getSelectedItem();
     }
 
     protected JPanel initAttrNamePanel() {
@@ -70,6 +90,22 @@ public class AbstractAttrCreatorDialogView extends AbstractClassModelDialog {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
         res.add(this.attributeType, c);
+
+        return res;
+    }
+
+    protected JPanel initVisibilityPanel() {
+        JPanel res = new JPanel(new GridBagLayout());
+        GridBagConstraints c = null;
+
+        c = GridBagConstraintsUtils.createNewConstraints(0, 0, 1, 1);
+        c.anchor = GridBagConstraints.LINE_START;
+        res.add(this.visibilityLabel, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(1, 0, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        res.add(this.attributeVisibility, c);
 
         return res;
     }
@@ -108,16 +144,24 @@ public class AbstractAttrCreatorDialogView extends AbstractClassModelDialog {
             this.add(attrNamePanel, c);
         }
 
+        JPanel visibilityPanel = this.initVisibilityPanel();
+        if (visibilityPanel != null) {
+            c = GridBagConstraintsUtils.createNewConstraints(0, 1, 2, 1);
+            c.fill = GridBagConstraints.HORIZONTAL;
+            c.weightx = 0.5;
+            this.add(visibilityPanel, c);
+        }
+
         JPanel anotPanel = this.initAnotationPanel();
         if (anotPanel != null) {
-            c = GridBagConstraintsUtils.createNewConstraints(0, 1, 2, 1);
+            c = GridBagConstraintsUtils.createNewConstraints(0, 2, 2, 1);
             c.fill = GridBagConstraints.BOTH;
             c.weightx = 0.5;
             c.weighty = 0.5;
             this.add(anotPanel, c);
         }
         
-        c = GridBagConstraintsUtils.createNewConstraints(1, 2, 1, 1);
+        c = GridBagConstraintsUtils.createNewConstraints(1, 3, 1, 1);
         c.anchor = GridBagConstraints.LINE_END;
         this.add(this.createButton, c);
     }

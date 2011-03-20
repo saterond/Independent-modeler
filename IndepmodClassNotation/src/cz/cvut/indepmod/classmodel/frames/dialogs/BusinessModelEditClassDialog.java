@@ -10,6 +10,9 @@ import org.jgraph.graph.DefaultGraphCell;
  * Date: 5.3.2011
  * Time: 14:33:26
  * @author Lucky
+ *
+ * This class represents the Edit Class dialog for business diagram.
+ * It hides anotations and methods.
  */
 public class BusinessModelEditClassDialog extends AbstractEditClassDialog {
 

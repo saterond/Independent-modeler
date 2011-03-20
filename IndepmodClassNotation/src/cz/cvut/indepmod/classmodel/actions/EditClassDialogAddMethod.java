@@ -33,7 +33,7 @@ public class EditClassDialogAddMethod extends ClassModelAbstractAction {
         Frame window = WindowManager.getDefault().getMainWindow();
         MethodModel method = new MethodCreatorDialog(
                 window,
-                this.dialog.getAllTypeModel()).getMethod();
+                this.dialog.getAllTypeModel()).getReturnValue();
 
         if (method != null) {
             this.model.addMethod(method);

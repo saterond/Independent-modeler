@@ -1,5 +1,6 @@
 package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 
+import cz.cvut.indepmod.classmodel.api.model.ICardinality;
 import cz.cvut.indepmod.classmodel.api.model.RelationType;
 import org.jgraph.graph.GraphConstants;
 
@@ -19,12 +20,12 @@ public class RelationModel extends AbstractRelationModel {
     }
 
     @Override
-    public Cardinality getStartCardinality() {
+    public ICardinality getStartCardinality() {
         return this.getCardinality(0);
     }
 
     @Override
-    public Cardinality getEndCardinality() {
+    public ICardinality getEndCardinality() {
         return this.getCardinality(1);
     }
 

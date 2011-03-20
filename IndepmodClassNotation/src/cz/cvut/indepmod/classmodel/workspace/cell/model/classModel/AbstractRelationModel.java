@@ -20,8 +20,11 @@ public abstract class AbstractRelationModel extends AbstractModel implements IRe
 
     protected DefaultEdge cell;
 
+    private String name;
+
     public AbstractRelationModel() {
         this.cell = null;
+        this.name = null;
     }
 
     public void setCell(DefaultEdge cell) {
@@ -55,8 +58,18 @@ public abstract class AbstractRelationModel extends AbstractModel implements IRe
     }
 
     @Override
+    public String getRelationName() {
+        return this.name;
+    }
+
+    @Override
+    public void setRelationName(String name) {
+        this.name = name;
+    }
+
+    @Override
     public String toString() {
-        return "";
+        return this.name;
     }
 
     private void verifyCell() {

@@ -1,5 +1,7 @@
 package cz.cvut.indepmod.classmodel.actions;
 
+import cz.cvut.indepmod.classmodel.Globals;
+import cz.cvut.indepmod.classmodel.api.model.DiagramType;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
@@ -31,16 +33,60 @@ public class SaveEditClassDialog extends ClassModelAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String newClassName = this.dialog.getClassName();
-        if (!newClassName.equals(model.getTypeName())) {
-            if (newClassName.matches("^[A-Za-z][0-9A-Za-z]*$")) {
-                LOG.info("Changing the name of the class");
-                model.setTypeName(newClassName);
-            } else {
-                LOG.warning("Bad name of the class!");
-            }
+        DiagramType diagramType = Globals.getInstance().getActualDiagramData().getDiagramType();
+        boolean isOk = false;
+        switch (diagramType) {
+            case CLASS:
+                isOk = this.classDiagramEditSave();
+                break;
+            case BUSINESS:
+                isOk = this.businessDiagramEditSave();
+                break;
         }
-        this.dialog.updateCell();
-        this.dialog.dispose();
+
+        if (isOk) {
+            this.dialog.updateCell();
+            this.dialog.dispose();
+        }
+    }
+
+    private boolean classDiagramEditSave() {
+        String stereotype = this.dialog.getStereotype();
+        String newClassName = this.dialog.getClassName();
+
+        if (!newClassName.equals(model.getTypeName())) {
+            if (newClassName.matches("^([A-Za-z][0-9A-Za-z]*::)?[A-Za-z][0-9A-Za-z]*$")) {
+                LOG.info("Changing the name of the class (class diagram)");
+                model.setTypeName(newClassName);
+                model.setStereotype(stereotype);
+                return true;
+            } else {
+                LOG.warning("Bad name of the class! (class diagram)");
+                return false;
+            }
+        } else {
+            model.setStereotype(stereotype);
+            return true;
+        }
+    }
+
+    private boolean businessDiagramEditSave() {
+        String stereotype = this.dialog.getStereotype();
+        String newClassName = this.dialog.getClassName();
+
+        if (! newClassName.equals(model.getTypeName())) {
+            if (! newClassName.isEmpty()) {
+                LOG.info("Changing the name of the class (business diagram)");
+                model.setTypeName(newClassName);
+                model.setStereotype(stereotype);
+                return true;
+            } else {
+                LOG.warning("Bad name of the class! (business diagram)");
+                return false;
+            }
+        } else {
+            model.setStereotype(stereotype);
+            return true;
+        }
     }
 }

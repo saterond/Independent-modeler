@@ -1,11 +1,11 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs.factory;
 
 import cz.cvut.indepmod.classmodel.api.model.DiagramType;
+import cz.cvut.indepmod.classmodel.api.model.IType;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractAttrCreatorDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
 import java.util.Collection;
 import org.jgraph.graph.DefaultGraphCell;
 
@@ -42,5 +42,5 @@ public abstract class AbstractDialogFactory {
             ClassModel model);
 
     public abstract AbstractAttrCreatorDialog createAttributeCreatorDialog(
-            Collection<TypeModel> types);
+            Collection<IType> types);
 }

@@ -1,5 +1,7 @@
 package cz.cvut.indepmod.classmodel.actions;
 
+import cz.cvut.indepmod.classmodel.Globals;
+import cz.cvut.indepmod.classmodel.api.model.DiagramType;
 import cz.cvut.indepmod.classmodel.frames.dialogs.EditRelationDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.factory.AbstractDialogFactory;
 import cz.cvut.indepmod.classmodel.resources.Resources;
@@ -54,9 +56,9 @@ public class EditAction extends ClassModelAbstractAction {
     private void classEditAction(ClassModelClassCell cell) {
         LOG.info("edit of Class");
         try {
+            DiagramType diagramType = Globals.getInstance().getActualDiagramData().getDiagramType();
             ClassModel model = (ClassModel) cell.getUserObject();
-            AbstractDialogFactory factory = AbstractDialogFactory.getFactory(
-                    graph.getDiagramType());
+            AbstractDialogFactory factory = AbstractDialogFactory.getFactory(diagramType);
             
             factory.createEditClassDialog(graph, cell, model);
         } catch (ClassCastException ex) {

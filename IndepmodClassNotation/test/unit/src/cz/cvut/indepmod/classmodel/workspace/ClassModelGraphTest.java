@@ -7,9 +7,9 @@ import java.awt.Rectangle;
 import java.util.HashMap;
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
+import cz.cvut.indepmod.classmodel.api.model.IClass;
 import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModelFactory;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.junit.After;
@@ -30,7 +30,7 @@ public class ClassModelGraphTest {
         this.graph = new ClassModelGraph(
                 new HashMap<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction>(),
                 new ToolChooserModel(),
-                DiagramDataModelFactory.getInstance().createNewDiagramModel());
+                DiagramDataModelFactory.getInstance().createNewDiagramModel().getLayoutCache());
 
         DefaultGraphCell cell = new DefaultGraphCell();
         cell.setUserObject(new ClassModel(Common.CLASS_NAME));
@@ -42,35 +42,15 @@ public class ClassModelGraphTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of getAllTypes method, of class ClassModelGraph.
-     */
-    @Test
-    public void testGetAllTypes() {
-        Collection<TypeModel> types = this.graph.getAllTypes();
-        assertTrue(types.size() >= 1);
-        
-        Iterator<TypeModel> it = types.iterator();
-        boolean isThere = false;
-        while (it.hasNext()) {
-            TypeModel model = it.next();
-            assertNotNull(model);
-            if (model.toString().equals(Common.CLASS_NAME) && model.getTypeName().equals(Common.CLASS_NAME)) {
-                isThere = true;
-            }
-        }
-        assertTrue(isThere);
-    }
-
     @Test
     public void testGetAllClasses() {
-        Collection<ClassModel> types = this.graph.getAllClasses();
+        Collection<IClass> types = this.graph.getAllClasses();
         assertEquals(1, types.size());
 
-        Iterator<ClassModel> it = types.iterator();
+        Iterator<IClass> it = types.iterator();
         boolean isThere = false;
         while (it.hasNext()) {
-            ClassModel model = it.next();
+            IClass model = it.next();
             assertNotNull(model);
             if (model.toString().equals(Common.CLASS_NAME) && model.getTypeName().equals(Common.CLASS_NAME)) {
                 isThere = true;

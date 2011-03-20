@@ -110,8 +110,8 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
     private void init() {
         this.actions = new HashMap<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction>();
         this.selectedTool = new ToolChooserModel();
-        this.graph = new ClassModelGraph(this.actions, this.selectedTool, this.diagramData);
-        this.classModelAPI = new ClassModelModel(this.graph);
+        this.graph = new ClassModelGraph(this.actions, this.selectedTool, this.diagramData.getLayoutCache());
+        this.classModelAPI = new ClassModelModel(this.graph, this.diagramData);
         this.saveCookie = new ClassModelSaveCookie(this, this.diagramData);
         this.modified = false;
 
@@ -134,6 +134,7 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
         this.associateLookup(new AbstractLookup(this.lookupContent));
         this.lookupContent.add(this.selectedTool);
         this.lookupContent.add(this.classModelAPI);
+        this.lookupContent.add(this.diagramData);
     }
 
     /**

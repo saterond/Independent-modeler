@@ -1,12 +1,12 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs.factory;
 
+import cz.cvut.indepmod.classmodel.api.model.IType;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractAttrCreatorDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelAttrCreatorDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditClassDialog;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
 import java.util.Collection;
 import org.jgraph.graph.DefaultGraphCell;
 import org.openide.windows.WindowManager;
@@ -29,7 +29,7 @@ public class ClassModelDialogFactory extends AbstractDialogFactory {
     }
 
     @Override
-    public AbstractAttrCreatorDialog createAttributeCreatorDialog(Collection<TypeModel> types) {
+    public AbstractAttrCreatorDialog createAttributeCreatorDialog(Collection<IType> types) {
         AbstractAttrCreatorDialog dialog = new ClassModelAttrCreatorDialog(
                 WindowManager.getDefault().getMainWindow(),
                 types);

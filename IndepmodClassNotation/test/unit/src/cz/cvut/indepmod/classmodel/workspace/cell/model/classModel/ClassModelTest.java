@@ -3,6 +3,9 @@ package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 import cz.cvut.indepmod.classmodel.Common;
 import org.jgraph.graph.DefaultEdge;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel.Tool;
+import cz.cvut.indepmod.classmodel.api.model.IAnotation;
+import cz.cvut.indepmod.classmodel.api.model.IAttribute;
+import cz.cvut.indepmod.classmodel.api.model.IMethod;
 import cz.cvut.indepmod.classmodel.api.model.IRelation;
 import cz.cvut.indepmod.classmodel.api.model.RelationType;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelCellFactory;
@@ -32,16 +35,16 @@ public class ClassModelTest {
 
     @Before
     public void setUp() {
-        Set<AttributeModel> attributes = new HashSet<AttributeModel>();
+        Set<IAttribute> attributes = new HashSet<IAttribute>();
         attributes.add(new AttributeModel(new TypeModel(Common.TYPE_NAME), Common.ATTRIBUTE_NAME));
         attributes.add(new AttributeModel(new TypeModel(Common.TYPE_NAME2), Common.ATTRIBUTE_NAME2));
         attributes.add(new AttributeModel(new TypeModel(Common.TYPE_NAME), Common.ATTRIBUTE_NAME2));
 
-        Set<MethodModel> methods = new HashSet<MethodModel>();
+        Set<IMethod> methods = new HashSet<IMethod>();
         methods.add(new MethodModel(new TypeModel(Common.TYPE_NAME), Common.METHOD_NAME, null));
         methods.add(new MethodModel(new TypeModel(Common.TYPE_NAME2), Common.METHOD_NAME2, null));
 
-        Set<AnotationModel> anotations = new HashSet<AnotationModel>();
+        Set<IAnotation> anotations = new HashSet<IAnotation>();
         anotations.add(new AnotationModel(Common.ANOT1));
         anotations.add(new AnotationModel(Common.ANOT2));
         anotations.add(new AnotationModel(Common.ANOT3));
@@ -132,7 +135,7 @@ public class ClassModelTest {
         m.addAttribute(new AttributeModel(new TypeModel(Common.TYPE_NAME), Common.ATTRIBUTE_NAME));
         assertEquals(1, m.getAttributeModels().size());
 
-        AttributeModel a = m.getAttributeModels().iterator().next();
+        IAttribute a = m.getAttributeModels().iterator().next();
         assertEquals(Common.TYPE_NAME, a.getType().getTypeName());
         assertEquals(Common.ATTRIBUTE_NAME, a.getName());
     }
@@ -296,7 +299,7 @@ public class ClassModelTest {
 
     private void doAnotationTest(ClassModel cm) {
         boolean isAnot1 = false, isAnot2 = false, isAnot3 = false;
-        for (AnotationModel anot : model.getAnotations()) {
+        for (IAnotation anot : model.getAnotations()) {
             if (anot.getName().equals(Common.ANOT1)) {
                 isAnot1 = true;
             } else if (anot.getName().equals(Common.ANOT2)) {

@@ -1,13 +1,16 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
 import cz.cvut.indepmod.classmodel.actions.EditRelationDialogSave;
+import cz.cvut.indepmod.classmodel.api.model.ICardinality;
+import cz.cvut.indepmod.classmodel.api.model.IRelation;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.RelationModel;
 import java.awt.Frame;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.logging.Logger;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import org.jgraph.graph.DefaultEdge;
 
 /**
@@ -23,10 +26,10 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
 
     private ClassModelGraph graph;
     private DefaultEdge edge;
-    private RelationModel model;
+    private IRelation model;
     private boolean changed;
 
-    public EditRelationDialog(Frame owner, ClassModelGraph graph, DefaultEdge edge, RelationModel model) {
+    public EditRelationDialog(Frame owner, ClassModelGraph graph, DefaultEdge edge, IRelation model) {
         super(owner);
 
         this.graph = graph;
@@ -41,15 +44,26 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
     }
 
     public boolean isChanged() {
-        return changed;
+        return this.changed;
     }
 
-    public Cardinality getStartingCardinality() {
-        return (Cardinality) this.sourceCardinality.getSelectedItem();
+    public ICardinality getStartingCardinality() {
+        Cardinality res = (Cardinality) this.sourceCardinality.getSelectedItem();
+        return res;
     }
 
-    public Cardinality getEndingCardinality() {
-        return (Cardinality) this.targetCardinality.getSelectedItem();
+    public ICardinality getEndingCardinality() {
+        Cardinality res = (Cardinality) this.targetCardinality.getSelectedItem();
+        return res;
+    }
+
+    public String getRelationName() {
+        String res = this.nameField.getText().trim();
+        if (res.isEmpty()) {
+            return null;
+        } else {
+            return res;
+        }
     }
 
     @Override
@@ -59,6 +73,8 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
     }
 
     private void initValues() {
+        this.nameField.setText(this.model.getRelationName());
+
         this.sourceCardinality.removeAllItems();
         this.targetCardinality.removeAllItems();
 
@@ -72,17 +88,35 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
         this.targetCardinality.addItem(Cardinality.ZERO_INFINITY);
         this.targetCardinality.addItem(Cardinality.ONE_INFINITY);
 
-        this.sourceCardinality.setSelectedItem(model.getStartCardinality());
-        this.targetCardinality.setSelectedItem(model.getEndCardinality());
+        this.sourceCardinality.setSelectedItem(this.model.getStartCardinality());
+        this.targetCardinality.setSelectedItem(this.model.getEndCardinality());
     }
 
     private void initHandlers() {
         this.sourceCardinality.addItemListener(this);
         this.targetCardinality.addItemListener(this);
+        this.nameField.getDocument().addDocumentListener(new NameFieldDocListener());
     }
 
     private void initActions() {
         this.saveButton.setAction(new EditRelationDialogSave(this.edge, this, this.graph));
     }
 
+    private class NameFieldDocListener implements DocumentListener {
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            changed = true;
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            changed = true;
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            changed = true;
+        }
+    }
 }

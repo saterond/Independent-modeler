@@ -1,10 +1,11 @@
 package cz.cvut.indepmod.classmodel.actions;
 
+import cz.cvut.indepmod.classmodel.Globals;
 import cz.cvut.indepmod.classmodel.api.model.DiagramType;
+import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.factory.AbstractDialogFactory;
 import cz.cvut.indepmod.classmodel.resources.Resources;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -24,24 +25,23 @@ public class EditClassDialogAddAttribute extends ClassModelAbstractAction {
     public static final String ACTION_NAME = Resources.getString("action_edit_class_dialog_add_attr");
     private ClassModel model;
     private AbstractEditClassDialog dialog;
-    private DiagramType diagramType;
 
     public EditClassDialogAddAttribute(
             ClassModel model,
-            AbstractEditClassDialog dialog,
-            DiagramType diagramType) {
+            AbstractEditClassDialog dialog) {
         super(ACTION_NAME, null);
         this.model = model;
         this.dialog = dialog;
-        this.diagramType = diagramType;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        DiagramType diagramType = Globals.getInstance().getActualDiagramData().getDiagramType();
+
         Frame window = WindowManager.getDefault().getMainWindow();
-        AbstractDialogFactory factory = AbstractDialogFactory.getFactory(this.diagramType);
-        AttributeModel attr = factory.createAttributeCreatorDialog(
-                this.dialog.getAllTypeModel()).getAttribute();
+        AbstractDialogFactory factory = AbstractDialogFactory.getFactory(diagramType);
+        IAttribute attr = factory.createAttributeCreatorDialog(
+                this.dialog.getAllTypeModel()).getReturnValue();
 
         if (attr != null) {
             this.model.addAttribute(attr);

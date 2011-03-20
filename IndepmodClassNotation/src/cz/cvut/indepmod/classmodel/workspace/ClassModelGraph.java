@@ -6,7 +6,7 @@ import cz.cvut.indepmod.classmodel.actions.EditAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModelListener;
 import cz.cvut.indepmod.classmodel.api.model.DiagramType;
-import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModel;
+import cz.cvut.indepmod.classmodel.api.model.IClass;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelCellFactory;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
@@ -16,48 +16,40 @@ import org.jgraph.event.GraphSelectionListener;
 import org.jgraph.graph.DefaultGraphCell;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.jgraph.graph.CellView;
+import org.jgraph.graph.GraphLayoutCache;
 
 public class ClassModelGraph extends JGraph {
 
     private static final Logger LOG = Logger.getLogger(ClassModelGraph.class.getName());
     private Map<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction> actions;
     private ToolChooserModel selectedTool;
-    private DiagramDataModel diagramData;
 
     public ClassModelGraph(
             Map<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction> actions,
             ToolChooserModel selectedTool,
-            DiagramDataModel diagramData) {
-        super(diagramData.getLayoutCache());
+            GraphLayoutCache cache) {
+        super(cache);
 
         this.actions = actions;
         this.selectedTool = selectedTool;
-        this.diagramData = diagramData;
 
         this.initActions();
         this.initEventHandling();
         this.setDoubleBuffered(true);
-    }
-
-    public Collection<TypeModel> getAllTypes() {
-        Collection<TypeModel> res = new LinkedList<TypeModel>(this.getAllClasses());
-
-        res.addAll(this.diagramData.getStaticDataTypes());
-        return res;
+        this.setAntiAliased(true);
     }
 
     /**
      * Returns collection of all classes that are in the Graph
      * @return Colection of all classes
      */
-    public Collection<ClassModel> getAllClasses() {
-        Collection<ClassModel> res = new LinkedList<ClassModel>();
+    public Collection<IClass> getAllClasses() {
+        Collection<IClass> res = new LinkedList<IClass>();
         CellView[] cw = this.getGraphLayoutCache().getCellViews();
         for (int i = 0; i < cw.length; i++) {
             DefaultGraphCell cell = (DefaultGraphCell) cw[i].getCell();
@@ -67,10 +59,6 @@ public class ClassModelGraph extends JGraph {
             }
         }
         return res;
-    }
-
-    public DiagramType getDiagramType() {
-        return this.diagramData.getDiagramType();
     }
 
     public void insertCell(Point p) {
@@ -83,16 +71,22 @@ public class ClassModelGraph extends JGraph {
     }
 
     public void selectCell(Object cell) {
+        if (cell == null) {
+
+        }
+
         boolean isAlreadySelected = false;
         Object[] selectionCells = this.getSelectionCells();
-        for (int i = 0; i < selectionCells.length; i++) {
-            Object c = selectionCells[i];
-            if (cell.equals(c)) {
-                isAlreadySelected = true;
-                System.arraycopy(selectionCells, i+1, selectionCells, i, selectionCells.length - i - 1);
-                selectionCells[selectionCells.length - 1] = cell;
-                this.setSelectionCells(selectionCells);
-                break;
+        if (cell != null) {
+            for (int i = 0; i < selectionCells.length; i++) {
+                Object c = selectionCells[i];
+                if (cell.equals(c)) {
+                    isAlreadySelected = true;
+                    System.arraycopy(selectionCells, i+1, selectionCells, i, selectionCells.length - i - 1);
+                    selectionCells[selectionCells.length - 1] = cell;
+                    this.setSelectionCells(selectionCells);
+                    break;
+                }
             }
         }
 

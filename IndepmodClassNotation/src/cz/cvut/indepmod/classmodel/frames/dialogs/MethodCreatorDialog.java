@@ -1,5 +1,8 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
+import cz.cvut.indepmod.classmodel.api.model.IAttribute;
+import cz.cvut.indepmod.classmodel.api.model.IType;
+import cz.cvut.indepmod.classmodel.api.model.Visibility;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.MethodModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
@@ -18,10 +21,10 @@ import org.openide.windows.WindowManager;
  */
 public class MethodCreatorDialog extends MethodCreatorDialogView {
     private MethodModel returnValue = null;
-    private Collection<TypeModel> availableTypes;
+    private Collection<IType> availableTypes;
     
 
-    public MethodCreatorDialog(Frame owner, Collection<TypeModel> types) {
+    public MethodCreatorDialog(Frame owner, Collection<IType> types) {
         super(owner);
 
         this.availableTypes = types;
@@ -31,7 +34,7 @@ public class MethodCreatorDialog extends MethodCreatorDialogView {
         this.setSizes();
     }
 
-    public MethodModel getMethod() {
+    public MethodModel getReturnValue() {
         return this.returnValue;
     }
 
@@ -42,16 +45,17 @@ public class MethodCreatorDialog extends MethodCreatorDialogView {
             public void actionPerformed(ActionEvent e) {
                 String name = nameField.getText();
                 TypeModel returnType = (TypeModel) typeBox.getSelectedItem();
+                Visibility vis = (Visibility) visibilityBox.getSelectedItem();
 
                 if (name.matches("^[A-Za-z][0-9A-Za-z]*$")) {
-                    Set<AttributeModel> attrs = new HashSet<AttributeModel>();
+                    Set<IAttribute> attrs = new HashSet<IAttribute>();
                     int size = attributeListModel.size();
                     for (int i = 0; i < size; i++) {
                         AttributeModel a = (AttributeModel) attributeListModel.get(i);
                         attrs.add(a);
                     }
 
-                    returnValue = new MethodModel(returnType, name, attrs);
+                    returnValue = new MethodModel(returnType, name, attrs, vis);
                     dispose();
                 }
             }
@@ -62,9 +66,9 @@ public class MethodCreatorDialog extends MethodCreatorDialogView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Frame window = WindowManager.getDefault().getMainWindow();
-                AttributeModel attr = new AbstractAttrCreatorDialog(
+                IAttribute attr = new AbstractAttrCreatorDialog(
                         window,
-                        availableTypes).getAttribute();
+                        availableTypes).getReturnValue();
 
                 if (attr != null) {
                     attributeListModel.addElement(attr);
@@ -94,8 +98,23 @@ public class MethodCreatorDialog extends MethodCreatorDialogView {
 
     private void initValues() {
         this.typeBox.removeAllItems();
-        for (TypeModel type : this.availableTypes) {
+        for (IType type : this.availableTypes) {
             this.typeBox.addItem(type);
         }
+
+        this.visibilityBox.removeAllItems();
+        this.visibilityBox.addItem(Visibility.PUBLIC);
+        this.visibilityBox.addItem(Visibility.PROTECTED);
+        this.visibilityBox.addItem(Visibility.PRIVATE);
+        this.visibilityBox.addItem(Visibility.NONE);
+
+//        this.typeBox.setEditable(true);
+//        JTextComponent textComp = (JTextComponent) this.typeBox.getEditor().getEditorComponent();
+//        textComp.setDocument(new PlainDocument(){
+//            @Override
+//            public void insertString(int offs, String str, AttributeSet a) {
+//                TypeModel type = new TypeModel(str);
+//            }
+//        });
     }
 }

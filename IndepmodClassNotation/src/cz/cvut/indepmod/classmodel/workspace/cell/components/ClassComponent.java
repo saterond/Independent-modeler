@@ -1,9 +1,9 @@
 package cz.cvut.indepmod.classmodel.workspace.cell.components;
 
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
+import cz.cvut.indepmod.classmodel.api.model.IAnotation;
+import cz.cvut.indepmod.classmodel.api.model.IAttribute;
+import cz.cvut.indepmod.classmodel.api.model.IMethod;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.MethodModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -71,7 +71,16 @@ public class ClassComponent extends JComponent {
         JPanel res = new JPanel(new GridBagLayout());
         res.setBorder(new LineBorder(Color.BLACK));
 
+        int y = 0;
+        if (this.model.getStereotype() != null) {
+            GridBagConstraints c = new GridBagConstraints();
+            c.gridy = y++;
+            JLabel stereotype = new JLabel("<<"+ this.model.getStereotype() +">>");
+            res.add(stereotype, c);
+        }
+
         GridBagConstraints c = new GridBagConstraints();
+        c.gridy = y;
         JLabel className = new JLabel(this.model.getTypeName());
         res.add(className, c);
 
@@ -82,8 +91,8 @@ public class ClassComponent extends JComponent {
         JPanel res = new JPanel(new GridBagLayout());
         res.setBorder(new LineBorder(Color.BLACK));
 
-        Set<AnotationModel> anots = this.model.getAnotations();
-        for (AnotationModel anot : anots ) {
+        Set<IAnotation> anots = this.model.getAnotations();
+        for (IAnotation anot : anots ) {
             JLabel anotLabel = new JLabel(anot.toString());
             GridBagConstraints c = new GridBagConstraints();
             c.gridx = 0;
@@ -100,8 +109,8 @@ public class ClassComponent extends JComponent {
         JPanel res = new JPanel(new GridBagLayout());
         res.setBorder(new LineBorder(Color.BLACK));
 
-        Set<AttributeModel> attrs = this.model.getAttributeModels();
-        for (AttributeModel attr : attrs ) {
+        Set<IAttribute> attrs = this.model.getAttributeModels();
+        for (IAttribute attr : attrs ) {
             JLabel attributeLabel = new JLabel(attr.toString());
             GridBagConstraints c = new GridBagConstraints();
             c.gridx = 0;
@@ -118,10 +127,10 @@ public class ClassComponent extends JComponent {
         JPanel res = new JPanel(new GridBagLayout());
         res.setBorder(new LineBorder(Color.BLACK));
 
-        Set<MethodModel> methods = this.model.getMethodModels();
-        Iterator<MethodModel> it = methods.iterator();
+        Set<IMethod> methods = this.model.getMethodModels();
+        Iterator<IMethod> it = methods.iterator();
         while (it.hasNext()) {
-            MethodModel method = it.next();
+            IMethod method = it.next();
 
             JLabel methodLabel = new JLabel(method.toString());
             GridBagConstraints c = new GridBagConstraints();

@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
+import cz.cvut.indepmod.classmodel.api.model.IType;
 import java.awt.Frame;
 import java.util.Collection;
 import javax.swing.JPanel;
@@ -12,7 +12,7 @@ import javax.swing.JPanel;
  */
 public class BusinessModelAttrCreatorDialog extends AbstractAttrCreatorDialog  {
 
-    public BusinessModelAttrCreatorDialog(Frame owner, Collection<TypeModel> types) {
+    public BusinessModelAttrCreatorDialog(Frame owner, Collection<IType> types) {
         super(owner, types);
     }
 
@@ -25,6 +25,8 @@ public class BusinessModelAttrCreatorDialog extends AbstractAttrCreatorDialog  {
         return null;
     }
 
-
-
+    @Override
+    protected JPanel initVisibilityPanel() {
+        return null;
+    }
 }

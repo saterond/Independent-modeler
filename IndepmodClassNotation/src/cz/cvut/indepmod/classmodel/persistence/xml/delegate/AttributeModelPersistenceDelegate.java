@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.persistence.xml.delegate;
 
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
+import cz.cvut.indepmod.classmodel.api.model.IAnotation;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
@@ -20,7 +20,7 @@ public class AttributeModelPersistenceDelegate extends DefaultPersistenceDelegat
     protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder out) {
         AttributeModel attr = (AttributeModel)oldInstance;
 
-        for (AnotationModel a : attr.getAnotations()) {
+        for (IAnotation a : attr.getAnotations()) {
             out.writeStatement(new Statement(oldInstance, "addAnotation", new Object[] {a}));
         }
     }
@@ -34,6 +34,6 @@ public class AttributeModelPersistenceDelegate extends DefaultPersistenceDelegat
                 oldInstance,
                 oldInstance.getClass(),
                 "new",
-                new Object[]{am.getType(), am.getName()});
+                new Object[]{am.getType(), am.getName(), am.getVisibility()});
     }
 }

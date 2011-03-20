@@ -1,6 +1,9 @@
 package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 
+import cz.cvut.indepmod.classmodel.api.model.IAnotation;
+import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IClass;
+import cz.cvut.indepmod.classmodel.api.model.IMethod;
 import cz.cvut.indepmod.classmodel.api.model.IRelation;
 import cz.cvut.indepmod.classmodel.api.model.Visibility;
 import java.util.ArrayList;
@@ -24,10 +27,11 @@ import org.jgraph.graph.Port;
 public class ClassModel extends TypeModel implements IClass {
 
     private static int counter = 0;
-    private Set<MethodModel> methodModels;
-    private Set<AttributeModel> attributeModels;
-    private Set<AnotationModel> anotationModels;
+    private Set<IMethod> methodModels;
+    private Set<IAttribute> attributeModels;
+    private Set<IAnotation> anotationModels;
     private Visibility visibility;
+    private String stereotype;
     private DefaultGraphCell cell;
 
     public ClassModel() {
@@ -46,10 +50,11 @@ public class ClassModel extends TypeModel implements IClass {
     public ClassModel(ClassModel model) {
         super(model.toString());
 
-        this.methodModels = new HashSet<MethodModel>(model.getMethodModels());
-        this.attributeModels = new HashSet<AttributeModel>(model.getAttributeModels());
-        this.anotationModels = new HashSet<AnotationModel>(model.getAnotations());
+        this.methodModels = new HashSet<IMethod>(model.getMethodModels());
+        this.attributeModels = new HashSet<IAttribute>(model.getAttributeModels());
+        this.anotationModels = new HashSet<IAnotation>(model.getAnotations());
         this.visibility = Visibility.PUBLIC;
+        this.stereotype = model.getStereotype();
         this.cell = model.cell;
     }
 
@@ -60,28 +65,29 @@ public class ClassModel extends TypeModel implements IClass {
      * @param methodModels    Set of methodModels of this class. This class will create new Set according to this.
      * @param attributeModels Set of attributeModels of this class. This class will create new Set according to this.
      */
-    public ClassModel(String name, Set<MethodModel> methodModels, Set<AttributeModel> attributeModels, Set<AnotationModel> anotationModels) {
+    public ClassModel(String name, Set<IMethod> methodModels, Set<IAttribute> attributeModels, Set<IAnotation> anotationModels) {
         super(name);
 
         if (methodModels != null) {
-            this.methodModels = new HashSet<MethodModel>(methodModels);
+            this.methodModels = new HashSet<IMethod>(methodModels);
         } else {
-            this.methodModels = new HashSet<MethodModel>();
+            this.methodModels = new HashSet<IMethod>();
         }
 
         if (attributeModels != null) {
-            this.attributeModels = new HashSet<AttributeModel>(attributeModels);
+            this.attributeModels = new HashSet<IAttribute>(attributeModels);
         } else {
-            this.attributeModels = new HashSet<AttributeModel>();
+            this.attributeModels = new HashSet<IAttribute>();
         }
 
         if (anotationModels != null) {
-            this.anotationModels = new HashSet<AnotationModel>(anotationModels);
+            this.anotationModels = new HashSet<IAnotation>(anotationModels);
         } else {
-            this.anotationModels = new HashSet<AnotationModel>();
+            this.anotationModels = new HashSet<IAnotation>();
         }
 
         this.visibility = Visibility.PUBLIC;
+        this.stereotype = null;
         this.cell = null;
     }
 
@@ -100,9 +106,8 @@ public class ClassModel extends TypeModel implements IClass {
      * @return a view of the method set
      */
     @Override
-    public Set<MethodModel> getMethodModels() {
-        //return Collections.unmodifiableSet(methodModels);
-        return new HashSet<MethodModel>(this.methodModels);
+    public Set<IMethod> getMethodModels() {
+        return new HashSet<IMethod>(this.methodModels);
     }
 
     /**
@@ -111,64 +116,52 @@ public class ClassModel extends TypeModel implements IClass {
      * @return a view of the attribute set
      */
     @Override
-    public Set<AttributeModel> getAttributeModels() {
-        //return Collections.unmodifiableSet(attributeModels);
-        return new HashSet<AttributeModel>(this.attributeModels);
+    public Set<IAttribute> getAttributeModels() {
+        return new HashSet<IAttribute>(this.attributeModels);
     }
 
     @Override
-    public Set<AnotationModel> getAnotations() {
-        return new HashSet<AnotationModel>(this.anotationModels);
+    public Set<IAnotation> getAnotations() {
+        return new HashSet<IAnotation>(this.anotationModels);
     }
 
-    public void addAnotation(AnotationModel anot) {
+    @Override
+    public void addAnotation(IAnotation anot) {
         if (anot != null) {
             this.anotationModels.add(anot);
             this.fireModelChanged();
         }
     }
 
-    public void removeAnotation(AnotationModel anot) {
+    @Override
+    public void removeAnotation(IAnotation anot) {
         this.anotationModels.remove(anot);
         this.fireModelChanged();
     }
 
-    /**
-     * Adds new attribute to this class model. If this attribute is already here
-     * it will not be apended
-     * @param attr new attribute to add
-     */
-    public void addAttribute(AttributeModel attr) {
+    @Override
+    public void addAttribute(IAttribute attr) {
         if (attr != null) {
             this.attributeModels.add(attr);
             this.fireModelChanged();
         }
     }
 
-    /**
-     * Removes the attribute from this class model (sure if the attribute is
-     * here).
-     * @param attr
-     */
-    public void removeAttribute(AttributeModel attr) {
+    
+    @Override
+    public void removeAttribute(IAttribute attr) {
         this.attributeModels.remove(attr);
         this.fireModelChanged();
     }
 
-    /**
-     * Removes the method from this class model if there is this method.
-     * @param method a method to be removed from this model
-     */
-    public void removeMethod(MethodModel method) {
+    @Override
+    public void removeMethod(IMethod method) {
         this.methodModels.remove(method);
         this.fireModelChanged();
     }
 
-    /**
-     * Adds the method to this class if it is not already here
-     * @param method a method to be added to this model
-     */
-    public void addMethod(MethodModel method) {
+    @Override
+    public void addMethod(IMethod method) {
         if (method != null) {
             this.methodModels.add(method);
             this.fireModelChanged();
@@ -176,7 +169,7 @@ public class ClassModel extends TypeModel implements IClass {
     }
 
     @Override
-    public Collection<? extends IRelation> getRelatedClass() {
+    public Collection<IRelation> getRelatedClass() {
         List<IRelation> res = new ArrayList<IRelation>();
 
         if (this.cell == null) {
@@ -207,6 +200,16 @@ public class ClassModel extends TypeModel implements IClass {
     @Override
     public Visibility getVisibility() {
         return this.visibility;
+    }
+
+    @Override
+    public String getStereotype() {
+        return this.stereotype;
+    }
+
+    @Override
+    public void setStereotype(String stereotype) {
+        this.stereotype = stereotype;
     }
 
     

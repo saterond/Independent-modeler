@@ -1,5 +1,6 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
+import cz.cvut.indepmod.classmodel.api.model.IAnotation;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import java.awt.Frame;
@@ -17,13 +18,13 @@ public class AnotationCreatorDialog extends AnotationCreatorDialogView {
 
     private static final Logger LOG = Logger.getLogger(AnotationCreatorDialog.class.getName());
 
-    private AnotationModel returnValue;
+    private IAnotation returnValue;
 
     public AnotationCreatorDialog(Frame owner) {
         this(owner, null);
     }
 
-    public AnotationCreatorDialog(Frame owner, AnotationModel returnValue) {
+    public AnotationCreatorDialog(Frame owner, IAnotation returnValue) {
         super(owner);
 
         this.returnValue = returnValue;
@@ -31,7 +32,7 @@ public class AnotationCreatorDialog extends AnotationCreatorDialogView {
         this.setSizes();
     }
 
-    public AnotationModel getAnotation() {
+    public IAnotation getAnotation() {
         return this.returnValue;
     }
 

@@ -22,6 +22,7 @@ public abstract class AbstractEditClassDialogView extends AbstractClassModelDial
 
     public static final String TITLE = Resources.getString("dialog_edit_class_title");
     public static final String NAME_LABEL = Resources.getString("dialog_edit_class_name");
+    public static final String STEREOTYPE_LABEL = Resources.getString("dialog_edit_class_stereotype");
     public static final String ANOT_LABEL = Resources.getString("dialog_edit_class_anot_list");
     public static final String ATTRIBUTES_LABEL = Resources.getString("dialog_edit_class_attribute_list");
     public static final String METHODS_LABEL = Resources.getString("dialog_edit_class_method_list");
@@ -33,6 +34,8 @@ public abstract class AbstractEditClassDialogView extends AbstractClassModelDial
     public static final String REMOVE_ATTRIBUTE_BUTTON = Resources.getString("dialog_edit_class_rem_attribute");
     public static final String REMOVE_METHOD_BUTTON = Resources.getString("dialog_edit_class_rem_method");
     public static final String REMOVE_ANOT_BUTTON = Resources.getString("dialog_edit_class_rem_anotation");
+    protected JLabel stereotypeLabel = new JLabel(STEREOTYPE_LABEL);
+    protected JTextField stereotypeField = new JTextField();
     protected JLabel classNameLabel = new JLabel(NAME_LABEL);
     protected JTextField classNameField = new JTextField();
     protected JButton addAnotationButton = new JButton(ADD_ANOT_BUTTON);
@@ -59,9 +62,18 @@ public abstract class AbstractEditClassDialogView extends AbstractClassModelDial
 
         c = GridBagConstraintsUtils.createNewConstraints(0, 0, 1, 1);
         c.anchor = GridBagConstraints.LINE_START;
-        res.add(this.classNameLabel, c);
+        res.add(this.stereotypeLabel, c);
 
         c = GridBagConstraintsUtils.createNewConstraints(1, 0, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        res.add(this.stereotypeField, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(0, 1, 1, 1);
+        c.anchor = GridBagConstraints.LINE_START;
+        res.add(this.classNameLabel, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(1, 1, 1, 1);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
         res.add(this.classNameField, c);

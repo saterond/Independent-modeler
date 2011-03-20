@@ -37,6 +37,18 @@ public interface IAttribute {
      * Returns a collection of annotations that are related to this attribute
      * @return A collection of annotations
      */
-    public Collection<? extends IAnotation> getAnotations();
+    public Collection<IAnotation> getAnotations();
+
+    /**
+     * Adds new anotation into this attribute
+     * @param anot new annotation to be added
+     */
+    public void addAnotation(IAnotation anot);
+
+    /**
+     * Removes the anotation from this attribute
+     * @param anot an anotation to be removed
+     */
+    public void removeAnotation(IAnotation anot);
 
 }

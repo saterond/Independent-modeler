@@ -1,8 +1,9 @@
 package cz.cvut.indepmod.classmodel.workspace;
 
 import cz.cvut.indepmod.classmodel.api.model.DiagramType;
+import cz.cvut.indepmod.classmodel.api.model.IClass;
 import cz.cvut.indepmod.classmodel.api.model.IClassModelModel;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModel;
 import java.util.Collection;
 
 /**
@@ -13,18 +14,20 @@ import java.util.Collection;
 public class ClassModelModel implements IClassModelModel {
 
     private ClassModelGraph graph;
+    private DiagramDataModel dataModel;
 
-    public ClassModelModel(ClassModelGraph graph) {
+    public ClassModelModel(ClassModelGraph graph, DiagramDataModel dataModel) {
         this.graph = graph;
+        this.dataModel = dataModel;
     }
 
     @Override
-    public Collection<ClassModel> getClasses() {
+    public Collection<IClass> getClasses() {
         return this.graph.getAllClasses();
     }
 
     @Override
     public DiagramType getDiagramType() {
-        return this.graph.getDiagramType();
+        return this.dataModel.getDiagramType();
     }
 }

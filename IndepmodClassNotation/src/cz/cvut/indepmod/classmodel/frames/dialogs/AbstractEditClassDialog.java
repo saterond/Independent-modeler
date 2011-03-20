@@ -1,5 +1,6 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
+import cz.cvut.indepmod.classmodel.Globals;
 import cz.cvut.indepmod.classmodel.actions.CancelEditClassDialog;
 import cz.cvut.indepmod.classmodel.actions.EditClassDialogAddAnotation;
 import cz.cvut.indepmod.classmodel.actions.EditClassDialogAddAttribute;
@@ -8,6 +9,12 @@ import cz.cvut.indepmod.classmodel.actions.EditClassDialogRemoveAnotation;
 import cz.cvut.indepmod.classmodel.actions.EditClassDialogRemoveAttribute;
 import cz.cvut.indepmod.classmodel.actions.EditClassDialogRemoveMethod;
 import cz.cvut.indepmod.classmodel.actions.SaveEditClassDialog;
+import cz.cvut.indepmod.classmodel.api.model.IAnotation;
+import cz.cvut.indepmod.classmodel.api.model.IAttribute;
+import cz.cvut.indepmod.classmodel.api.model.IClass;
+import cz.cvut.indepmod.classmodel.api.model.IMethod;
+import cz.cvut.indepmod.classmodel.api.model.IType;
+import cz.cvut.indepmod.classmodel.util.ClassModelLibrary;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
@@ -61,6 +68,9 @@ public class AbstractEditClassDialog extends AbstractEditClassDialogView impleme
         this.initAction();
         this.initHandlers();
         this.setSizes(DEFAULT_WIDTH, DEFAULT_HEIGTH);
+
+        this.classNameField.requestFocus();
+        this.classNameField.selectAll();
     }
 
 
@@ -96,6 +106,15 @@ public class AbstractEditClassDialog extends AbstractEditClassDialogView impleme
         return this.classNameField.getText();
     }
 
+    public String getStereotype() {
+        String res = this.stereotypeField.getText().trim();
+        if (res.isEmpty()) {
+            return null;
+        } else {
+            return res;
+        }
+    }
+
     /**
      * This method is called when there is a change in the model and thus the
      * cell's view should be updated (e.g. attribute action adds an attribute)
@@ -110,8 +129,10 @@ public class AbstractEditClassDialog extends AbstractEditClassDialogView impleme
      * Returns all Types from the graph
      * @return All types which are used in the graph
      */
-    public Collection<TypeModel> getAllTypeModel() {
-        return this.graph.getAllTypes();
+    public Collection<IType> getAllTypeModel() {
+        Collection<IClass> classes = this.graph.getAllClasses();
+        Collection<IType> staticTypes = Globals.getInstance().getActualDiagramData().getStaticDataTypes();
+        return ClassModelLibrary.joinTypeCollections(classes, staticTypes);
     }
 
     @Override
@@ -140,9 +161,8 @@ public class AbstractEditClassDialog extends AbstractEditClassDialogView impleme
     private void initValues() {
         String typeName = this.classModel.getTypeName();
 
+        this.stereotypeField.setText(this.classModel.getStereotype());
         this.classNameField.setText(typeName);
-        this.classNameField.setSelectionStart(0);
-        this.classNameField.setSelectionEnd(typeName.length());
 
         this.attributeList.setModel(this.attributeListModel);
         this.methodList.setModel(this.methodListModel);
@@ -158,9 +178,9 @@ public class AbstractEditClassDialog extends AbstractEditClassDialogView impleme
      * dialog
      */
     private void loadAnotationListValues() {
-        Set<AnotationModel> anots = this.classModel.getAnotations();
+        Set<IAnotation> anots = this.classModel.getAnotations();
         this.anotationListModel.clear();
-        for (AnotationModel anot : anots) {
+        for (IAnotation anot : anots) {
             this.anotationListModel.addElement(anot);
         }
     }
@@ -170,9 +190,9 @@ public class AbstractEditClassDialog extends AbstractEditClassDialogView impleme
      * dialog
      */
     private void loadAttributeListValues() {
-        Set<AttributeModel> attributes = this.classModel.getAttributeModels();
+        Set<IAttribute> attributes = this.classModel.getAttributeModels();
         this.attributeListModel.clear();
-        for (AttributeModel attr : attributes) {
+        for (IAttribute attr : attributes) {
             this.attributeListModel.addElement(attr);
         }
     }
@@ -182,9 +202,9 @@ public class AbstractEditClassDialog extends AbstractEditClassDialogView impleme
      * dialog
      */
     private void loadMethodsListValues() {
-        Set<MethodModel> methods = this.classModel.getMethodModels();
+        Set<IMethod> methods = this.classModel.getMethodModels();
         this.methodListModel.clear();
-        for (MethodModel method : methods) {
+        for (IMethod method : methods) {
             this.methodListModel.addElement(method);
         }
     }
@@ -196,7 +216,7 @@ public class AbstractEditClassDialog extends AbstractEditClassDialogView impleme
         //this.editAttributeButton.addActionListener(new ClassModelEditClassDialogEditAttribute(this));
         this.removeAttributeButton.addActionListener(new EditClassDialogRemoveAttribute(this.classModel, this));
         this.addAnotationButton.addActionListener(new EditClassDialogAddAnotation(classModel, this));
-        this.addAttributeButton.addActionListener(new EditClassDialogAddAttribute(this.classModel, this, this.graph.getDiagramType()));
+        this.addAttributeButton.addActionListener(new EditClassDialogAddAttribute(this.classModel, this));
         this.addMethodButton.addActionListener(new EditClassDialogAddMethod(this.classModel, this));
         this.removeAnotationButton.addActionListener(new EditClassDialogRemoveAnotation(this.classModel, this));
         this.removeMethodButton.addActionListener(new EditClassDialogRemoveMethod(this.classModel, this));

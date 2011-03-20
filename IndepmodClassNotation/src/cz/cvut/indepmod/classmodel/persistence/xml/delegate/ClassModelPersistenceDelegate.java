@@ -1,9 +1,9 @@
 package cz.cvut.indepmod.classmodel.persistence.xml.delegate;
 
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
+import cz.cvut.indepmod.classmodel.api.model.IAnotation;
+import cz.cvut.indepmod.classmodel.api.model.IAttribute;
+import cz.cvut.indepmod.classmodel.api.model.IMethod;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.MethodModel;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Expression;
@@ -24,21 +24,23 @@ public class ClassModelPersistenceDelegate extends DefaultPersistenceDelegate {
         //super.initialize(type, oldInstance, newInstance, out);
 
         ClassModel cm = (ClassModel)oldInstance;
-        Set<MethodModel> methods = cm.getMethodModels();
-        Set<AttributeModel> attributes = cm.getAttributeModels();
-        Set<AnotationModel> anotations = cm.getAnotations();
+        Set<IMethod> methods = cm.getMethodModels();
+        Set<IAttribute> attributes = cm.getAttributeModels();
+        Set<IAnotation> anotations = cm.getAnotations();
 
-        for (MethodModel m : methods) {
+        for (IMethod m : methods) {
             out.writeStatement(new Statement(oldInstance, "addMethod", new Object[] {m}));
         }
 
-        for (AttributeModel a : attributes) {
+        for (IAttribute a : attributes) {
             out.writeStatement(new Statement(oldInstance, "addAttribute", new Object[] {a}));
         }
 
-        for (AnotationModel a : anotations) {
+        for (IAnotation a : anotations) {
             out.writeStatement(new Statement(oldInstance, "addAnotation", new Object[] {a}));
         }
+
+        out.writeStatement(new Statement(oldInstance, "setStereotype", new Object[] {cm.getStereotype()}));
     }
 
     @Override

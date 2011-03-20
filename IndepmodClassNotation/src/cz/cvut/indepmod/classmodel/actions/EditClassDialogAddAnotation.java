@@ -1,9 +1,9 @@
 package cz.cvut.indepmod.classmodel.actions;
 
+import cz.cvut.indepmod.classmodel.api.model.IAnotation;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AnotationCreatorDialog;
 import cz.cvut.indepmod.classmodel.resources.Resources;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -31,7 +31,7 @@ public class EditClassDialogAddAnotation extends ClassModelAbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         Frame window = WindowManager.getDefault().getMainWindow();
-        AnotationModel anot = new AnotationCreatorDialog(window).getAnotation();
+        IAnotation anot = new AnotationCreatorDialog(window).getAnotation();
 
         if (anot != null) {
             this.model.addAnotation(anot);

@@ -93,7 +93,8 @@ public class ClassModelCellFactory {
 
         //GraphConstants.setEndFill(edge.getAttributes(), true);
         GraphConstants.setLineStyle(edge.getAttributes(), GraphConstants.STYLE_ORTHOGONAL);
-        GraphConstants.setLabelAlongEdge(edge.getAttributes(), false);
+        GraphConstants.setLabelAlongEdge(edge.getAttributes(), true);
+        GraphConstants.setLabelPosition(edge.getAttributes(), new Point2D.Double(GraphConstants.PERMILLE/2, 10));
         GraphConstants.setEditable(edge.getAttributes(), false);
         GraphConstants.setMoveable(edge.getAttributes(), true);
         GraphConstants.setDisconnectable(edge.getAttributes(), false);

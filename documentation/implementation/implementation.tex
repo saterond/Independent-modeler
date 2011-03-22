@@ -46,7 +46,7 @@ The second part is called Application and consists of implementation documentati
 
 A class diagram is a basic UML\footnote{UML - Unified Modeling Language} diagram. It is probably the best known of all UML diagrams. The class diagram is used for description of system's (or program's) structure by showing its classes and their relations. In a computer engineering, class diagram is used for both conceptual modeling (business modeling) and class modeling on platform level, which is consequently translated into a programming language (into the programming code).
 
-Conceptual/Business modeling is used in early stage of software/system development. Its purpose is to depict the basic business processes
+Conceptual modeling is frequently used in early stage of software/system development. Its purpose is to depict the basic ideas of the domain that we want to build (a problem domain). It is why is this model often called Domain Object Model (DOM) or simply domain model. The domain model represents the vocabulary and key features of the problem domain. These features are represented by entities that occur in the problem domain, their attributes and relations between them. This type of model is really useful as a communication tool between several members of business team or between the business and technical team. By this model it can be also verified that the system meets the user's requirements, but only if this model is created well.
 
 Despite the fact that the diagram is called class diagram, it does not describe only the classes of the system. It describes all the data types like interfaces, enumeration types, etc. Concrete types (class, interface, etc.) are distinguished by stereotypes. All these data types are in the class diagram displayed as rectangles. These rectangles can be divided into three parts: 
 \begin{itemize}
@@ -55,7 +55,6 @@ Despite the fact that the diagram is called class diagram, it does not describe 
     \item The last, third part, contains the list of methods. Every method defines its scope, name, list of parameters and the return value. Again, there can be only methods which are important to depict a concrete problem.
 \end{itemize}
 
-Example of a class diagram (on Java platform level) can be seen in the Figure \ref{f-classDiagramExample}. There are two rectangles. First, with name IBarking, represents the interface (it has the \guillemotleft{}interface\guillemotright stereotype). This interface defines one public method with no return type (void) called bark. The second rectangle represents simple class (there is no stereotype) called Dog. The Dog class defines three public attributes (weight of the double type, name of the String type and age of the integer type) and two public methods (pee and bark), both with no return type. Between these two rectangles there is a relationship defining that the Dog class implements the IBarking interface.
 \begin{figure}[!ht]
 \begin{center}
 \includegraphics[]{img/classDiagramExample.png}
@@ -63,6 +62,8 @@ Example of a class diagram (on Java platform level) can be seen in the Figure \r
 \label{f-classDiagramExample}
 \end{center}
 \end{figure}
+
+Example of a class diagram (on Java platform level) can be seen in the Figure \ref{f-classDiagramExample}. There are two rectangles. First, with name IBarking, represents the interface (it has the \guillemotleft{}interface\guillemotright stereotype). This interface defines one public method with no return type (void) called bark. The second rectangle represents simple class (there is no stereotype) called Dog. The Dog class defines three public attributes (weight of the double type, name of the String type and age of the integer type) and two public methods (pee and bark), both with no return type. Between these two rectangles there is a relationship defining that the Dog class implements the IBarking interface. More information about class diagram can be found in \cite{UMLDistilled}.
 
 \section{Analysis}
 
@@ -80,9 +81,27 @@ There are a lot of applications that provides the class modeling. Basic appearan
 
 An application that inspired me at most was Enterprise Architect from Sparx Systems company. This application does not provide only class modeling functionality, but only this one is important because it is what this thesis deals with. The class modeling in Enterprise Architect has a lot of functionality that cannot be created during a one bachelor thesis. Thus, it has to be decided which functionality will be implemented and which will not.
 
-Every class diagram has to be able to depict the basic elements of the class diagram as were described in section \ref{section:classDiagramDescription}.
+Every class diagram modeller has to be able to depict the basic elements of the class diagram as were described in section \ref{section:classDiagramDescription}. Existing modellers provides another functionality like information about complexities of single classes, their constraints, statuses, requirements, notes and many others. It is a lot of functionality that can not be created during a one bachelor project but it can be implemented in related projects.
 
-TODO: Add the desired functionality + class diagram meta model.
+A feature that is not a common one and is implemented in the Indepmod Class Notation Modeller is an annotation list of classes, methods and attributes. Annotations are used in the Java programming language from version 1.5 and in the C\# programming language. Annotations are form of metadata which are stored in the source code. Alternative to annotations are configuration files (very often of XML type) that hold these information. These metadata are often used by frameworks. An example can be the JPA\footnote{JPA - Java Persistence API} framework of Java EE\footnote{Java EE - Java Enterprise Edition} that uses these metadata for the definition of object relation mapping (ORM)\footnote{Object Relation Mapping - a technique that maps objects from object oriented system into tables from relation database}. In a former version of java, these metadata were stored in XML configuration files. When there was a lot of classes to be configured, these configuration files were very large and confusing. On the other hand, annotations allow to specify these configurations inside the classes. This means that if you want to see or edit a class configuration, you don't have to search it in a file with maybe hundreds or thousands lines. Instead, you will open a desired class and find these information there.
+
+\subsubsection{Class Diagram Data Model}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[scale=1]{img/classDiagramMetamodel.png}
+\caption{Class Diagram Metamodel}
+\label{f-classDiagramMetamodel}
+\end{center}
+\end{figure}
+
+Figure \ref{f-classDiagramMetamodel} shows the data model of the class diagram that Indepmod Class Notation uses. Main building block of whole class diagram is the class. Every class has a visibility, a stereotype (which can be empty) and a name. Each class defines a data type identified by its name. In addition to the stereotype and the name, the class has also the list of annotations, attributes and methods.
+
+An attribute has a name, a visibility and represents a data type. This data type can be the data type of a class that we have already created or it can be another else data type (like String or int data type in Java). The attribute can also have several (or none) annotations.
+
+A method is also defined by a name and has a visibility. The attributes owned by the method represents the parameters and the data type represents what the method returns.
+
+An annotation has a name and can have several annotation attributes. Each annotation attribute has the name and a list of values.
 
 \subsection{Used Frameworks}
 
@@ -102,11 +121,11 @@ JGraph is an opensource graph visualisation library which is based on Java Swing
 
 Except the diagram visualisation, JGraph provides some other functionality like zooming of the drawing area, undo/redo support, drag\&drop of nodes and edges and many other. More information about this framework can be found in \cite{jgraphmanual}.
 
-\subsection{Design Patterns}
+%\subsection{Design Patterns}
 
-Indepmod Class Notation is created to fulfil the expectations of object oriented programming (OOP) like e.g. encapsulation, separation of interface and implementation and using of design patterns.
+%Indepmod Class Notation is created to fulfil the expectations of object oriented programming (OOP) like e.g. encapsulation, separation of interface and implementation and using of design patterns.
 
-TODO: special MVC modification (like in original Indepmod/Promod) for dialogs? AbstractFactory for Dialog Creation???
+%TODO: special MVC modification (like in original Indepmod/Promod) for dialogs? AbstractFactory for Dialog Creation???
 
 \section{Application}
 
@@ -316,6 +335,34 @@ So problem is solved. Some information like the name are stored inside the User 
 \end{center}
 \end{figure}
 
+\subsubsection{Forms}
+
+Forms (most of them are dialogs) of the Indepmod Class Notation plugin is created on Swing technology. Their classes are located in cz.cvut.indepmod.classmodel.frames.dialogs package. Every form uses the special case of MVC\footnote{MVC - Model View Controller} design pattern. Standard MVC design pattern has three single components:
+ \begin{itemize}
+    \item a model - represents the data that is processed. It can be e.g. a class instance that holds this data.
+    \item a view - presents the data to the user. It is e.g. a form with single components but it does not have to be only the form. It can be also an image or a chart. The view holds the pointer to its model so it can be refreshed when there is a change in the model.
+    \item a controller - has a pointer to both the view and the model. It performs an action when user does something (e.g. click on a button in a view) and updates the values in the model.
+\end{itemize}
+
+The MVC pattern in this project is slightly different. The view and the controller are not separated but the view is an predecessor of the controller. It is done so because it is not expected to change the view for another else. This does not violate the rule of encapsulation and in addition, the form elements (text fields, buttons, etc.) can be in the view created with protected visibility. It means that the controller can manage these elements directly.
+
+For better view of the MVC design pattern you can take a look at the Figures \ref{f-classDiagStdMVC} and \ref{f-classDiagIndepmodMVC} where is shown the principle of this design pattern.
+
+\begin{figure}[!ht]
+\begin{center}
+\subfigure[Standard MVC Design Pattern]{
+\includegraphics[scale=1]{img/MVCStandard.png}
+\label{f-classDiagStdMVC}
+}
+\subfigure[MVC Design Pattern used in the Indepmod Class Notation]{
+\includegraphics[scale=1]{img/MVCOfIndepmod.png}
+\label{f-classDiagIndepmodMVC}
+}
+\caption{Class diagrams of MVC Design patterns}
+\label{f-classDiagMVC}
+\end{center}
+\end{figure}
+
 \subsubsection{Persistence}
 \label{subsection:persistence}
 
@@ -382,6 +429,8 @@ You can see the package structure in this directory tree:
 \bibitem{netbeansWebNewFileTemplate}{\it{Netbeans Platform} [online]. 2005-06-26, 2008-04-15 [cit. 2011-03-03]. NetBeans File Template Module Tutorial. Available from WWW: \url{http://platform.netbeans.org/tutorials/60/nbm-filetemplates.html}.}
 
 \bibitem{netbeansWebWizardNewFile}{\it{Creating a Better Java Class Wizard} [online]. 2008-04-02 [cit. 2011-03-03]. Geertjan's Blog. Available from WWW: \url{http://blogs.sun.com/geertjan/entry/creating_a_better_java_class}.} %Wizard for creation of new file
+
+\bibitem{UMLDistilled}{FOWLER, Martin. \it{Destilované UML}. Prague : Grada Publishing, a.s., 2009. 176 p. ISBN 978-80-247-2062-3.}
 \end{thebibliography}
 
 \end{document}

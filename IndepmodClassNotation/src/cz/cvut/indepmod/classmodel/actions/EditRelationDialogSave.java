@@ -41,11 +41,19 @@ public class EditRelationDialogSave extends ClassModelAbstractAction {
             ICardinality endCard = this.dialog.getEndingCardinality();
             String relationName = this.dialog.getRelationName();
 
+            int lineEnd = GraphConstants.getLineEnd(edge.getAttributes());
+            int newLineEnd = this.dialog.isArrowChecked() ? GraphConstants.ARROW_SIMPLE : GraphConstants.ARROW_NONE;
+
             IRelation userObj = (IRelation) this.edge.getUserObject();
             userObj.setRelationName(relationName);
 
+
             Map attrMap = new Hashtable();
             GraphConstants.setExtraLabels(attrMap, new ICardinality[]{startCard, endCard});
+            if (lineEnd != newLineEnd) {
+                GraphConstants.setLineEnd(attrMap, newLineEnd);
+            }
+
             this.graph.getGraphLayoutCache().editCell(edge, attrMap);
         }
         this.dialog.dispose();

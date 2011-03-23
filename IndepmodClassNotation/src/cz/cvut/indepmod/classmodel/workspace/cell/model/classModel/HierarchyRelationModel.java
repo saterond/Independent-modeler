@@ -34,5 +34,4 @@ public class HierarchyRelationModel extends AbstractRelationModel {
         return this.type;
     }
 
-
 }

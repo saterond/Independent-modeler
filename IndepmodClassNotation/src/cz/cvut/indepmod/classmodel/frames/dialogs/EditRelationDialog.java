@@ -1,14 +1,16 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
 import cz.cvut.indepmod.classmodel.actions.EditRelationDialogSave;
+import cz.cvut.indepmod.classmodel.api.model.IArrowableRelation;
 import cz.cvut.indepmod.classmodel.api.model.ICardinality;
-import cz.cvut.indepmod.classmodel.api.model.IRelation;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import java.awt.Frame;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.logging.Logger;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.jgraph.graph.DefaultEdge;
@@ -26,10 +28,10 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
 
     private ClassModelGraph graph;
     private DefaultEdge edge;
-    private IRelation model;
+    private IArrowableRelation model;
     private boolean changed;
 
-    public EditRelationDialog(Frame owner, ClassModelGraph graph, DefaultEdge edge, IRelation model) {
+    public EditRelationDialog(Frame owner, ClassModelGraph graph, DefaultEdge edge, IArrowableRelation model) {
         super(owner);
 
         this.graph = graph;
@@ -66,6 +68,10 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
         }
     }
 
+    public boolean isArrowChecked() {
+        return this.arrowCheck.isSelected();
+    }
+
     @Override
     public void itemStateChanged(ItemEvent e) {
         LOG.info("property changed");
@@ -90,12 +96,21 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
 
         this.sourceCardinality.setSelectedItem(this.model.getStartCardinality());
         this.targetCardinality.setSelectedItem(this.model.getEndCardinality());
+
+        this.arrowCheck.setSelected(this.model.isArrowOnEnd());
     }
 
     private void initHandlers() {
         this.sourceCardinality.addItemListener(this);
         this.targetCardinality.addItemListener(this);
         this.nameField.getDocument().addDocumentListener(new NameFieldDocListener());
+        this.arrowCheck.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                changed = true;
+            }
+        });
     }
 
     private void initActions() {

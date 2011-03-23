@@ -6,6 +6,7 @@ import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -35,7 +36,7 @@ public abstract class AbstractEditClassDialogView extends AbstractClassModelDial
     public static final String REMOVE_METHOD_BUTTON = Resources.getString("dialog_edit_class_rem_method");
     public static final String REMOVE_ANOT_BUTTON = Resources.getString("dialog_edit_class_rem_anotation");
     protected JLabel stereotypeLabel = new JLabel(STEREOTYPE_LABEL);
-    protected JTextField stereotypeField = new JTextField();
+    protected JComboBox stereotypeField = new JComboBox();
     protected JLabel classNameLabel = new JLabel(NAME_LABEL);
     protected JTextField classNameField = new JTextField();
     protected JButton addAnotationButton = new JButton(ADD_ANOT_BUTTON);
@@ -62,21 +63,21 @@ public abstract class AbstractEditClassDialogView extends AbstractClassModelDial
 
         c = GridBagConstraintsUtils.createNewConstraints(0, 0, 1, 1);
         c.anchor = GridBagConstraints.LINE_START;
-        res.add(this.stereotypeLabel, c);
+        res.add(this.classNameLabel, c);
 
         c = GridBagConstraintsUtils.createNewConstraints(1, 0, 1, 1);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
-        res.add(this.stereotypeField, c);
+        res.add(this.classNameField, c);
 
         c = GridBagConstraintsUtils.createNewConstraints(0, 1, 1, 1);
         c.anchor = GridBagConstraints.LINE_START;
-        res.add(this.classNameLabel, c);
+        res.add(this.stereotypeLabel, c);
 
         c = GridBagConstraintsUtils.createNewConstraints(1, 1, 1, 1);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
-        res.add(this.classNameField, c);
+        res.add(this.stereotypeField, c);
 
         return res;
     }

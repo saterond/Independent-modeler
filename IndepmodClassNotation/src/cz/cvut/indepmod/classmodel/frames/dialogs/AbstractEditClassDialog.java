@@ -21,7 +21,6 @@ import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeMode
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.MethodModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ModelListener;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
 import java.awt.Frame;
 import java.util.Collection;
 import java.util.HashMap;
@@ -68,9 +67,6 @@ public class AbstractEditClassDialog extends AbstractEditClassDialogView impleme
         this.initAction();
         this.initHandlers();
         this.setSizes(DEFAULT_WIDTH, DEFAULT_HEIGTH);
-
-        this.classNameField.requestFocus();
-        this.classNameField.selectAll();
     }
 
 
@@ -107,10 +103,15 @@ public class AbstractEditClassDialog extends AbstractEditClassDialogView impleme
     }
 
     public String getStereotype() {
-        String res = this.stereotypeField.getText().trim();
+        String res = ((String)this.stereotypeField.getSelectedItem()).trim();
         if (res.isEmpty()) {
             return null;
         } else {
+            /**
+             * This is here because user can add new stereotype. If the stereotype
+             * is already in diagram data, it will not be added.
+             */
+            Globals.getInstance().getActualDiagramData().addStereotype(res);
             return res;
         }
     }
@@ -131,7 +132,7 @@ public class AbstractEditClassDialog extends AbstractEditClassDialogView impleme
      */
     public Collection<IType> getAllTypeModel() {
         Collection<IClass> classes = this.graph.getAllClasses();
-        Collection<IType> staticTypes = Globals.getInstance().getActualDiagramData().getStaticDataTypes();
+        Collection<IType> staticTypes = Globals.getInstance().getActualDiagramData().getDataTypes();
         return ClassModelLibrary.joinTypeCollections(classes, staticTypes);
     }
 
@@ -159,10 +160,19 @@ public class AbstractEditClassDialog extends AbstractEditClassDialogView impleme
      * Initializes values in the dialog according to the class model
      */
     private void initValues() {
+        Collection<String> stereotypes = Globals.getInstance().getActualDiagramData().getStereotypes();
+        String stereotype = this.classModel.getStereotype() == null ? "" : this.classModel.getStereotype();
         String typeName = this.classModel.getTypeName();
 
-        this.stereotypeField.setText(this.classModel.getStereotype());
+        this.stereotypeField.removeAllItems();
+        this.stereotypeField.setEditable(true);
+        for (String s : stereotypes) {
+            this.stereotypeField.addItem(s);
+        }
+        this.stereotypeField.setSelectedItem(stereotype);
+        
         this.classNameField.setText(typeName);
+        this.classNameField.selectAll();
 
         this.attributeList.setModel(this.attributeListModel);
         this.methodList.setModel(this.methodListModel);

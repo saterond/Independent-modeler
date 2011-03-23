@@ -7,7 +7,6 @@ import cz.cvut.indepmod.classmodel.workspace.ClassModelGraphModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelCellViewFactory;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import org.jgraph.graph.GraphLayoutCache;
@@ -20,10 +19,31 @@ import org.jgraph.graph.GraphLayoutCache;
  */
 public class DiagramDataModel {
 
+    /**
+     * Layout cache of the graph. This object storest the information about
+     * graph objects
+     */
     private GraphLayoutCache layoutCache;
+
+    /**
+     * The type of the diagram (class or business diagram)
+     */
     private DiagramType diagramType;
+
+    /**
+     * Set of static data types (String, int, ...)
+     */
     private Set<IType> staticDataTypes;
+
+    /**
+     * Set of dynamic data types which were added by the user. These data
+     * types are not classes created by the user. This types are types that
+     * are not among static data types and among created classes. It is when
+     * user want to add an attribut of e.g. JTextField type and type it by hand.
+     */
     private Set<IType> dynamicDataTypes;
+
+    private Set<String> stereotypes;
 
     public DiagramDataModel() {
         this(new GraphLayoutCache(
@@ -32,9 +52,9 @@ public class DiagramDataModel {
              DiagramType.CLASS);
     }
 
-    public DiagramDataModel(GraphLayoutCache layoutCache, DiagramType diagramType) {
-        this.layoutCache = layoutCache;
-        this.diagramType = diagramType;
+    public DiagramDataModel(GraphLayoutCache cache, DiagramType diagType) {
+        this.layoutCache = cache;
+        this.diagramType = diagType;
 
         if (this.layoutCache == null) {
             this.layoutCache = new GraphLayoutCache(
@@ -43,23 +63,57 @@ public class DiagramDataModel {
         }
 
         this.dynamicDataTypes = new HashSet<IType>();
+        this.stereotypes = new HashSet<String>();
+        this.stereotypes.add(""); //No stereotype
 
         this.initStaticTypes();
     }
 
+    /**
+     * Returns the GraphLayoutCache instance
+     * @return
+     */
     public GraphLayoutCache getLayoutCache() {
         return layoutCache;
     }
 
+    /**
+     * Returns the diagram type
+     * @return
+     */
     public DiagramType getDiagramType() {
         return diagramType;
     }
 
+    /**
+     * Returns a collection of static data types
+     * @return
+     */
     public Collection<IType> getStaticDataTypes() {
+        return new HashSet<IType>(this.staticDataTypes);
+    }
+
+    /**
+     * Returns a collection of dynamic data types
+     * @return
+     */
+    public Collection<IType> getDynamicDataTypes() {
+        return new HashSet<IType>(this.dynamicDataTypes);
+    }
+
+    /**
+     * Returns a collection of all data types (static + dynamic)
+     * @return
+     */
+    public Collection<IType> getDataTypes() {
         Collection<IType> res = ClassModelLibrary.joinTypeCollections(this.staticDataTypes, this.dynamicDataTypes);
         return res;
     }
 
+    /**
+     * Adds new dynamic data type (in case there is not such a type yet)
+     * @param type
+     */
     public void addDynamicDataType(IType type) {
         if (this.staticDataTypes.contains(type)) {
             return;
@@ -67,6 +121,21 @@ public class DiagramDataModel {
         this.dynamicDataTypes.add(type);
     }
 
+    /**
+     * Returns a collection of stereotypes
+     * @return
+     */
+    public Collection<String> getStereotypes() {
+        return new HashSet<String>(this.stereotypes);
+    }
+
+    /**
+     * Adds a new stereotype, but only if it is not already there.
+     * @param stereotype
+     */
+    public void addStereotype(String stereotype) {
+        this.stereotypes.add(stereotype);
+    }
 
     /**
      * TODO - this will be loaded from a XML. Only temporary

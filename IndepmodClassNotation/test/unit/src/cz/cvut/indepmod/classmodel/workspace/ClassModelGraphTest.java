@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 import java.util.HashMap;
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
-import cz.cvut.indepmod.classmodel.api.model.IClass;
+import cz.cvut.indepmod.classmodel.api.model.IElement;
 import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModelFactory;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import org.jgraph.graph.DefaultGraphCell;
@@ -44,13 +44,13 @@ public class ClassModelGraphTest {
 
     @Test
     public void testGetAllClasses() {
-        Collection<IClass> types = this.graph.getAllClasses();
+        Collection<IElement> types = this.graph.getAllClasses();
         assertEquals(1, types.size());
 
-        Iterator<IClass> it = types.iterator();
+        Iterator<IElement> it = types.iterator();
         boolean isThere = false;
         while (it.hasNext()) {
-            IClass model = it.next();
+            IElement model = it.next();
             assertNotNull(model);
             if (model.toString().equals(Common.CLASS_NAME) && model.getTypeName().equals(Common.CLASS_NAME)) {
                 isThere = true;

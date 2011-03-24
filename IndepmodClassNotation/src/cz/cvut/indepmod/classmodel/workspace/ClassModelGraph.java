@@ -6,9 +6,9 @@ import cz.cvut.indepmod.classmodel.actions.EditAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModelListener;
 import cz.cvut.indepmod.classmodel.api.model.DiagramType;
-import cz.cvut.indepmod.classmodel.api.model.IClass;
+import cz.cvut.indepmod.classmodel.api.model.IElement;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelCellFactory;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
 import org.jgraph.JGraph;
 import org.jgraph.event.GraphSelectionEvent;
@@ -48,14 +48,14 @@ public class ClassModelGraph extends JGraph {
      * Returns collection of all classes that are in the Graph
      * @return Colection of all classes
      */
-    public Collection<IClass> getAllClasses() {
-        Collection<IClass> res = new LinkedList<IClass>();
+    public Collection<IElement> getAllClasses() {
+        Collection<IElement> res = new LinkedList<IElement>();
         CellView[] cw = this.getGraphLayoutCache().getCellViews();
         for (int i = 0; i < cw.length; i++) {
             DefaultGraphCell cell = (DefaultGraphCell) cw[i].getCell();
             Object userObject = cell.getUserObject();
-            if (userObject instanceof ClassModel) {
-                res.add((ClassModel) userObject);
+            if (userObject instanceof AbstractElementModel) {
+                res.add((AbstractElementModel) userObject);
             }
         }
         return res;

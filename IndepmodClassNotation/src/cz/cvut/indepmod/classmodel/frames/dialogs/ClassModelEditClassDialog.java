@@ -1,7 +1,7 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import java.awt.Frame;
 import org.jgraph.graph.DefaultGraphCell;
 
@@ -16,7 +16,7 @@ public class ClassModelEditClassDialog extends AbstractEditClassDialog {
             Frame owner,
             ClassModelGraph graph,
             DefaultGraphCell cell,
-            ClassModel classModel) {
+            AbstractElementModel classModel) {
         super(owner, graph, cell, classModel);
     }
 

@@ -23,6 +23,8 @@ public class ToolChooserView extends TopComponent {
     
     private final Icon CONTROL_ICON = createImageIcon("resource/control.gif");
     private final Icon CLASS_ICON = createImageIcon("resource/class.gif");
+    private final Icon INTERFACE_ICON = createImageIcon("resource/interface.gif");
+    private final Icon ENUMERATION_ICON = createImageIcon("resource/enum.gif");
     private final Icon RELATION_ICON = createImageIcon("resource/relation.gif");
     private final Icon GENERALIZATION_ICON = createImageIcon("resource/generalization.gif");
     private final Icon REALIZATION_ICON = createImageIcon("resource/realization.gif");
@@ -32,6 +34,8 @@ public class ToolChooserView extends TopComponent {
     private ButtonGroup buttonGroup = new ButtonGroup();
     protected JToggleButton controllButton = new JToggleButton(ToolChooserModel.TOOL_CONTROL_NAME, CONTROL_ICON);
     protected JToggleButton addClassButton = new JToggleButton(ToolChooserModel.TOOL_ADD_CLASS_NAME, CLASS_ICON);
+    protected JToggleButton addInterfaceButton = new JToggleButton(ToolChooserModel.TOOL_ADD_INTERFACE_NAME, INTERFACE_ICON);
+    protected JToggleButton addEnumerationButton = new JToggleButton(ToolChooserModel.TOOL_ADD_ENUMERATION_NAME, ENUMERATION_ICON);
     protected JToggleButton addRelationButton = new JToggleButton(RELATION_ICON);
     protected JToggleButton addGeneralizationButton = new JToggleButton(GENERALIZATION_ICON);
     protected JToggleButton addRealisationButton = new JToggleButton(REALIZATION_ICON);
@@ -46,6 +50,8 @@ public class ToolChooserView extends TopComponent {
     public void disableToolChooser() {
         this.controllButton.setEnabled(false);
         this.addClassButton.setEnabled(false);
+        this.addInterfaceButton.setEnabled(false);
+        this.addEnumerationButton.setEnabled(false);
         this.addRelationButton.setEnabled(false);
         this.addGeneralizationButton.setEnabled(false);
         this.addRealisationButton.setEnabled(false);
@@ -56,6 +62,8 @@ public class ToolChooserView extends TopComponent {
     public void enableToolChooser() {
         this.controllButton.setEnabled(true);
         this.addClassButton.setEnabled(true);
+        this.addInterfaceButton.setEnabled(true);
+        this.addEnumerationButton.setEnabled(true);
         this.addRelationButton.setEnabled(true);
         this.addGeneralizationButton.setEnabled(true);
         this.addRealisationButton.setEnabled(true);
@@ -118,6 +126,21 @@ public class ToolChooserView extends TopComponent {
         c.anchor = GridBagConstraints.LINE_START;
         c.insets = new Insets(0, 3, 0, 0);
         res.add(this.addClassButton, c);
+
+        c = new GridBagConstraints();
+        c.gridx = 1;
+        c.gridy = 1;
+        c.weightx = 0.5;
+        c.insets = new Insets(0, 3, 0, 0);
+        res.add(this.addInterfaceButton, c);
+
+        c = new GridBagConstraints();
+        c.gridx = 2;
+        c.gridy = 1;
+        c.weightx = 0.5;
+        c.anchor = GridBagConstraints.LINE_END;
+        c.insets = new Insets(0, 3, 0, 0);
+        res.add(this.addEnumerationButton, c);
 
         return res;
     }
@@ -198,6 +221,8 @@ public class ToolChooserView extends TopComponent {
     private void initButtonGroup() {
         this.buttonGroup.add(this.controllButton);
         this.buttonGroup.add(this.addClassButton);
+        this.buttonGroup.add(this.addInterfaceButton);
+        this.buttonGroup.add(this.addEnumerationButton);
         this.buttonGroup.add(this.addRelationButton);
         this.buttonGroup.add(this.addGeneralizationButton);
         this.buttonGroup.add(this.addRealisationButton);

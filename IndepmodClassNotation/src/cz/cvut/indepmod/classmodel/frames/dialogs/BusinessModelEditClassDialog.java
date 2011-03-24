@@ -1,7 +1,7 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import java.awt.Frame;
 import javax.swing.JPanel;
 import org.jgraph.graph.DefaultGraphCell;
@@ -20,7 +20,7 @@ public class BusinessModelEditClassDialog extends AbstractEditClassDialog {
             Frame owner,
             ClassModelGraph graph,
             DefaultGraphCell cell,
-            ClassModel classModel) {
+            AbstractElementModel classModel) {
         super(owner, graph, cell, classModel);
     }
 
@@ -31,6 +31,11 @@ public class BusinessModelEditClassDialog extends AbstractEditClassDialog {
 
     @Override
     protected JPanel initMethodPanel() {
+        return null;
+    }
+
+    @Override
+    protected JPanel initPropertyPanel() {
         return null;
     }
 

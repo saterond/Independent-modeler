@@ -4,7 +4,9 @@ import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.api.model.RelationType;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.EnumerationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.HierarchyRelationModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.InterfaceModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.RelationModel;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
@@ -34,6 +36,14 @@ public class ClassModelCellFactory {
             case TOOL_ADD_CLASS:
                 cell = new ClassModelClassCell();
                 cell.setUserObject(new ClassModel());
+                break;
+            case TOOL_ADD_INTERFACE:
+                cell = new ClassModelClassCell();
+                cell.setUserObject(new InterfaceModel());
+                break;
+            case TOOL_ADD_ENUMERATION:
+                cell = new ClassModelClassCell();
+                cell.setUserObject(new EnumerationModel());
                 break;
             default:
                 LOG.severe("Unknown selected tool");

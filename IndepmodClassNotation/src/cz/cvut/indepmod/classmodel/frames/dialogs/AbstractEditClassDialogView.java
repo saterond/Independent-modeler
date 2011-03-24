@@ -6,6 +6,7 @@ import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -24,7 +25,9 @@ public abstract class AbstractEditClassDialogView extends AbstractClassModelDial
     public static final String TITLE = Resources.getString("dialog_edit_class_title");
     public static final String NAME_LABEL = Resources.getString("dialog_edit_class_name");
     public static final String STEREOTYPE_LABEL = Resources.getString("dialog_edit_class_stereotype");
+    public static final String ABSTRACT_LABEL = Resources.getString("dialog_edit_class_abstract");
     public static final String ANOT_LABEL = Resources.getString("dialog_edit_class_anot_list");
+    public static final String PROPERTY_LABEL = Resources.getString("dialog_edit_class_property_list");
     public static final String ATTRIBUTES_LABEL = Resources.getString("dialog_edit_class_attribute_list");
     public static final String METHODS_LABEL = Resources.getString("dialog_edit_class_method_list");
     public static final String SAVE_BUTTON = Resources.getString("dialog_edit_class_save");
@@ -39,6 +42,7 @@ public abstract class AbstractEditClassDialogView extends AbstractClassModelDial
     protected JComboBox stereotypeField = new JComboBox();
     protected JLabel classNameLabel = new JLabel(NAME_LABEL);
     protected JTextField classNameField = new JTextField();
+    protected JCheckBox abstractCheckBox = new JCheckBox(ABSTRACT_LABEL);
     protected JButton addAnotationButton = new JButton(ADD_ANOT_BUTTON);
     protected JButton removeAnotationButton = new JButton(REMOVE_ANOT_BUTTON);
     protected JButton addAttributeButton = new JButton(ADD_ATTRIBUTE_BUTTON);
@@ -78,6 +82,18 @@ public abstract class AbstractEditClassDialogView extends AbstractClassModelDial
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
         res.add(this.stereotypeField, c);
+
+        return res;
+    }
+
+    protected JPanel initPropertyPanel() {
+        JPanel res = new JPanel(new GridBagLayout());
+        res.setBorder(new TitledBorder(PROPERTY_LABEL));
+        GridBagConstraints c = null;
+
+        c = GridBagConstraintsUtils.createNewConstraints(0, 0, 1, 1);
+        c.anchor = GridBagConstraints.LINE_START;
+        res.add(this.abstractCheckBox, c);
 
         return res;
     }
@@ -160,9 +176,17 @@ public abstract class AbstractEditClassDialogView extends AbstractClassModelDial
             this.add(classNamePanel, c);
         }
 
+        JPanel propertyPanel = this.initPropertyPanel();
+        if (propertyPanel != null) {
+            c = GridBagConstraintsUtils.createNewConstraints(0, 1, 2, 1);
+            c.fill = GridBagConstraints.HORIZONTAL;
+            c.weightx = 0.5;
+            this.add(propertyPanel, c);
+        }
+
         JPanel anotPanel = this.initAnotationPanel();
         if (anotPanel != null) {
-            c = GridBagConstraintsUtils.createNewConstraints(0, 1, 2, 1);
+            c = GridBagConstraintsUtils.createNewConstraints(0, 2, 2, 1);
             c.fill = GridBagConstraints.BOTH;
             c.weightx = 0.5;
             c.weighty = 0.5;
@@ -171,7 +195,7 @@ public abstract class AbstractEditClassDialogView extends AbstractClassModelDial
 
         JPanel attrPanel = this.initAttributePanel();
         if (attrPanel != null) {
-            c = GridBagConstraintsUtils.createNewConstraints(0, 2, 2, 1);
+            c = GridBagConstraintsUtils.createNewConstraints(0, 3, 2, 1);
             c.fill = GridBagConstraints.BOTH;
             c.weightx = 0.5;
             c.weighty = 0.5;
@@ -180,19 +204,19 @@ public abstract class AbstractEditClassDialogView extends AbstractClassModelDial
 
         JPanel methodPanel = this.initMethodPanel();
         if (methodPanel != null) {
-            c = GridBagConstraintsUtils.createNewConstraints(0, 3, 2, 1);
+            c = GridBagConstraintsUtils.createNewConstraints(0, 4, 2, 1);
             c.fill = GridBagConstraints.BOTH;
             c.weightx = 0.5;
             c.weighty = 0.5;
             this.add(methodPanel, c);
         }
 
-        c = GridBagConstraintsUtils.createNewConstraints(0, 4, 1, 1);
+        c = GridBagConstraintsUtils.createNewConstraints(0, 5, 1, 1);
         c.anchor = GridBagConstraints.LINE_END;
         c.weightx = 0.5;
         this.add(this.saveButton, c);
 
-        c = GridBagConstraintsUtils.createNewConstraints(1, 4, 1, 1);
+        c = GridBagConstraintsUtils.createNewConstraints(1, 5, 1, 1);
         c.anchor = GridBagConstraints.LINE_START;
         c.weightx = 0.5;
         this.add(this.cancelButton, c);

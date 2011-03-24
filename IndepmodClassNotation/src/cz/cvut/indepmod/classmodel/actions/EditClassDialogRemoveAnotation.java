@@ -3,7 +3,7 @@ package cz.cvut.indepmod.classmodel.actions;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import java.awt.event.ActionEvent;
 
 /**
@@ -14,10 +14,10 @@ import java.awt.event.ActionEvent;
 public class EditClassDialogRemoveAnotation extends ClassModelAbstractAction {
 
     public static final String ACTION_NAME = Resources.getString("action_edit_class_dialog_rem_anot");
-    private ClassModel model;
+    private AbstractElementModel model;
     private AbstractEditClassDialog dialog;
 
-    public EditClassDialogRemoveAnotation(ClassModel model, AbstractEditClassDialog dialog) {
+    public EditClassDialogRemoveAnotation(AbstractElementModel model, AbstractEditClassDialog dialog) {
         super(ACTION_NAME, null);
 
         this.model = model;

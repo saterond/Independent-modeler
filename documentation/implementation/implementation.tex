@@ -18,6 +18,8 @@
 \newcommand\luckyparindent{1.2cm}
 \parindent=\luckyparindent
 
+\setcounter{secnumdepth}{5}
+
 %\setlength{\parindent}{1pt}
 %\setlength{\parskip}{1pt plus 1pt minus 0.5pt}
 
@@ -337,7 +339,9 @@ So problem is solved. Some information like the name are stored inside the User 
 
 \subsubsection{Forms}
 
-Forms (most of them are dialogs) of the Indepmod Class Notation plugin is created on Swing technology. Their classes are located in cz.cvut.indepmod.classmodel.frames.dialogs package. Every form uses the special case of MVC\footnote{MVC - Model View Controller} design pattern. Standard MVC design pattern has three single components:
+Forms (most of them are dialogs) of the Indepmod Class Notation plugin is created on Swing technology. Their classes are located in cz.cvut.indepmod.classmodel.frames.dialogs package.
+
+Every form uses the special case of MVC\footnote{MVC - Model View Controller} design pattern. Standard MVC design pattern has three single components:
  \begin{itemize}
     \item a model - represents the data that is processed. It can be e.g. a class instance that holds this data.
     \item a view - presents the data to the user. It is e.g. a form with single components but it does not have to be only the form. It can be also an image or a chart. The view holds the pointer to its model so it can be refreshed when there is a change in the model.
@@ -346,7 +350,7 @@ Forms (most of them are dialogs) of the Indepmod Class Notation plugin is create
 
 The MVC pattern in this project is slightly different. The view and the controller are not separated but the view is an predecessor of the controller. It is done so because it is not expected to change the view for another else. This does not violate the rule of encapsulation and in addition, the form elements (text fields, buttons, etc.) can be in the view created with protected visibility. It means that the controller can manage these elements directly.
 
-For better view of the MVC design pattern you can take a look at the Figures \ref{f-classDiagStdMVC} and \ref{f-classDiagIndepmodMVC} where is shown the principle of this design pattern.
+For better view of the MVC design pattern you can take a look at the Figures \ref{f-classDiagStdMVC} and \ref{f-classDiagIndepmodMVC} where is shown the principle of this design pattern. Detailed info about this design pattern can be found in \cite{DesignPatterns}.
 
 \begin{figure}[!ht]
 \begin{center}
@@ -362,6 +366,31 @@ For better view of the MVC design pattern you can take a look at the Figures \re
 \label{f-classDiagMVC}
 \end{center}
 \end{figure}
+
+Another design pattern that some forms use is the Abstract Factory in conjunction with Template method. Usage of this design pattern was necessary because Indepmod Class Notation creates two types of diagrams - class and business diagram. The class diagram lets the user edit all elements of classes (attributes, annotations, methods) but the business diagram lets the user edit only the attributes. When user make the action to edit the class, Indepmod Class Notation shows appropriate dialog according to the type of the model.
+
+Forms that are based on this design pattern are forms for class edition and attribute creation. In this thesis I will explain only the principle of the form for class edition. The form for attribute creation is analogous.
+
+The form for class edition of the business diagram is defined by BusinessModelEditClassDialog class and the form for class edition of the class diagram is defined by ClassModelEditClassDialog. These dialogs have many things in common. This is why they have a common predecessors. These predecessors looks like any other dialog except that they are abstract\footnote{Abstract class - it can't create its instances}. These abstract predecessors are AbstractEditClassDialogView (a view) and AbstractEditClassDialog (a controller). 
+
+The abstract view is able to create the whole UI for class diagram class edition. Component initialization is divided into several protected methods. These methods creates single parts of the UI. Their names are: 
+
+\begin{itemize}
+    \item initClassNamePanel - creates the panel for name and stereotype edition
+    \item initAnotationPanel - creates the panel for annotation edition
+    \item initAttributePanel - creates the panel for attribute edition
+    \item initMethodPanel - creates the panel for method edition
+\end{itemize}
+
+These methods are treated as template methods so they can be overrode. The abstract controller behaves like any other controller of this program.
+
+The BusinessModelEditClassDialog is extended from the abstract controller and overrides methods that creates annotation and method panels. It overrides them in a way that it returns an null pointer. The abstract view compose its UI of these parts and when a part is null, it is not added there. The ClassModelEditClassDialog does not override any method because all desired functionality is done in its predecessors.
+
+These dialogs are created by an Abstract Factory. The Abstract Factory design consists of three parts. The first part is an abstract class (the abstract factory). This class defines the interface for concrete classes and a static method that returns an implementation of concrete factory. The second part is consisted of these concrete factories. Their responsibility is to create single components according to the interface of the abstract factory. The third part is consisted of components which are created by these concrete factories.
+
+TODO - The image of abstract factory.
+
+The Abstract Factory is situated in the cz.cvut.indepmod.classmodel.frames.dialogs.factory package and is called AbstractDialogFactory. It has a static method which accepts the type of the diagram and returns an instance of a concrete factory. This concrete factory creates the dialog. Please take a look at the javadoc of this project for more information about the names of methods, etc. For more information about the Abstract Factory design pattern take a look at the \cite{DesignPatterns}.
 
 \subsubsection{Persistence}
 \label{subsection:persistence}
@@ -431,6 +460,8 @@ You can see the package structure in this directory tree:
 \bibitem{netbeansWebWizardNewFile}{\it{Creating a Better Java Class Wizard} [online]. 2008-04-02 [cit. 2011-03-03]. Geertjan's Blog. Available from WWW: \url{http://blogs.sun.com/geertjan/entry/creating_a_better_java_class}.} %Wizard for creation of new file
 
 \bibitem{UMLDistilled}{FOWLER, Martin. \it{Destilované UML}. Prague : Grada Publishing, a.s., 2009. 176 p. ISBN 978-80-247-2062-3.}
+
+\bibitem{DesignPatterns}{PECINOVSKÝ, Rudolf. \it{Návrhové Vzory}. Brno : Computer Press, a.s., 2007. 527 p. ISBN 978-80-251-1582-4.}
 \end{thebibliography}
 
 \end{document}

@@ -6,7 +6,7 @@ import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelAttrCreatorDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditClassDialog;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import java.util.Collection;
 import org.jgraph.graph.DefaultGraphCell;
 import org.openide.windows.WindowManager;
@@ -19,7 +19,7 @@ import org.openide.windows.WindowManager;
 public class ClassModelDialogFactory extends AbstractDialogFactory {
 
     @Override
-    public AbstractEditClassDialog createEditClassDialog(ClassModelGraph graph, DefaultGraphCell cell, ClassModel model) {
+    public AbstractEditClassDialog createEditClassDialog(ClassModelGraph graph, DefaultGraphCell cell, AbstractElementModel model) {
         AbstractEditClassDialog dialog = new ClassModelEditClassDialog(
                 WindowManager.getDefault().getMainWindow(),
                 graph, 

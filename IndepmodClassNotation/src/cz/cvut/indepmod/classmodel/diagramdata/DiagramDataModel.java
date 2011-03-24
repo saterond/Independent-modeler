@@ -151,5 +151,6 @@ public class DiagramDataModel {
         this.staticDataTypes.add(new TypeModel("double"));
         this.staticDataTypes.add(new TypeModel("float"));
         this.staticDataTypes.add(new TypeModel("void"));
+        this.staticDataTypes.add(new TypeModel(""));
     }
 }

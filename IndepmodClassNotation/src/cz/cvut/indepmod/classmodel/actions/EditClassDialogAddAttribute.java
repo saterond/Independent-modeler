@@ -6,7 +6,7 @@ import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.factory.AbstractDialogFactory;
 import cz.cvut.indepmod.classmodel.resources.Resources;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import org.openide.windows.WindowManager;
@@ -23,11 +23,11 @@ import org.openide.windows.WindowManager;
 public class EditClassDialogAddAttribute extends ClassModelAbstractAction {
 
     public static final String ACTION_NAME = Resources.getString("action_edit_class_dialog_add_attr");
-    private ClassModel model;
+    private AbstractElementModel model;
     private AbstractEditClassDialog dialog;
 
     public EditClassDialogAddAttribute(
-            ClassModel model,
+            AbstractElementModel model,
             AbstractEditClassDialog dialog) {
         super(ACTION_NAME, null);
         this.model = model;

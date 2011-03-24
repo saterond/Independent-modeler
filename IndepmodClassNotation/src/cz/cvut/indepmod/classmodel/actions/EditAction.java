@@ -8,7 +8,7 @@ import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelClassCell;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelRelation;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.RelationModel;
 
 import java.awt.event.ActionEvent;
@@ -57,7 +57,7 @@ public class EditAction extends ClassModelAbstractAction {
         LOG.info("edit of Class");
         try {
             DiagramType diagramType = Globals.getInstance().getActualDiagramData().getDiagramType();
-            ClassModel model = (ClassModel) cell.getUserObject();
+            AbstractElementModel model = (AbstractElementModel) cell.getUserObject();
             AbstractDialogFactory factory = AbstractDialogFactory.getFactory(diagramType);
             
             factory.createEditClassDialog(graph, cell, model);

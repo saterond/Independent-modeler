@@ -115,6 +115,8 @@ public class ClassModelMarqueeHandler extends BasicMarqueeHandler {
         }
 
         switch (tool) {
+            case TOOL_ADD_INTERFACE:
+            case TOOL_ADD_ENUMERATION:
             case TOOL_ADD_CLASS:
                 return true;
             default:

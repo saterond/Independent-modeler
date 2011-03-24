@@ -2,7 +2,7 @@ package cz.cvut.indepmod.classmodel.actions;
 
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
 import cz.cvut.indepmod.classmodel.resources.Resources;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.MethodModel;
 import java.awt.event.ActionEvent;
 
@@ -14,10 +14,10 @@ import java.awt.event.ActionEvent;
 public class EditClassDialogRemoveMethod extends ClassModelAbstractAction {
 
     public static final String ACTION_NAME = Resources.getString("action_edit_class_dialog_rem_method");
-    private ClassModel model;
+    private AbstractElementModel model;
     private AbstractEditClassDialog dialog;
 
-    public EditClassDialogRemoveMethod(ClassModel model, AbstractEditClassDialog dialog) {
+    public EditClassDialogRemoveMethod(AbstractElementModel model, AbstractEditClassDialog dialog) {
         super(ACTION_NAME, null);
         this.model = model;
         this.dialog = dialog;

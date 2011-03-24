@@ -3,7 +3,7 @@ package cz.cvut.indepmod.classmodel.persistence.xml.delegate;
 import cz.cvut.indepmod.classmodel.api.model.IAnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IMethod;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Expression;
@@ -15,15 +15,15 @@ import java.util.Set;
  * Time: 14:49:43
  * @author Lucky
  *
- * This class is XML Persistence delegate for ClassModel objects
+ * This class is XML Persistence delegate for AbstractElementModel objects
  */
-public class ClassModelPersistenceDelegate extends DefaultPersistenceDelegate {
+public class AbstractElementlPersistenceDelegate extends DefaultPersistenceDelegate {
 
     @Override
     protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder out) {
         //super.initialize(type, oldInstance, newInstance, out);
 
-        ClassModel cm = (ClassModel)oldInstance;
+        AbstractElementModel cm = (AbstractElementModel)oldInstance;
         Set<IMethod> methods = cm.getMethodModels();
         Set<IAttribute> attributes = cm.getAttributeModels();
         Set<IAnotation> anotations = cm.getAnotations();
@@ -45,7 +45,7 @@ public class ClassModelPersistenceDelegate extends DefaultPersistenceDelegate {
 
     @Override
     protected Expression instantiate(Object oldInstance, Encoder out) {
-        ClassModel cm = (ClassModel)oldInstance;
+        AbstractElementModel cm = (AbstractElementModel)oldInstance;
         return new Expression(
                 oldInstance,
                 oldInstance.getClass(),

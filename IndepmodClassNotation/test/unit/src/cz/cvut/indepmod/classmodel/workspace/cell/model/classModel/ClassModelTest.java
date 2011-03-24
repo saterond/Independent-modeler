@@ -29,9 +29,9 @@ import static org.junit.Assert.*;
  */
 public class ClassModelTest {
 
-    private ClassModel model;
-    private ClassModel model2;
-    private ClassModel model3;
+    private AbstractElementModel model;
+    private AbstractElementModel model2;
+    private AbstractElementModel model3;
 
     @Before
     public void setUp() {
@@ -60,7 +60,7 @@ public class ClassModelTest {
 
     @Test
     public void testClassInitialization() {
-        ClassModel m = null;
+        AbstractElementModel m = null;
 
         m = new ClassModel();
         assertTrue(m.getAttributeModels().isEmpty());
@@ -92,7 +92,7 @@ public class ClassModelTest {
     }
 
     /**
-     * Test of toString method, of class ClassModel.
+     * Test of toString method, of class AbstractElementModel.
      */
     @Test
     public void testToString() {
@@ -100,7 +100,7 @@ public class ClassModelTest {
     }
 
     /**
-     * Test of getMethodModels method, of class ClassModel.
+     * Test of getMethodModels method, of class AbstractElementModel.
      */
     @Test
     public void testGetMethodModels() {
@@ -109,7 +109,7 @@ public class ClassModelTest {
     }
 
     /**
-     * Test of getAttributeModels method, of class ClassModel.
+     * Test of getAttributeModels method, of class AbstractElementModel.
      */
     @Test
     public void testGetAttributeModels() {
@@ -125,11 +125,11 @@ public class ClassModelTest {
     }
 
     /**
-     * Test of addAttribute method, of class ClassModel.
+     * Test of addAttribute method, of class AbstractElementModel.
      */
     @Test
     public void testAddAttribute() {
-        ClassModel m = new ClassModel();
+        AbstractElementModel m = new ClassModel();
         assertEquals(0, m.getAttributeModels().size());
 
         m.addAttribute(new AttributeModel(new TypeModel(Common.TYPE_NAME), Common.ATTRIBUTE_NAME));
@@ -141,11 +141,11 @@ public class ClassModelTest {
     }
 
     /**
-     * Test of removeAttribute method, of class ClassModel.
+     * Test of removeAttribute method, of class AbstractElementModel.
      */
     @Test
     public void testRemoveAttribute() {
-        ClassModel m = new ClassModel();
+        AbstractElementModel m = new ClassModel();
         assertEquals(0, m.getAttributeModels().size());
 
         m.addAttribute(new AttributeModel(new TypeModel(Common.TYPE_NAME), Common.ATTRIBUTE_NAME));
@@ -156,11 +156,11 @@ public class ClassModelTest {
     }
 
     /**
-     * Test of removeMethod method, of class ClassModel.
+     * Test of removeMethod method, of class AbstractElementModel.
      */
     @Test
     public void testRemoveMethod() {
-        ClassModel m = new ClassModel(Common.CLASS_NAME);
+        AbstractElementModel m = new ClassModel(Common.CLASS_NAME);
 
         assertEquals(0, m.getMethodModels().size());
 
@@ -178,11 +178,11 @@ public class ClassModelTest {
     }
 
     /**
-     * Test of addMethod method, of class ClassModel.
+     * Test of addMethod method, of class AbstractElementModel.
      */
     @Test
     public void testAddMethod() {
-        ClassModel m = new ClassModel(Common.CLASS_NAME);
+        AbstractElementModel m = new ClassModel(Common.CLASS_NAME);
 
         assertEquals(0, m.getMethodModels().size());
 
@@ -195,7 +195,7 @@ public class ClassModelTest {
 
     @Test
     public void testAddAndRemoveAnotation() {
-        ClassModel m = new ClassModel(Common.CLASS_NAME);
+        AbstractElementModel m = new ClassModel(Common.CLASS_NAME);
 
         AnotationModel anotMod1 = new AnotationModel(Common.ANOT1);
         AnotationModel anotMod2 = new AnotationModel(Common.ANOT2);
@@ -297,7 +297,7 @@ public class ClassModelTest {
     }
 
 
-    private void doAnotationTest(ClassModel cm) {
+    private void doAnotationTest(AbstractElementModel cm) {
         boolean isAnot1 = false, isAnot2 = false, isAnot3 = false;
         for (IAnotation anot : model.getAnotations()) {
             if (anot.getName().equals(Common.ANOT1)) {

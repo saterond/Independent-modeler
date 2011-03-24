@@ -14,13 +14,13 @@ public interface IRelation {
      * Returns the class from where this relation starts
      * @return starting class
      */
-    public IClass getStartingClass();
+    public IElement getStartingClass();
 
     /**
      * Returns the class where this relation ends
      * @return ending class
      */
-    public IClass getEndingClass();
+    public IElement getEndingClass();
 
     /**
      * Returns the starting cardinality

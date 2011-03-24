@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 
-import cz.cvut.indepmod.classmodel.api.model.IClass;
+import cz.cvut.indepmod.classmodel.api.model.IElement;
 import cz.cvut.indepmod.classmodel.api.model.IRelation;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
@@ -36,23 +36,23 @@ public abstract class AbstractRelationModel extends AbstractModel implements IRe
     }
 
     @Override
-    public IClass getStartingClass() {
+    public IElement getStartingClass() {
         this.verifyCell();
 
         DefaultPort p = (DefaultPort) this.cell.getSource();
         DefaultGraphCell c = (DefaultGraphCell) p.getParent();
-        IClass clazz = (IClass) c.getUserObject();
+        IElement clazz = (IElement) c.getUserObject();
 
         return clazz;
     }
 
     @Override
-    public IClass getEndingClass() {
+    public IElement getEndingClass() {
         this.verifyCell();
 
         DefaultPort p = (DefaultPort) this.cell.getTarget();
         DefaultGraphCell c = (DefaultGraphCell) p.getParent();
-        IClass clazz = (IClass) c.getUserObject();
+        IElement clazz = (IElement) c.getUserObject();
 
         return clazz;
     }

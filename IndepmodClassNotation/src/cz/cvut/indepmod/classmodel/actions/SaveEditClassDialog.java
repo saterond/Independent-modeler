@@ -4,7 +4,7 @@ import cz.cvut.indepmod.classmodel.Globals;
 import cz.cvut.indepmod.classmodel.api.model.DiagramType;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
 import cz.cvut.indepmod.classmodel.resources.Resources;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import java.awt.event.ActionEvent;
 import java.util.logging.Logger;
 
@@ -19,13 +19,11 @@ import java.util.logging.Logger;
 public class SaveEditClassDialog extends ClassModelAbstractAction {
 
     public static final String ACTION_NAME = Resources.getString("action_edit_class_dialog_save");
-    
     private static final Logger LOG = Logger.getLogger(SaveEditClassDialog.class.getName());
-
-    private ClassModel model;
+    private AbstractElementModel model;
     private AbstractEditClassDialog dialog;
 
-    public SaveEditClassDialog(ClassModel model, AbstractEditClassDialog dialog) {
+    public SaveEditClassDialog(AbstractElementModel model, AbstractEditClassDialog dialog) {
         super(ACTION_NAME, null);
         this.model = model;
         this.dialog = dialog;
@@ -53,20 +51,17 @@ public class SaveEditClassDialog extends ClassModelAbstractAction {
     private boolean classDiagramEditSave() {
         String stereotype = this.dialog.getStereotype();
         String newClassName = this.dialog.getClassName();
+        boolean isAbstract = this.dialog.isCheckedAbstract();
 
-        if (!newClassName.equals(model.getTypeName())) {
-            if (newClassName.matches("^([A-Za-z][0-9A-Za-z]*::)?[A-Za-z][0-9A-Za-z]*$")) {
-                LOG.info("Changing the name of the class (class diagram)");
-                model.setTypeName(newClassName);
-                model.setStereotype(stereotype);
-                return true;
-            } else {
-                LOG.warning("Bad name of the class! (class diagram)");
-                return false;
-            }
-        } else {
+        if (newClassName.matches("^([A-Za-z][0-9A-Za-z]*::)?[A-Za-z][0-9A-Za-z]*$")) {
+            LOG.info("Changing the name of the class (class diagram)");
+            model.setTypeName(newClassName);
             model.setStereotype(stereotype);
+            model.setAbstract(isAbstract);
             return true;
+        } else {
+            LOG.warning("Bad name of the class! (class diagram)");
+            return false;
         }
     }
 
@@ -74,19 +69,14 @@ public class SaveEditClassDialog extends ClassModelAbstractAction {
         String stereotype = this.dialog.getStereotype();
         String newClassName = this.dialog.getClassName();
 
-        if (! newClassName.equals(model.getTypeName())) {
-            if (! newClassName.isEmpty()) {
-                LOG.info("Changing the name of the class (business diagram)");
-                model.setTypeName(newClassName);
-                model.setStereotype(stereotype);
-                return true;
-            } else {
-                LOG.warning("Bad name of the class! (business diagram)");
-                return false;
-            }
-        } else {
+        if (!newClassName.isEmpty()) {
+            LOG.info("Changing the name of the class (business diagram)");
+            model.setTypeName(newClassName);
             model.setStereotype(stereotype);
             return true;
+        } else {
+            LOG.warning("Bad name of the class! (business diagram)");
+            return false;
         }
     }
 }

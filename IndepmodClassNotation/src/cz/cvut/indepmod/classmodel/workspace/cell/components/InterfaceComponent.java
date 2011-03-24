@@ -4,12 +4,13 @@ import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractEleme
 
 /**
  * Date: 24.3.2011
- * Time: 18:55:04
+ * Time: 18:55:25
  * @author Lucky
  */
-public class ClassComponent extends AbstractElementComponent {
+public class InterfaceComponent extends AbstractElementComponent {
 
-    public ClassComponent(AbstractElementModel model) {
+    public InterfaceComponent(AbstractElementModel model) {
         super(model);
     }
+
 }

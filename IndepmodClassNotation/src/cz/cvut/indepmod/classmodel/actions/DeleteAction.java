@@ -2,7 +2,7 @@ package cz.cvut.indepmod.classmodel.actions;
 
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphModel;
@@ -64,7 +64,7 @@ public class DeleteAction extends ClassModelAbstractAction {
         for (Object c : cells) {
             DefaultGraphCell cell = (DefaultGraphCell) c;
             Object userObject = cell.getUserObject();
-            if (userObject instanceof ClassModel) {
+            if (userObject instanceof AbstractElementModel) {
                 result.add(cell);
             }
         }

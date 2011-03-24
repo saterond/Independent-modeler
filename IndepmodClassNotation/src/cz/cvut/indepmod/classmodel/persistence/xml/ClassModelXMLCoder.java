@@ -6,7 +6,7 @@ import cz.cvut.indepmod.classmodel.persistence.xml.delegate.AnotationModelPersis
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.AttributeModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.CardinalityPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.ClassModelDiagramModelPersistenceDelegate;
-import cz.cvut.indepmod.classmodel.persistence.xml.delegate.ClassModelPersistenceDelegate;
+import cz.cvut.indepmod.classmodel.persistence.xml.delegate.AbstractElementlPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.HierarchyRelationModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.MethodModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.RelationModelPersistenceDelegate;
@@ -18,7 +18,7 @@ import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttr
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.HierarchyRelationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.MethodModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.RelationModel;
@@ -167,7 +167,7 @@ public class ClassModelXMLCoder {
 
 
         //USER OBJECTS AND ITS SUBOBJECTS=======================================
-        encoder.setPersistenceDelegate(ClassModel.class, new ClassModelPersistenceDelegate());
+        encoder.setPersistenceDelegate(AbstractElementModel.class, new AbstractElementlPersistenceDelegate());
         encoder.setPersistenceDelegate(AttributeModel.class, new AttributeModelPersistenceDelegate());
         encoder.setPersistenceDelegate(MethodModel.class, new MethodModelPersistenceDelegate());
         encoder.setPersistenceDelegate(TypeModel.class, new TypeModelPersistenceDelegate());

@@ -5,7 +5,7 @@ import cz.cvut.indepmod.classmodel.api.model.IType;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractAttrCreatorDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import java.util.Collection;
 import org.jgraph.graph.DefaultGraphCell;
 
@@ -39,7 +39,7 @@ public abstract class AbstractDialogFactory {
     public abstract AbstractEditClassDialog createEditClassDialog(
             ClassModelGraph graph,
             DefaultGraphCell cell, 
-            ClassModel model);
+            AbstractElementModel model);
 
     public abstract AbstractAttrCreatorDialog createAttributeCreatorDialog(
             Collection<IType> types);

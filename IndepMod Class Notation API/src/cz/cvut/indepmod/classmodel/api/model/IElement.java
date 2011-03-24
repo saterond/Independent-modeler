@@ -1,18 +1,20 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package cz.cvut.indepmod.classmodel.api.model;
 
 import java.util.Collection;
 import java.util.Set;
 
 /**
- *
+ * Element represents Classes, Interfaces or Enumerations
  * @author Lucky
  */
-public interface IClass extends IType {
+public interface IElement extends IType {
+
+    /**
+     * Returns the type of the element. By this you can determine if the element
+     * is a class, an interface or an enumeration
+     * @return
+     */
+    public ElementType getElementType();
 
     /**
      * Returns the Visibility of this class
@@ -25,6 +27,18 @@ public interface IClass extends IType {
      * @return the stereotype or null if there is no stereotype
      */
     public String getStereotype();
+
+    /**
+     * Returns true if this element is abstract
+     * @return
+     */
+    public boolean isAbstract();
+
+    /**
+     * Sets if this element is abstract or not
+     * @param abstr
+     */
+    public void setAbstract(boolean abstr);
 
     /**
      * Returns an attribute set

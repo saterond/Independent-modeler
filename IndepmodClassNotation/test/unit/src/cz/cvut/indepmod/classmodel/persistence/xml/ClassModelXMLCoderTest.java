@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.awt.geom.Point2D;
 import cz.cvut.indepmod.classmodel.Common;
-import cz.cvut.indepmod.classmodel.api.model.IClass;
+import cz.cvut.indepmod.classmodel.api.model.IElement;
 import java.util.Collection;
 import org.jgraph.graph.Edge;
 import org.jgraph.graph.Port;
@@ -26,6 +26,7 @@ import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttr
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.MethodModel;
 import java.awt.Rectangle;
@@ -72,8 +73,8 @@ public class ClassModelXMLCoderTest {
 
     @Test
     public void testSimpleEncodeDecode() throws FileNotFoundException {
-        ClassModel mod1 = new ClassModel(Common.CLASS_NAME);
-        ClassModel mod2 = new ClassModel(Common.CLASS_NAME2);
+        AbstractElementModel mod1 = new ClassModel(Common.CLASS_NAME);
+        AbstractElementModel mod2 = new ClassModel(Common.CLASS_NAME2);
         ClassModelClassCell cell1 = new ClassModelClassCell(mod1);
         ClassModelClassCell cell2 = new ClassModelClassCell(mod2);
         GraphConstants.setBounds(cell1.getAttributes(), new Rectangle.Double(10, 10, 100, 60));
@@ -135,7 +136,7 @@ public class ClassModelXMLCoderTest {
         assertTrue("Cell 2 is not there after decode", isThereClass2);
 
         DefaultGraphCell root = (DefaultGraphCell) this.graph.getRoots()[0];
-        ClassModel model = (ClassModel) root.getUserObject();
+        AbstractElementModel model = (AbstractElementModel) root.getUserObject();
         assertEquals(Common.CLASS_NAME, model.getTypeName());
         assertEquals(Common.VAL2, model.getStereotype());
         assertEquals(1, model.getAttributeModels().size());
@@ -163,7 +164,7 @@ public class ClassModelXMLCoderTest {
         assertEquals(Common.ATTRIBUTE_NAME2, model.getMethodModels().iterator().next().getAttributeModels().iterator().next().getName());
 
         root = (DefaultGraphCell) this.graph.getRoots()[1];
-        model = (ClassModel) root.getUserObject();
+        model = (AbstractElementModel) root.getUserObject();
 
         assertEquals(Common.CLASS_NAME2, model.getTypeName());
         assertTrue(model.getAttributeModels().isEmpty());
@@ -172,8 +173,8 @@ public class ClassModelXMLCoderTest {
         Collection<? extends IRelation> rels = model.getRelatedClass();
         assertEquals(1, rels.size());
         IRelation r = rels.iterator().next();
-        IClass c1 = r.getStartingClass();
-        IClass c2 = r.getEndingClass();
+        IElement c1 = r.getStartingClass();
+        IElement c2 = r.getEndingClass();
         assertEquals(mod1.getTypeName(), c1.getTypeName());
         assertEquals(mod2.getTypeName(), c2.getTypeName());
         assertEquals(Cardinality.ONE, r.getStartCardinality());

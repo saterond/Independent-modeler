@@ -37,10 +37,13 @@ public class EditAction extends ClassModelAbstractAction {
     @Override
     public void actionPerformed(ActionEvent event) {
         Object[] os = this.graph.getSelectionCells();
+        if (os.length == 0) {
+            LOG.info("Edit Action was performed even is no cell was selected!");
+            return;
+        }
+
         Object o = os[os.length - 1];
-        if (o == null) {
-            LOG.severe("Edit Action was performed even is no cell was selected!");
-        } else if (o instanceof ClassModelClassCell) {
+        if (o instanceof ClassModelClassCell) {
             this.classEditAction((ClassModelClassCell) o);
         } else if (o instanceof ClassModelRelation) {
             ClassModelRelation edge = (ClassModelRelation) o;

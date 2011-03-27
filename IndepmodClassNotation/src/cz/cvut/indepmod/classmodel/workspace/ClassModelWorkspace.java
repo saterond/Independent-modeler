@@ -1,6 +1,8 @@
 package cz.cvut.indepmod.classmodel.workspace;
 
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
+import cz.cvut.indepmod.classmodel.actions.EditAction;
+import cz.cvut.indepmod.classmodel.actions.nbfolders.EditElementCookie;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModelFactory;
 import cz.cvut.indepmod.classmodel.file.ClassModelSaveCookie;
@@ -135,6 +137,7 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
         this.lookupContent.add(this.selectedTool);
         this.lookupContent.add(this.classModelAPI);
         this.lookupContent.add(this.diagramData);
+        this.lookupContent.add(new EditElementCookie(this.actions.get(EditAction.class)));
     }
 
     /**

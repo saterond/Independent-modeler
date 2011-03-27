@@ -14,9 +14,9 @@ import org.jgraph.graph.DefaultGraphCell;
  * This class represents the Edit Class dialog for business diagram.
  * It hides anotations and methods.
  */
-public class BusinessModelEditClassDialog extends AbstractEditClassDialog {
+public class BusinessModelEditElementDialog extends AbstractEditElementDialog {
 
-    public BusinessModelEditClassDialog(
+    public BusinessModelEditElementDialog(
             Frame owner,
             ClassModelGraph graph,
             DefaultGraphCell cell,

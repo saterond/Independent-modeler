@@ -28,6 +28,7 @@ import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeMode
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.InterfaceModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.MethodModel;
 import java.awt.Rectangle;
 import java.io.File;
@@ -69,6 +70,25 @@ public class ClassModelXMLCoderTest {
     public void tearDown() {
         File f = new File(FILE_NAME);
         f.delete();
+    }
+
+    @Test
+    public void testInterfaceEncodeDecode() throws FileNotFoundException {
+        AbstractElementModel mod1 = new InterfaceModel(Common.CLASS_NAME);
+        ClassModelClassCell cell1 = new ClassModelClassCell(mod1);
+        this.graph.getGraphLayoutCache().insert(cell1);
+
+
+        File file = new File(FILE_NAME);
+        FileOutputStream fos = new FileOutputStream(file);
+        ClassModelXMLCoder encoder = ClassModelXMLCoder.getInstance();
+        encoder.encode(this.diagramModel, fos);
+
+        FileInputStream fis = new FileInputStream(file);
+        this.graph.setGraphLayoutCache(encoder.decode(fis).getLayoutCache());
+
+        IElement el = this.graph.getAllClasses().iterator().next();
+        assertEquals(Common.CLASS_NAME, el.getTypeName());
     }
 
     @Test

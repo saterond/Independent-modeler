@@ -20,7 +20,7 @@ import javax.swing.border.TitledBorder;
  * Time: 13:42:05
  * @author Lucky
  */
-public abstract class AbstractEditClassDialogView extends AbstractClassModelDialog {
+public abstract class AbstractEditElementDialogView extends AbstractClassModelDialog {
 
     public static final String TITLE = Resources.getString("dialog_edit_class_title");
     public static final String NAME_LABEL = Resources.getString("dialog_edit_class_name");
@@ -55,7 +55,7 @@ public abstract class AbstractEditClassDialogView extends AbstractClassModelDial
     protected JList attributeList = new JList();
     protected JList methodList = new JList();
 
-    public AbstractEditClassDialogView(Frame owner) {
+    public AbstractEditElementDialogView(Frame owner) {
         super(owner, TITLE);
 
         this.initLayout();

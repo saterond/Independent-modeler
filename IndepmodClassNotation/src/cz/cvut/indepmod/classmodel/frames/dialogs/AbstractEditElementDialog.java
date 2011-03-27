@@ -1,14 +1,14 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
 import cz.cvut.indepmod.classmodel.Globals;
-import cz.cvut.indepmod.classmodel.actions.CancelEditClassDialog;
-import cz.cvut.indepmod.classmodel.actions.EditClassDialogAddAnotation;
-import cz.cvut.indepmod.classmodel.actions.EditClassDialogAddAttribute;
-import cz.cvut.indepmod.classmodel.actions.EditClassDialogAddMethod;
-import cz.cvut.indepmod.classmodel.actions.EditClassDialogRemoveAnotation;
-import cz.cvut.indepmod.classmodel.actions.EditClassDialogRemoveAttribute;
-import cz.cvut.indepmod.classmodel.actions.EditClassDialogRemoveMethod;
-import cz.cvut.indepmod.classmodel.actions.SaveEditClassDialog;
+import cz.cvut.indepmod.classmodel.actions.CancelEditElementDialog;
+import cz.cvut.indepmod.classmodel.actions.EditElementDialogAddAnotation;
+import cz.cvut.indepmod.classmodel.actions.EditElementDialogAddAttribute;
+import cz.cvut.indepmod.classmodel.actions.EditElementDialogAddMethod;
+import cz.cvut.indepmod.classmodel.actions.EditElementDialogRemoveAnotation;
+import cz.cvut.indepmod.classmodel.actions.EditElementDialogRemoveAttribute;
+import cz.cvut.indepmod.classmodel.actions.EditElementDialogRemoveMethod;
+import cz.cvut.indepmod.classmodel.actions.SaveEditElementDialog;
 import cz.cvut.indepmod.classmodel.api.model.IAnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IElement;
@@ -35,7 +35,7 @@ import org.jgraph.graph.GraphConstants;
  * Time: 18:13:34
  * @author Lucky
  */
-public class AbstractEditClassDialog extends AbstractEditClassDialogView implements ModelListener {
+public class AbstractEditElementDialog extends AbstractEditElementDialogView implements ModelListener {
 
     private static final int DEFAULT_WIDTH = 350;
     private static final int DEFAULT_HEIGTH = 450;
@@ -48,7 +48,7 @@ public class AbstractEditClassDialog extends AbstractEditClassDialogView impleme
     private DefaultListModel methodListModel;
     private DefaultListModel anotationListModel;
 
-    public AbstractEditClassDialog(
+    public AbstractEditElementDialog(
             Frame owner,
             ClassModelGraph graph,
             DefaultGraphCell cell,
@@ -230,13 +230,13 @@ public class AbstractEditClassDialog extends AbstractEditClassDialogView impleme
      */
     private void initAction() {
         //this.editAttributeButton.addActionListener(new ClassModelEditClassDialogEditAttribute(this));
-        this.removeAttributeButton.addActionListener(new EditClassDialogRemoveAttribute(this.elementModel, this));
-        this.addAnotationButton.addActionListener(new EditClassDialogAddAnotation(elementModel, this));
-        this.addAttributeButton.addActionListener(new EditClassDialogAddAttribute(this.elementModel, this));
-        this.addMethodButton.addActionListener(new EditClassDialogAddMethod(this.elementModel, this));
-        this.removeAnotationButton.addActionListener(new EditClassDialogRemoveAnotation(this.elementModel, this));
-        this.removeMethodButton.addActionListener(new EditClassDialogRemoveMethod(this.elementModel, this));
-        this.saveButton.addActionListener(new SaveEditClassDialog(this.elementModel, this));
-        this.cancelButton.addActionListener(new CancelEditClassDialog(this));
+        this.removeAttributeButton.addActionListener(new EditElementDialogRemoveAttribute(this.elementModel, this));
+        this.addAnotationButton.addActionListener(new EditElementDialogAddAnotation(elementModel, this));
+        this.addAttributeButton.addActionListener(new EditElementDialogAddAttribute(this.elementModel, this));
+        this.addMethodButton.addActionListener(new EditElementDialogAddMethod(this.elementModel, this));
+        this.removeAnotationButton.addActionListener(new EditElementDialogRemoveAnotation(this.elementModel, this));
+        this.removeMethodButton.addActionListener(new EditElementDialogRemoveMethod(this.elementModel, this));
+        this.saveButton.addActionListener(new SaveEditElementDialog(this.elementModel, this));
+        this.cancelButton.addActionListener(new CancelEditElementDialog(this));
     }
 }

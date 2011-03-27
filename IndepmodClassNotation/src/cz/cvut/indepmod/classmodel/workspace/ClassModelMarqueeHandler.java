@@ -4,9 +4,12 @@ import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.actions.DeleteAction;
 import cz.cvut.indepmod.classmodel.actions.EditAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
+import cz.cvut.indepmod.classmodel.api.model.ElementType;
+import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelCellFactory;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelClassCell;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelRelation;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.HierarchyRelationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.RelationModel;
 import org.jgraph.graph.BasicMarqueeHandler;
@@ -19,6 +22,10 @@ import java.awt.geom.Point2D;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.jgraph.graph.DefaultEdge;
+import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.DefaultPort;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 
 public class ClassModelMarqueeHandler extends BasicMarqueeHandler {
 
@@ -79,11 +86,20 @@ public class ClassModelMarqueeHandler extends BasicMarqueeHandler {
             this.printTempLine(Color.black, this.graph.getBackground());
 
             if (this.actualPort != null && !this.actualPort.equals(this.startingPort)) {
-                DefaultEdge edge = ClassModelCellFactory.createEdge(this.selectedToolModel.getSelectedTool());
-                edge.setSource(this.startingPort.getCell());
-                edge.setTarget(this.actualPort.getCell());
+                Object source = this.startingPort.getCell();
+                Object target = this.actualPort.getCell();
+                if (this.isRelationValid(this.selectedToolModel.getSelectedTool(), source, target)) {
+                    DefaultEdge edge = ClassModelCellFactory.createEdge(this.selectedToolModel.getSelectedTool());
+                    edge.setSource(source);
+                    edge.setTarget(target);
 
-                this.graph.getGraphLayoutCache().insert(edge);
+                    this.graph.getGraphLayoutCache().insert(edge);
+                } else {
+                    NotifyDescriptor nd = new NotifyDescriptor.Message(
+                            Resources.getString("error_add_relation_bad_relation"),
+                            NotifyDescriptor.WARNING_MESSAGE);
+                    DialogDisplayer.getDefault().notify(nd);
+                }
             }
 
             this.actualPort = null;
@@ -162,8 +178,8 @@ public class ClassModelMarqueeHandler extends BasicMarqueeHandler {
             Object userObject = ((ClassModelRelation) c).getUserObject();
             if (userObject instanceof RelationModel) {
                 showPopupMenu(e,
-                    this.actions.get(EditAction.class),
-                    this.actions.get(DeleteAction.class));
+                        this.actions.get(EditAction.class),
+                        this.actions.get(DeleteAction.class));
             } else if (userObject instanceof HierarchyRelationModel) {
                 showPopupMenu(e,
                         this.actions.get(DeleteAction.class));
@@ -179,5 +195,28 @@ public class ClassModelMarqueeHandler extends BasicMarqueeHandler {
         }
 
         popup.show(this.graph, e.getX(), e.getY());
+    }
+
+    private boolean isRelationValid(ToolChooserModel.Tool tool, Object source, Object target) {
+        DefaultPort sourcePort = (DefaultPort) source;
+        DefaultPort targetPort = (DefaultPort) target;
+        DefaultGraphCell sourceCell = (DefaultGraphCell) sourcePort.getParent();
+        DefaultGraphCell targetCell = (DefaultGraphCell) targetPort.getParent();
+        AbstractElementModel sourceModel = (AbstractElementModel) sourceCell.getUserObject();
+        AbstractElementModel targetModel = (AbstractElementModel) targetCell.getUserObject();
+
+        switch (tool) {
+            case TOOL_ADD_RELATION:
+                return true;
+            case TOOL_ADD_AGREGATION:
+            case TOOL_ADD_COMPOSITION:
+                return (sourceModel.getElementType() != ElementType.INTERFACE);
+            case TOOL_ADD_GENERALIZATION:
+                return (sourceModel.getElementType() == targetModel.getElementType());
+            case TOOL_ADD_REALISATION:
+                return (targetModel.getElementType() == ElementType.INTERFACE && sourceModel.getElementType() != ElementType.INTERFACE);
+            default:
+                throw new IllegalArgumentException("Tool does not represent a relation!");
+        }
     }
 }

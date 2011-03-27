@@ -64,9 +64,9 @@ public class DiagramDataModel {
 
         this.dynamicDataTypes = new HashSet<IType>();
         this.stereotypes = new HashSet<String>();
-        this.stereotypes.add(""); //No stereotype
 
         this.initStaticTypes();
+        this.initDefaultStereotypes();
     }
 
     /**
@@ -152,5 +152,12 @@ public class DiagramDataModel {
         this.staticDataTypes.add(new TypeModel("float"));
         this.staticDataTypes.add(new TypeModel("void"));
         this.staticDataTypes.add(new TypeModel(""));
+    }
+
+    private void initDefaultStereotypes() {
+        this.stereotypes = new HashSet<String>();
+        this.stereotypes.add(""); //Empty stereotype
+        this.stereotypes.add("interface");
+        this.stereotypes.add("enumeration");
     }
 }

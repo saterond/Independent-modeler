@@ -1,7 +1,7 @@
 package cz.cvut.indepmod.classmodel.actions;
 
 import cz.cvut.indepmod.classmodel.api.model.IAnotation;
-import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
+import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditElementDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AnotationCreatorDialog;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
@@ -15,14 +15,14 @@ import org.openide.windows.WindowManager;
  * Time: 17:57:34
  * @author Lucky
  */
-public class EditClassDialogAddAnotation extends ClassModelAbstractAction {
+public class EditElementDialogAddAnotation extends ClassModelAbstractAction {
 
     public static final String ACTION_NAME = Resources.getString("action_edit_class_dialog_add_anot");
-    private static final Logger LOG = Logger.getLogger(EditClassDialogAddAnotation.class.getName());
+    private static final Logger LOG = Logger.getLogger(EditElementDialogAddAnotation.class.getName());
     private AbstractElementModel model;
-    private AbstractEditClassDialog dialog;
+    private AbstractEditElementDialog dialog;
 
-    public EditClassDialogAddAnotation(AbstractElementModel model, AbstractEditClassDialog dialog) {
+    public EditElementDialogAddAnotation(AbstractElementModel model, AbstractEditElementDialog dialog) {
         super(ACTION_NAME, null);
         this.model = model;
         this.dialog = dialog;

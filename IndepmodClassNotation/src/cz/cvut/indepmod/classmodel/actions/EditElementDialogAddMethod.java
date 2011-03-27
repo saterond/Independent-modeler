@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.actions;
 
-import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
+import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditElementDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.MethodCreatorDialog;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
@@ -14,14 +14,14 @@ import org.openide.windows.WindowManager;
  * Time: 12:40:57
  * @author Lucky
  */
-public class EditClassDialogAddMethod extends ClassModelAbstractAction {
+public class EditElementDialogAddMethod extends ClassModelAbstractAction {
 
     public static final String ACTION_NAME = Resources.getString("action_edit_class_dialog_add_method");
 
     private AbstractElementModel model;
-    private AbstractEditClassDialog dialog;
+    private AbstractEditElementDialog dialog;
 
-    public EditClassDialogAddMethod(AbstractElementModel model, AbstractEditClassDialog dialog) {
+    public EditElementDialogAddMethod(AbstractElementModel model, AbstractEditElementDialog dialog) {
         super(ACTION_NAME, null);
         this.model = model;
         this.dialog = dialog;

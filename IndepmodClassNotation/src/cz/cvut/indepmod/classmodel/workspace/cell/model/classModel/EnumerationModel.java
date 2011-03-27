@@ -22,26 +22,22 @@ public class EnumerationModel extends AbstractElementModel {
         super("Enum"+ ++counter);
 
         this.setStereotype(DEFAULT_STEREOTYPE);
-        Globals.getInstance().getActualDiagramData().addStereotype(DEFAULT_STEREOTYPE);
     }
 
     public EnumerationModel(String name) {
         super(name);
         this.setStereotype(DEFAULT_STEREOTYPE);
-        Globals.getInstance().getActualDiagramData().addStereotype(DEFAULT_STEREOTYPE);
     }
 
     public EnumerationModel(String name, Set<IMethod> methodModels, Set<IAttribute> attributeModels, Set<IAnotation> anotationModels) {
         super(name, methodModels, attributeModels, anotationModels);
         this.setStereotype(DEFAULT_STEREOTYPE);
-        Globals.getInstance().getActualDiagramData().addStereotype(DEFAULT_STEREOTYPE);
     }
 
     public EnumerationModel(AbstractElementModel model) {
         super(model);
         this.setStereotype("enumeration");
     }
-
 
 
     @Override

@@ -3,7 +3,7 @@ package cz.cvut.indepmod.classmodel.frames.dialogs.factory;
 import cz.cvut.indepmod.classmodel.api.model.DiagramType;
 import cz.cvut.indepmod.classmodel.api.model.IType;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractAttrCreatorDialog;
-import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
+import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditElementDialog;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import java.util.Collection;
@@ -36,7 +36,7 @@ public abstract class AbstractDialogFactory {
         }
     }
 
-    public abstract AbstractEditClassDialog createEditClassDialog(
+    public abstract AbstractEditElementDialog createEditClassDialog(
             ClassModelGraph graph,
             DefaultGraphCell cell, 
             AbstractElementModel model);

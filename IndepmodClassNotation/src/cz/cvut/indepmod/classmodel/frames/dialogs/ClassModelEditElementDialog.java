@@ -10,9 +10,9 @@ import org.jgraph.graph.DefaultGraphCell;
  * Time: 14:32:31
  * @author Lucky
  */
-public class ClassModelEditClassDialog extends AbstractEditClassDialog {
+public class ClassModelEditElementDialog extends AbstractEditElementDialog {
 
-    public ClassModelEditClassDialog(
+    public ClassModelEditElementDialog(
             Frame owner,
             ClassModelGraph graph,
             DefaultGraphCell cell,

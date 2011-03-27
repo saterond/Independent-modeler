@@ -2,9 +2,9 @@ package cz.cvut.indepmod.classmodel.frames.dialogs.factory;
 
 import cz.cvut.indepmod.classmodel.api.model.IType;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractAttrCreatorDialog;
-import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditClassDialog;
+import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditElementDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelAttrCreatorDialog;
-import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditClassDialog;
+import cz.cvut.indepmod.classmodel.frames.dialogs.ClassModelEditElementDialog;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import java.util.Collection;
@@ -19,8 +19,8 @@ import org.openide.windows.WindowManager;
 public class ClassModelDialogFactory extends AbstractDialogFactory {
 
     @Override
-    public AbstractEditClassDialog createEditClassDialog(ClassModelGraph graph, DefaultGraphCell cell, AbstractElementModel model) {
-        AbstractEditClassDialog dialog = new ClassModelEditClassDialog(
+    public AbstractEditElementDialog createEditClassDialog(ClassModelGraph graph, DefaultGraphCell cell, AbstractElementModel model) {
+        AbstractEditElementDialog dialog = new ClassModelEditElementDialog(
                 WindowManager.getDefault().getMainWindow(),
                 graph, 
                 cell, 

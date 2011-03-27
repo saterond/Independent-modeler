@@ -1,6 +1,5 @@
 package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 
-import cz.cvut.indepmod.classmodel.Globals;
 import cz.cvut.indepmod.classmodel.api.model.ElementType;
 import cz.cvut.indepmod.classmodel.api.model.IAnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
@@ -22,28 +21,24 @@ public class InterfaceModel extends AbstractElementModel {
         super("Interface"+ ++counter);
 
         this.setStereotype(DEFAULT_STEREOTYPE);
-        Globals.getInstance().getActualDiagramData().addStereotype(DEFAULT_STEREOTYPE);
     }
 
     public InterfaceModel(String name) {
         super(name);
 
         this.setStereotype(DEFAULT_STEREOTYPE);
-        Globals.getInstance().getActualDiagramData().addStereotype(DEFAULT_STEREOTYPE);
     }
 
     public InterfaceModel(String name, Set<IMethod> methodModels, Set<IAttribute> attributeModels, Set<IAnotation> anotationModels) {
         super(name, methodModels, attributeModels, anotationModels);
 
         this.setStereotype(DEFAULT_STEREOTYPE);
-        Globals.getInstance().getActualDiagramData().addStereotype(DEFAULT_STEREOTYPE);
     }
 
     public InterfaceModel(AbstractElementModel model) {
         super(model);
 
         this.setStereotype(DEFAULT_STEREOTYPE);
-        Globals.getInstance().getActualDiagramData().addStereotype(DEFAULT_STEREOTYPE);
     }
 
 

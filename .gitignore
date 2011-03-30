@@ -13,4 +13,5 @@ documentation/*/*.bbl
 documentation/*/*.out
 documentation/*/*.lot
 documentation/*/*.toc
+documentation/*/*.lof
 documentation/bachelor thesis/k336_thesis

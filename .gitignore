@@ -11,3 +11,6 @@ documentation/*/*.dvi
 documentation/*/*.blg
 documentation/*/*.bbl
 documentation/*/*.out
+documentation/*/*.lot
+documentation/*/*.toc
+documentation/bachelor thesis/k336_thesis

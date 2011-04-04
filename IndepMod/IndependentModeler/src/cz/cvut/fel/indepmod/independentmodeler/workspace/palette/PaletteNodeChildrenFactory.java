@@ -4,6 +4,7 @@ import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.NoteCell;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.NoteCellFactory;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.ArrowEdgeFactory;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.LineEdgeFactory;
 import java.awt.datatransfer.Transferable;
 import java.io.IOException;
 import java.util.List;
@@ -35,8 +36,11 @@ public class PaletteNodeChildrenFactory extends ChildFactory<IPaletteNode> {
                     //                    IndependentModelerPaletteNodeModel.Note,
                     new NoteCellFactory()));
             toPopulate.add(new PaletteEdgeNode(
-                    "Edge",
+                    "Arrow edge",
                     new ArrowEdgeFactory()));
+            toPopulate.add(new PaletteEdgeNode(
+                    "Line edge",
+                    new LineEdgeFactory()));
         }
         return true;
     }

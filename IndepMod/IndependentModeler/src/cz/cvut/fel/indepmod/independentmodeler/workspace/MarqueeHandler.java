@@ -1,7 +1,6 @@
 package cz.cvut.fel.indepmod.independentmodeler.workspace;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
-import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.IndependentModelerEdge;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteListener;
 import java.awt.Color;
@@ -17,7 +16,6 @@ import java.util.logging.Logger;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import org.jgraph.graph.DefaultEdge;
-import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.PortView;
 import org.openide.nodes.Node;
@@ -129,11 +127,11 @@ public class MarqueeHandler extends BasicMarqueeHandler implements Serializable 
             this.drawTempLine(Color.black, this.getGraph().getBackground());
             if (this.getActualPort() != null && !this.getActualPort().equals(
                     this.getStartingPort())) {
-
+                DefaultEdge edge = this.getPaletteListener().getEdge();
                 if (((Cell) this.getStartingPort().getParentView().getCell()).
                         canConnectTo((Cell) this.getActualPort().getParentView().
-                        getCell())) {
-                    DefaultEdge edge = this.getPaletteListener().getEdge();
+                        getCell(), edge)) {
+                    
                     edge.setSource(this.getStartingPort().getCell());
                     edge.setTarget(this.getActualPort().getCell());
                     if (edge instanceof IndependentModelerEdge) {
@@ -218,7 +216,7 @@ public class MarqueeHandler extends BasicMarqueeHandler implements Serializable 
                 Navigator.findInstance().setSelectedNodes(node);
             }
         } catch (PropertyVetoException ex) {
-            ex.printStackTrace();
+            
         }
     }
 

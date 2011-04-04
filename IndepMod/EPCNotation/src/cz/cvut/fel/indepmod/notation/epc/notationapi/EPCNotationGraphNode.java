@@ -1,14 +1,16 @@
 package cz.cvut.fel.indepmod.notation.epc.notationapi;
 
 import cz.cvut.fel.indepmod.editorprovider.EditorProvider;
-import cz.cvut.fel.indepmod.epcnotationid.EPCNotationId;
+import cz.cvut.fel.indepmod.epcnotation.id.EPCNotationId;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.Graph;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.IndependentModelerCellViewFactory;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.ArrowEdge;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.IndependentModelerEdge;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.LineEdge;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.nodes.ArrowEdgeNode;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.nodes.LineEdgeNode;
 import cz.cvut.fel.indepmod.notationidentifikatorapi.GraphNode;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -59,6 +61,11 @@ public class EPCNotationGraphNode extends GraphNode implements Externalizable {
     @Override
     public Action[] getActions(boolean context) {
         return new Action[]{new OpenAction(), new RenameAction()};
+    }
+
+    @Override
+    public String getHtmlDisplayName() {
+        return "<b>"+this.getDisplayName()+"</b>";
     }
 
     public Graph getGraph() {
@@ -119,8 +126,22 @@ public class EPCNotationGraphNode extends GraphNode implements Externalizable {
             List<Rectangle2D> sources,
             List<Rectangle2D> targets) {
         edgeClasses.add(object.getClass().getName());
+        if (object instanceof ArrowEdge) {
+            this.parseArrowEdgeInfo((ArrowEdge) object, sources, targets);
+        } else if (object instanceof LineEdge) {
+            this.parseLineEdgeInfo((LineEdge) object, sources, targets);
+        }
+    }
 
-        ArrowEdge edge = (ArrowEdge) object;
+    private void parseLineEdgeInfo(LineEdge edge, List<Rectangle2D> sources,
+            List<Rectangle2D> targets) {
+        LineEdgeNode navigatorNode = (LineEdgeNode) edge.getNavigatorNode();
+        sources.add(this.getBoundsForCellNode((CellNode) navigatorNode.getSource()));
+        targets.add(this.getBoundsForCellNode((CellNode) navigatorNode.getTarget()));
+    }
+
+    private void parseArrowEdgeInfo(ArrowEdge edge, List<Rectangle2D> sources,
+            List<Rectangle2D> targets) {
         ArrowEdgeNode navigatorNode = (ArrowEdgeNode) edge.getNavigatorNode();
         sources.add(this.getBoundsForCellNode((CellNode) navigatorNode.getSource()));
         targets.add(this.getBoundsForCellNode((CellNode) navigatorNode.getTarget()));
@@ -137,7 +158,6 @@ public class EPCNotationGraphNode extends GraphNode implements Externalizable {
         this.setRootDir((File) in.readObject());
     }
 
-    
     @Override
     public void loadGraph() throws FileNotFoundException, IOException, ClassNotFoundException {
         File file = new File(this.getRootDir().getPath() + File.separator + "graph.imj");
@@ -191,6 +211,10 @@ public class EPCNotationGraphNode extends GraphNode implements Externalizable {
     private void createEdgeByClassName(String edgeClass, Iterator<Rectangle2D> sourceIterator, Iterator<Rectangle2D> targetIterator) {
         if (edgeClass.equals(ArrowEdge.class.getName())) {
             ArrowEdge edge = new ArrowEdge();
+            this.findSourceAndTarget(edge, sourceIterator.next(), targetIterator.next());
+            this.getGraph().addEdge(edge);
+        } else if (edgeClass.equals(LineEdge.class.getName())) {
+            LineEdge edge = new LineEdge();
             this.findSourceAndTarget(edge, sourceIterator.next(), targetIterator.next());
             this.getGraph().addEdge(edge);
         }

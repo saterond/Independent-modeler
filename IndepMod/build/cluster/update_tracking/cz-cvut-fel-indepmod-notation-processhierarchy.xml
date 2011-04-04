@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<module codename="cz.cvut.fel.indepmod.notation.processhierarchy">
-    <module_version install_time="1297952340481" last="true" origin="installer" specification_version="1.0">
-        <file crc="3366072616" name="config/Modules/cz-cvut-fel-indepmod-notation-processhierarchy.xml"/>
-        <file crc="256432027" name="modules/cz-cvut-fel-indepmod-notation-processhierarchy.jar"/>
-    </module_version>
-</module>

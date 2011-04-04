@@ -1,6 +1,7 @@
 package cz.cvut.fel.indepmod.notation.epc.workspace.palette;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.ArrowEdgeFactory;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.LineEdgeFactory;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.IPaletteNode;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteCellNode;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteEdgeNode;
@@ -52,8 +53,11 @@ public class EPCPaletteNodeChildrenFactory
                     "Supporting System",
                     new SupportingSystemCellFactory()));
             toPopulate.add(new PaletteEdgeNode(
-                    "Edge",
+                    "Arrow edge",
                     new ArrowEdgeFactory()));
+            toPopulate.add(new PaletteEdgeNode(
+                    "Line edge",
+                    new LineEdgeFactory()));
         }
         return true;
     }

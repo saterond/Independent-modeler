@@ -1,15 +1,20 @@
 package cz.cvut.fel.indepmod.independentmodeler.workspace;
 
+import cz.cvut.fel.indepmod.independentmodeler.workspace.cookie.SaveCookieImpl;
 import java.beans.PropertyVetoException;
 import java.util.logging.Logger;
+import org.openide.cookies.SaveCookie;
 import org.openide.windows.TopComponent;
 import org.openide.windows.WindowManager;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.BeanTreeView;
+import org.openide.nodes.AbstractNode;
+import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.ImageUtilities;
 import org.openide.util.NbBundle;
+import org.openide.util.lookup.InstanceContent;
 
 public final class Navigator extends TopComponent implements
         ExplorerManager.Provider {
@@ -19,6 +24,9 @@ public final class Navigator extends TopComponent implements
     static final String ICON_PATH =
             "cz/cvut/fel/indepmod/independentmodeler/navigator.png";
     private ExplorerManager mgr = new ExplorerManager();
+    private InstanceContent ic;
+    private SaveCookieImpl impl;
+    private SaveNode saveNode;
 
     private Navigator() {
         initTopComponent();
@@ -27,11 +35,17 @@ public final class Navigator extends TopComponent implements
         this.setDisplayName("Navigator");
         setIcon(ImageUtilities.loadImage(ICON_PATH, true));
         ((BeanTreeView) jScrollPane1).setRootVisible(false);
+        setActivatedNodes(new Node[]{saveNode = new SaveNode()});
 
-//        Mode mode = WindowManager.getDefault().findMode("navigator");
-//        if (mode != null) {
-//            mode.dockInto(this);
-//        }
+        impl = new SaveCookieImpl();
+//        ic = new InstanceContent();
+//        ic.add(ExplorerUtils.createLookup(mgr, getActionMap()));
+//        ic.add(impl);
+//        associateLookup(new AbstractLookup(ic));
+
+
+
+//        associateLookup(Lookups.fixed(mgr, impl));
     }
 
     public static synchronized Navigator getDefault() {
@@ -109,9 +123,34 @@ public final class Navigator extends TopComponent implements
     public void setSelectedNodes(Node[] nodes) throws PropertyVetoException {
         this.mgr.setSelectedNodes(nodes);
         this.requestActive();
+        this.saveNode.fire();
     }
 
     public Node[] getSelectedNodes() {
         return this.mgr.getSelectedNodes();
+    }
+
+    private class SaveNode extends AbstractNode {
+
+        private SaveCookieImpl impl;
+
+        public SaveNode() {
+            super(Children.LEAF);
+            impl = new SaveCookieImpl();
+            getCookieSet().assign(SaveCookie.class, impl);
+        }
+
+        @Override
+        public <T extends Cookie> T getCookie(Class<T> type) {
+            if(type == SaveCookie.class) {
+                return (T) impl;
+            }
+            return null;
+        }
+
+        public void fire() {
+            fireCookieChange();
+        }
+
     }
 }

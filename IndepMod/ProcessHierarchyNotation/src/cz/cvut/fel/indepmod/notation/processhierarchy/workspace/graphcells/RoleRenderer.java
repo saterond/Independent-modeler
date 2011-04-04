@@ -23,6 +23,8 @@ import org.jgraph.graph.VertexView;
  */
 public class RoleRenderer extends VertexRenderer {
 
+    private RoleCell cell;
+
     /**
      * Return a slightly larger preferred size than for a rectangle.
      */
@@ -104,21 +106,15 @@ public class RoleRenderer extends VertexRenderer {
      */
     @Override
     public void paint(Graphics g) {
-//        int b = borderWidth;
+        this.cell = (RoleCell) this.view.getCell();
         Graphics2D g2 = (Graphics2D) g;
-//        Dimension d = getSize();
-//        boolean tmp = selected;
         if (super.isOpaque()) {
             this.drawOpaque(g, g2);
         }
-//        try {
-//            setBorder(null);
-//            setOpaque(false);
-//            selected = false;
-//            super.paint(g);
-//        } finally {
-//            selected = tmp;
-//        }
+        if (this.cell.getRoleName() != null && bordercolor != null) {
+            g.setColor(bordercolor);
+            g2.drawString("Name: " + this.cell.getRoleName(), 2 * this.getSize().width / 10, 3 * this.getSize().height / 7);
+        }
         if (bordercolor != null) {
             this.drawBorder(g, g2);
         }

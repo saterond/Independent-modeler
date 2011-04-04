@@ -9,7 +9,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.Locale;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.openide.util.Exceptions;
@@ -29,7 +28,7 @@ public final class OpenProjectAction implements ActionListener {
         }
     }
 
-    private void loadProject(File file) {
+    public void loadProject(File file) {
         if (file != null) {
             try {
                 FileInputStream fin = null;

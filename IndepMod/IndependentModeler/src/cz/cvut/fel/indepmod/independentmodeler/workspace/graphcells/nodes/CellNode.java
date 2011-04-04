@@ -2,6 +2,8 @@ package cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
 import java.awt.Color;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import org.openide.ErrorManager;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
@@ -13,7 +15,8 @@ import sun.beans.editors.ColorEditor;
  *
  * @author Petr Vales
  */
-abstract public class CellNode extends AbstractNode {
+abstract public class CellNode extends AbstractNode implements
+        PropertyChangeListener {
 
     public CellNode(Children children) {
         super(children);
@@ -22,8 +25,15 @@ abstract public class CellNode extends AbstractNode {
     @Override
     protected Sheet createSheet() {
         Sheet sheet = Sheet.createDefault();
-        Sheet.Set set = Sheet.createPropertiesSet();
+        Sheet.Set set = this.fillSetWithCommonProperties(Sheet.
+                createPropertiesSet());
+        sheet.put(set);
+        return sheet;
+    }
+
+    protected Sheet.Set fillSetWithCommonProperties(Sheet.Set set) {
         set.setDisplayName("Common");
+        set.setName("Common");
         try {
             set.put(this.createHeightProperty());
             set.put(this.createWidthProperty());
@@ -36,8 +46,7 @@ abstract public class CellNode extends AbstractNode {
         } catch (NoSuchMethodException ex) {
             ErrorManager.getDefault();
         }
-        sheet.put(set);
-        return sheet;
+        return set;
     }
 
     private Property createHeightProperty() throws NoSuchMethodException {
@@ -102,6 +111,14 @@ abstract public class CellNode extends AbstractNode {
         lineColorProp.setName("Line color");
         lineColorProp.setPropertyEditorClass(ColorEditor.class);
         return lineColorProp;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("name")) {
+            this.fireDisplayNameChange((String) evt.getOldValue(), (String) evt.
+                    getNewValue());
+        }
     }
 
     abstract public Cell getCell();

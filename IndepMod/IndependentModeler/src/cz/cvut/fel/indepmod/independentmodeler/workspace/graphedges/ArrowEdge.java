@@ -103,6 +103,14 @@ public class ArrowEdge extends DefaultEdge implements GraphObject,
         this.node.setTargetNode(node);
     }
 
+    public Node getSourceNode() {
+        return this.node.getSource();
+    }
+
+    public Node getTargetNode() {
+        return this.node.getTarget();
+    }
+
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeObject(this.getAttributes());

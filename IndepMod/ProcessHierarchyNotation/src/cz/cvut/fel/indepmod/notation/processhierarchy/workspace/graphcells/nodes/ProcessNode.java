@@ -3,18 +3,17 @@ package cz.cvut.fel.indepmod.notation.processhierarchy.workspace.graphcells.node
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
 import cz.cvut.fel.indepmod.notation.processhierarchy.workspace.graphcells.ProcessCell;
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
 import javax.swing.Action;
+import org.openide.ErrorManager;
 import org.openide.nodes.Children;
+import org.openide.nodes.PropertySupport;
+import org.openide.nodes.Sheet;
 
 /**
  *
  * @author Petr Vales
  */
-public class ProcessNode extends CellNode implements Externalizable {
+public class ProcessNode extends CellNode {
 
     private transient ProcessCell cell;
 
@@ -31,7 +30,14 @@ public class ProcessNode extends CellNode implements Externalizable {
 
     @Override
     public String getHtmlDisplayName() {
-        return "<b>" + this.getDisplayName() + "<b>";
+        return "<b>" + this.cell.getProcessId() +
+                "<b>:  <font color='!controlShadow'><i>" +
+                this.cell.getName() + "</i></font>";
+    }
+
+    @Override
+    public String getDisplayName() {
+        return this.cell.getName();
     }
 
     @Override
@@ -49,12 +55,46 @@ public class ProcessNode extends CellNode implements Externalizable {
     }
 
     @Override
-    public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeObject(this.getDisplayName());
+    protected Sheet createSheet() {
+        Sheet sheet = Sheet.createDefault();
+        Sheet.Set set = this.fillSetWithCommonProperties(Sheet.createPropertiesSet());
+        Sheet.Set set2 = this.fillSetWithProcessProperties(Sheet.createPropertiesSet());
+        sheet.put(set);
+        sheet.put(set2);
+        return sheet;
     }
 
-    @Override
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        this.setDisplayName((String) in.readObject());
+    protected Sheet.Set fillSetWithProcessProperties(Sheet.Set set) {
+        set.setDisplayName("Process");
+        set.setName("Process");
+        try {
+            set.put(this.createIdProperty());
+            set.put(this.createNameProperty());
+            set.put(this.createInfoProperty());
+        } catch (NoSuchMethodException ex) {
+            ErrorManager.getDefault();
+        }
+        return set;
+    }
+
+    private Property createIdProperty() throws NoSuchMethodException {
+        Property idProp = new PropertySupport.Reflection(this.getCell(),
+                String.class, "processId");
+        idProp.setName("Id");
+        return idProp;
+    }
+
+    private Property createNameProperty() throws NoSuchMethodException {
+        Property nameProp = new PropertySupport.Reflection(this.getCell(),
+                String.class, "name");
+        nameProp.setName("Name");
+        return nameProp;
+    }
+
+    private Property createInfoProperty() throws NoSuchMethodException {
+        Property infoProp = new PropertySupport.Reflection(this.getCell(),
+                String.class, "info");
+        infoProp.setName("Info");
+        return infoProp;
     }
 }

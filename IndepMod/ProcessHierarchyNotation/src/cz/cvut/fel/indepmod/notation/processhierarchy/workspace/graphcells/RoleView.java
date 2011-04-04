@@ -15,17 +15,17 @@ public class RoleView extends VertexView {
 
     private static transient CellViewRenderer renderer = new RoleRenderer();
 
-    public RoleView() {
-        super();
-    }
+//    public RoleView() {
+//        super();
+//    }
 
     public RoleView(Object cell) {
         super(cell);
     }
 
-    protected static void setRenderer(ProcessRenderer aRenderer) {
-        renderer = aRenderer;
-    }
+//    protected static void setRenderer(ProcessRenderer aRenderer) {
+//        renderer = aRenderer;
+//    }
 
     @Override
     public CellViewRenderer getRenderer() {

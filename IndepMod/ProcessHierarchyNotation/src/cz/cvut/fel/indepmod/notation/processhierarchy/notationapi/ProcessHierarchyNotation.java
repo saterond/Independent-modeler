@@ -5,17 +5,15 @@ import cz.cvut.fel.indepmod.independentmodeler.workspace.transferhandler.Indepen
 import cz.cvut.fel.indepmod.notation.processhierarchy.workspace.palette.ProcessHierarchyCategoryChildrenFactory;
 import cz.cvut.fel.indepmod.notationapi.Notation;
 import cz.cvut.fel.indepmod.notationidentifikatorapi.GraphNode;
+import cz.cvut.fel.indepmod.processhierarchynotation.id.ProcessHierarchyNotationId;
 import java.io.IOException;
 import java.io.ObjectInput;
-import org.openide.util.Exceptions;
 
 /**
  *
  * @author Petr Vales
  */
 public class ProcessHierarchyNotation implements Notation {
-
-    public static final String NAME = "Process Hierarchy";
 
     @Override
     public CategoryChildrenFactory getCathegoryChildrenFactory() {
@@ -29,7 +27,7 @@ public class ProcessHierarchyNotation implements Notation {
 
     @Override
     public String getName() {
-        return ProcessHierarchyNotation.NAME;
+        return ProcessHierarchyNotationId.NAME;
     }
 
     @Override
@@ -39,7 +37,6 @@ public class ProcessHierarchyNotation implements Notation {
 
     @Override
     public GraphNode loadGraphNode(ObjectInput in) throws ClassNotFoundException, IOException {
-            return (GraphNode) in.readObject();
+        return (GraphNode) in.readObject();
     }
-
 }

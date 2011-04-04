@@ -1,6 +1,6 @@
 package cz.cvut.fel.indepmod.notation.epc.notationapi;
 
-import cz.cvut.fel.indepmod.epcnotationid.EPCNotationId;
+import cz.cvut.fel.indepmod.epcnotation.id.EPCNotationId;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.CategoryChildrenFactory;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.transferhandler.IndependentModelerTransferHandler;
 import cz.cvut.fel.indepmod.notation.epc.workspace.palette.EPCCategoryChildrenFactory;

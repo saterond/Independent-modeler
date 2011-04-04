@@ -11,12 +11,12 @@ public class FunctionView extends VertexView {
 
     private static transient CellViewRenderer renderer = new FunctionRenderer();
 
-    public FunctionView(Object o) {
-        super(o);
+    public FunctionView(FunctionCell cell) {
+        super(cell);
     }
-
-    public FunctionView() {
-    }
+//
+//    public FunctionView() {
+//    }
 
     protected static void setRenderer(EventRenderer aRenderer) {
         renderer = aRenderer;

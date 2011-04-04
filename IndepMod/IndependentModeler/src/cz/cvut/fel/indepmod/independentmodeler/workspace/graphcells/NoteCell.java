@@ -2,6 +2,8 @@ package cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.NoteNode;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.LineEdge;
+import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.VertexView;
 import org.openide.nodes.Node;
 
@@ -28,8 +30,13 @@ public class NoteCell extends Cell {
     }
 
     @Override
-    public boolean canConnectTo(Cell cell) {
-        return true;
+    public boolean canConnectTo(Cell cell, DefaultEdge edge) {
+        if(edge instanceof LineEdge) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     @Override

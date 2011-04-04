@@ -1,6 +1,7 @@
 package cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.GraphObject;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.ArrowEdge;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
@@ -8,12 +9,18 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Set;
 import javax.swing.Action;
 import javax.swing.JPopupMenu;
 import org.jgraph.JGraph;
 import org.jgraph.graph.AttributeMap;
+import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
+import org.jgraph.graph.Edge;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.VertexView;
 
@@ -36,7 +43,7 @@ abstract public class Cell extends DefaultGraphCell implements GraphObject,
 
     abstract public VertexView getVertexView();
 
-    abstract public boolean canConnectTo(Cell cell);
+    abstract public boolean canConnectTo(Cell cell, DefaultEdge edge);
 
     @Override
     public void setGraph(JGraph _graph) {
@@ -52,11 +59,17 @@ abstract public class Cell extends DefaultGraphCell implements GraphObject,
     }
 
     public void startEditing() {
-        this.getGraph().startEditingAtCell(this);
+        if (this.getGraph() != null) {
+            this.getGraph().startEditingAtCell(this);
+        }
     }
 
     public boolean stopEditing() {
-        return this.getGraph().stopEditing();
+        if (this.getGraph() != null) {
+            return this.getGraph().stopEditing();
+        } else {
+            return false;
+        }
     }
 
     public void cancleEditing() {
@@ -184,5 +197,22 @@ abstract public class Cell extends DefaultGraphCell implements GraphObject,
     public void readExternal(ObjectInput in) throws IOException,
             ClassNotFoundException {
         this.setAttributes((AttributeMap) in.readObject());
+    }
+
+    public List<Edge> getAllEdges() {
+        List<Edge> edgeList = new ArrayList<Edge>();
+        Enumeration childrens = this.children();
+        for (; childrens.hasMoreElements();) {
+            Object nextElement = childrens.nextElement();
+            if (nextElement instanceof DefaultPort) {
+                Set edges = ((DefaultPort) nextElement).getEdges();
+                for (Object edgeObject : edges) {
+                    if (edgeObject instanceof Edge) {
+                        edgeList.add((Edge) edgeObject);
+                    }
+                }
+            }
+        }
+        return edgeList;
     }
 }

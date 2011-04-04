@@ -11,7 +11,7 @@ public class SupportingSystemView extends VertexView {
 
     private static transient CellViewRenderer renderer = new SupportingSystemRenderer();
 
-    public SupportingSystemView(Object o) {
+    public SupportingSystemView(SupportingSystemCell o) {
         super(o);
     }
 

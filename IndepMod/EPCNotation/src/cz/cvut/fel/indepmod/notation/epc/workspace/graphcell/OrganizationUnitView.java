@@ -11,7 +11,7 @@ public class OrganizationUnitView extends VertexView {
 
     private static transient CellViewRenderer renderer = new OrganizationUnitRenderer();
 
-    public OrganizationUnitView(Object o) {
+    public OrganizationUnitView(OrganizationUnitCell o) {
         super(o);
     }
 

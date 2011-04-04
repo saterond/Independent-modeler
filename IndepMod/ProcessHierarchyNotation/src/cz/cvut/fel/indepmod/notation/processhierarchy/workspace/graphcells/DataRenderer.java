@@ -13,23 +13,20 @@ import org.jgraph.graph.VertexRenderer;
  */
 public class DataRenderer extends VertexRenderer {
 
+    private DataCell cell;
+
     @Override
-    public void paint(Graphics g) {
-//        int b = borderWidth;
+    public synchronized void paint(Graphics g) {
+        cell = (DataCell) this.view.getCell();
         Graphics2D g2 = (Graphics2D) g;
-//        Dimension d = getSize();
-//        boolean tmp = selected;
         if (super.isOpaque()) {
             this.drawOpaque(g, g2);
         }
-//        try {
-//            setBorder(null);
-//            setOpaque(false);
-//            selected = false;
-//            super.paint(g);
-//        } finally {
-//            selected = tmp;
-//        }
+
+        if (bordercolor != null && this.cell.getDataName() != null) {
+            g.setColor(bordercolor);
+            g2.drawString("Data name: " + this.cell.getDataName(), 15 + this.borderWidth, this.getSize().height - this.borderWidth - 15);
+        }
         if (bordercolor != null) {
             this.drawBorder(g, g2);
         }

@@ -3,18 +3,18 @@ package cz.cvut.fel.indepmod.notation.processhierarchy.workspace.graphcells.node
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
 import cz.cvut.fel.indepmod.notation.processhierarchy.workspace.graphcells.RoleCell;
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
+import java.beans.PropertyChangeListener;
 import javax.swing.Action;
+import org.openide.ErrorManager;
 import org.openide.nodes.Children;
+import org.openide.nodes.PropertySupport;
+import org.openide.nodes.Sheet;
 
 /**
  *
  * @author Petr Vales
  */
-public class RoleNode extends CellNode implements Externalizable {
+public class RoleNode extends CellNode {
 
     private transient RoleCell cell;
 
@@ -31,7 +31,12 @@ public class RoleNode extends CellNode implements Externalizable {
 
     @Override
     public String getHtmlDisplayName() {
-        return "<b>" + this.getDisplayName() + "<b>";
+        return "<b>" + this.cell.getRoleName() + "<b>";
+    }
+
+    @Override
+    public String getDisplayName() {
+        return this.cell.getRoleName();
     }
 
     @Override
@@ -49,12 +54,30 @@ public class RoleNode extends CellNode implements Externalizable {
     }
 
     @Override
-    public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeObject(this.getDisplayName());
+    protected Sheet createSheet() {
+        Sheet sheet = Sheet.createDefault();
+        Sheet.Set set = this.fillSetWithCommonProperties(Sheet.createPropertiesSet());
+        Sheet.Set set2 = this.fillSetWithRoleProperties(Sheet.createPropertiesSet());
+        sheet.put(set);
+        sheet.put(set2);
+        return sheet;
     }
 
-    @Override
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        this.setDisplayName((String) in.readObject());
+    protected Sheet.Set fillSetWithRoleProperties(Sheet.Set set) {
+        set.setDisplayName("Role");
+        set.setName("Role");
+        try {
+            set.put(this.createNameProperty());
+        } catch (NoSuchMethodException ex) {
+            ErrorManager.getDefault();
+        }
+        return set;
+    }
+
+    private Property createNameProperty() throws NoSuchMethodException {
+        Property nameProp = new PropertySupport.Reflection(this.getCell(),
+                String.class, "roleName");
+        nameProp.setName("Name");
+        return nameProp;
     }
 }

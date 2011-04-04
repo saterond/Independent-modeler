@@ -2,6 +2,7 @@ package cz.cvut.fel.indepmod.independentmodeler.workspace;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.PaletteListener;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.actions.IndependentModelerPaletteActions;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.cookie.SaveCookieImpl;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.palette.CategoryChildrenFactory;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.transferhandler.IndependentModelerTransferHandler;
 import cz.cvut.fel.indepmod.notationidentifikatorapi.GraphNode;
@@ -15,7 +16,8 @@ import org.netbeans.spi.palette.PaletteController;
 import org.netbeans.spi.palette.PaletteFactory;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
-import org.openide.util.lookup.Lookups;
+import org.openide.util.lookup.AbstractLookup;
+import org.openide.util.lookup.InstanceContent;
 import org.openide.windows.TopComponent;
 
 /**
@@ -29,10 +31,11 @@ public class Editor extends TopComponent {
     private Graph graph;
     private IndependentModelerTransferHandler transferHandler;
     private PaletteListener paletteListener;
-    
+    private InstanceContent ic = new InstanceContent();
+    private SaveCookieImpl impl;
+
 //    InstanceContent ic;
 //    SaveCookieImpl impl;
-
     public Editor(String title,
             CategoryChildrenFactory childrenfactory,
             IndependentModelerTransferHandler transferHandler,
@@ -42,12 +45,13 @@ public class Editor extends TopComponent {
         this.setDisplayName(title);
         this.initPalette(childrenfactory);
         this.initComponents(node);
-
+        this.initSaveCookie();
 //        impl = new SaveCookieImpl();
 //        ic = new InstanceContent();
 ////        ic.add(ExplorerUtils.createLookup(mgr, getActionMap()));
 //        ic.add(impl);
 //        associateLookup(new AbstractLookup(ic));
+        associateLookup(new AbstractLookup(ic));
     }
 
     public Editor(String title, CategoryChildrenFactory factory,
@@ -58,6 +62,14 @@ public class Editor extends TopComponent {
         this.setDisplayName(title);
         this.initPalette(factory);
         this.initComponents(node, graph);
+        this.initSaveCookie();
+        associateLookup(new AbstractLookup(ic));
+    }
+
+    private void initSaveCookie() {
+        impl = new SaveCookieImpl();
+////        ic.add(ExplorerUtils.createLookup(mgr, getActionMap()));
+        ic.add(impl);
     }
 
     private void initComponents(GraphNode node, Graph graph) {
@@ -107,7 +119,8 @@ public class Editor extends TopComponent {
                 new AbstractNode(Children.create(
                 factory, true)),
                 new IndependentModelerPaletteActions());
-        this.associateLookup(Lookups.fixed(this.palette));
+        ic.add(this.palette);
+//        this.associateLookup(Lookups.fixed(this.palette));
         this.paletteListener = new PaletteListener(palette);
         this.palette.addPropertyChangeListener(this.paletteListener);
     }
@@ -125,32 +138,13 @@ public class Editor extends TopComponent {
         this.graph = graph;
     }
 
-//    public class SaveCookieImpl implements SaveCookie {
-//
-//        @Override
-//        public void save() throws IOException {
-//
-//            Confirmation msg = new NotifyDescriptor.Confirmation(
-//                    "Do you want to save?",
-//                    NotifyDescriptor.OK_CANCEL_OPTION,
-//                    NotifyDescriptor.QUESTION_MESSAGE);
-//
-//            Object result = DialogDisplayer.getDefault().notify(msg);
-//
-//
-//            if (NotifyDescriptor.YES_OPTION.equals(result)) {
-//                FileOutputStream fos = null;
-//                ObjectOutputStream oos = null;
-//                try {
-//                    fos = new FileOutputStream("lastProject.imp");
-//                    oos = new ObjectOutputStream(fos);
-//                    oos.writeObject(getGraph());
-//                    oos.close();
-//                } catch (IOException ex) {
-//                    ex.printStackTrace();
-//                }
-//            }
-//
-//        }
-//    }
+    @Override
+    protected void componentOpened() {
+        super.componentOpened();
+    }
+
+    @Override
+    protected void componentClosed() {
+        super.componentClosed();
+    }
 }

@@ -1,5 +1,6 @@
 package cz.cvut.fel.indepmod.independentmodeler.workspace;
 
+import cz.cvut.fel.indepmod.independentmodeler.OpenProjectAction;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.projectnodes.ProjectNode;
 import java.beans.PropertyVetoException;
 import java.io.File;
@@ -7,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.util.logging.Logger;
 import org.openide.util.NbBundle;
 import org.openide.windows.TopComponent;
@@ -37,8 +40,8 @@ public final class ProjectTopComponent extends TopComponent implements
             "cz/cvut/fel/indepmod/independentmodeler/opened_projects_scope.png";
     private ExplorerManager mgr = new ExplorerManager();
     private ProjectNode rootNode;
-    InstanceContent ic;
-    SaveCookieImpl impl;
+    private InstanceContent ic;
+    private SaveCookieImpl impl;
 
     public ProjectTopComponent() {
         initTopComponent();
@@ -206,4 +209,25 @@ public final class ProjectTopComponent extends TopComponent implements
             saveProject();
         }
     }
+
+//    @Override
+//    protected Object writeReplace() throws ObjectStreamException {
+//        return new ResolverHelper(rootNode.getFile());
+//    }
+//
+//    final static class ResolverHelper implements Serializable {
+//        private final File file;
+//
+//        private ResolverHelper(File file) {
+//            this.file = file;
+//        }
+//
+//        public Object readResolve() {
+//            OpenProjectAction openProjectAction =
+//                    new OpenProjectAction();
+//            openProjectAction.loadProject(file);
+//            return ProjectTopComponent.getDefault();
+//        }
+//
+//    }
 }

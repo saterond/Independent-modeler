@@ -11,21 +11,21 @@ public class DataView extends VertexView {
 
     private static transient CellViewRenderer renderer = new DataRenderer();
 
-    public
-
-     DataView(Object o) {
+    public DataView(DataCell o) {
         super(o);
+//        renderer = new DataRenderer(o);
     }
 
-    public DataView() {
-    }
-
-    protected static void setRenderer(ProcessRenderer aRenderer) {
-        renderer = aRenderer;
-    }
+//    public DataView() {
+//        super();
+//    }
+//
+//    protected static void setRenderer(ProcessRenderer aRenderer) {
+//        renderer = aRenderer;
+//    }
 
     @Override
-    public CellViewRenderer getRenderer() {
+    public synchronized CellViewRenderer getRenderer() {
         return renderer;
     }
 }

@@ -11,7 +11,7 @@ public class InputView extends VertexView {
 
     private static transient CellViewRenderer renderer = new InputOutputRenderer();
 
-    public InputView(Object o) {
+    public InputView(InputCell o) {
         super(o);
     }
 

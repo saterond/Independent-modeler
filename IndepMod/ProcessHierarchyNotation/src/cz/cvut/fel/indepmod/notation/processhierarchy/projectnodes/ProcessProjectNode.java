@@ -1,29 +1,29 @@
 package cz.cvut.fel.indepmod.notation.processhierarchy.projectnodes;
 
 import cz.cvut.fel.indepmod.editorprovider.EditorProvider;
-import cz.cvut.fel.indepmod.epcnotationid.EPCNotationId;
+import cz.cvut.fel.indepmod.epcnotation.id.EPCNotationId;
+import cz.cvut.fel.indepmod.independentmodeler.api.IndependentModelerGraphModel;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.Graph;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.IndependentModelerCellViewFactory;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.ArrowEdge;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.IndependentModelerEdge;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.LineEdge;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.nodes.ArrowEdgeNode;
-import cz.cvut.fel.indepmod.notation.processhierarchy.notationapi.ProcessHierarchyNotation;
+import cz.cvut.fel.indepmod.notation.processhierarchy.api.ProcessHierarchyGraphModelImpl;
 import cz.cvut.fel.indepmod.notationidentifikatorapi.GraphNode;
+import cz.cvut.fel.indepmod.processhierarchynotation.id.ProcessHierarchyNotationId;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
-import java.io.Externalizable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -88,7 +88,7 @@ public class ProcessProjectNode extends GraphNode {
 //        this.saveGraph();
 //        out.writeObject(this.getChildren().getNodes());
 //    }
-
+    @Override
     public void saveGraph() throws FileNotFoundException, IOException {
         File file = new File(this.getRootDir().getPath() + File.separator + "graph.imj");
         file.createNewFile();
@@ -140,7 +140,7 @@ public class ProcessProjectNode extends GraphNode {
 //        this.setRootDir((File) in.readObject());
 ////        this.loadGraph();
 //    }
-
+    @Override
     public void loadGraph() throws FileNotFoundException, IOException, ClassNotFoundException {
         File file = new File(this.getRootDir().getPath() + File.separator + "graph.imj");
         FileInputStream fin = new FileInputStream(file);
@@ -195,6 +195,10 @@ public class ProcessProjectNode extends GraphNode {
             ArrowEdge edge = new ArrowEdge();
             this.findSourceAndTarget(edge, sourceIterator.next(), targetIterator.next());
             this.getGraph().addEdge(edge);
+        } else if (edgeClass.equals(ArrowEdge.class.getName())) {
+            LineEdge edge = new LineEdge();
+            this.findSourceAndTarget(edge, sourceIterator.next(), targetIterator.next());
+            this.getGraph().addEdge(edge);
         }
     }
 
@@ -217,7 +221,7 @@ public class ProcessProjectNode extends GraphNode {
 
     @Override
     public String getNotationId() {
-        return ProcessHierarchyNotation.NAME;
+        return ProcessHierarchyNotationId.NAME;
     }
 
     private class OpenAction extends AbstractAction implements Presenter.Popup {
@@ -247,6 +251,7 @@ public class ProcessProjectNode extends GraphNode {
                         null,
                         getGraph());
             }
+            IndependentModelerGraphModel api = new ProcessHierarchyGraphModelImpl(graph);
         }
 
         @Override

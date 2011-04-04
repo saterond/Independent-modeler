@@ -1,10 +1,6 @@
 package cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.nodes;
 
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.ArrowEdge;
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
 import javax.swing.Action;
 import org.openide.ErrorManager;
 import org.openide.nodes.AbstractNode;
@@ -17,7 +13,7 @@ import org.openide.nodes.Sheet;
  *
  * @author Petr Vales
  */
-public class ArrowEdgeNode extends AbstractNode implements Externalizable {
+public class ArrowEdgeNode extends AbstractNode {
 
     private transient ArrowEdge edge;
     private Node source;
@@ -51,17 +47,6 @@ public class ArrowEdgeNode extends AbstractNode implements Externalizable {
     @Override
     public Action[] getActions(boolean popup) {
         return null;
-    }
-
-    @Override
-    public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeObject(this.getDisplayName());
-    }
-
-    @Override
-    public void readExternal(ObjectInput in) throws IOException,
-            ClassNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void setSourceNode(Node node) {

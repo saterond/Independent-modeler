@@ -11,7 +11,7 @@ public class EventView extends VertexView {
 
     private static transient CellViewRenderer renderer = new EventRenderer();
 
-    public EventView(Object o) {
+    public EventView(EventCell o) {
         super(o);
     }
 

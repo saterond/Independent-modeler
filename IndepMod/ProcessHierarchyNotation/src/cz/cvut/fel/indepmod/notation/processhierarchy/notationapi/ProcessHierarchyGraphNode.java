@@ -7,8 +7,11 @@ import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.IndependentM
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.CellNode;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.ArrowEdge;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.IndependentModelerEdge;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.LineEdge;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.nodes.ArrowEdgeNode;
+import cz.cvut.fel.indepmod.independentmodeler.workspace.graphedges.nodes.LineEdgeNode;
 import cz.cvut.fel.indepmod.notationidentifikatorapi.GraphNode;
+import cz.cvut.fel.indepmod.processhierarchynotation.id.ProcessHierarchyNotationId;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -40,7 +43,6 @@ import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.PortView;
 import org.openide.nodes.Children;
-import org.openide.nodes.Node;
 import org.openide.util.actions.Presenter;
 
 /**
@@ -85,6 +87,7 @@ public final class ProcessHierarchyGraphNode extends GraphNode implements Extern
         this.saveGraph();
     }
 
+    @Override
     public void saveGraph() throws FileNotFoundException, IOException {
         File file = new File(this.getRootDir().getPath() + File.separator + "graph.imj");
         file.createNewFile();
@@ -95,9 +98,21 @@ public final class ProcessHierarchyGraphNode extends GraphNode implements Extern
         out.close();
     }
 
+    //TODO
     private void saveCells(ObjectOutputStream out) throws IOException {
         Object[] cells = this.getGraph().getGraphLayoutCache().getCells(false, true, false, false);
         out.writeObject(cells);
+
+//        ------------------------test----------------------
+//        for (Object object : cells) {
+//            if (object instanceof RoleCell) {
+//                Collection<cz.cvut.fel.indepmod.notation.processhierarchy.model.api.Process> data = ((RoleCell) object).getAllProcesses();
+//                for (cz.cvut.fel.indepmod.notation.processhierarchy.model.api.Process iData : data) {
+//                    System.out.println(iData.getName());
+//                }
+//            }
+//        }
+//        ------------------------test----------------------
     }
 
     private void saveEdges(ObjectOutputStream out) throws IOException {
@@ -118,8 +133,26 @@ public final class ProcessHierarchyGraphNode extends GraphNode implements Extern
             List<Rectangle2D> sources,
             List<Rectangle2D> targets) {
         edgeClasses.add(object.getClass().getName());
+        if (object instanceof ArrowEdge) {
+            this.parseArrowEdgeInfo((ArrowEdge) object, sources, targets);
+        } else if (object instanceof LineEdge) {
+            this.parseLineEdgeInfo((LineEdge) object, sources, targets);
+        }
+//        ArrowEdge edge = (ArrowEdge) object;
+//        ArrowEdgeNode navigatorNode = (ArrowEdgeNode) edge.getNavigatorNode();
+//        sources.add(this.getBoundsForCellNode((CellNode) navigatorNode.getSource()));
+//        targets.add(this.getBoundsForCellNode((CellNode) navigatorNode.getTarget()));
+    }
 
-        ArrowEdge edge = (ArrowEdge) object;
+    private void parseLineEdgeInfo(LineEdge edge, List<Rectangle2D> sources,
+            List<Rectangle2D> targets) {
+        LineEdgeNode navigatorNode = (LineEdgeNode) edge.getNavigatorNode();
+        sources.add(this.getBoundsForCellNode((CellNode) navigatorNode.getSource()));
+        targets.add(this.getBoundsForCellNode((CellNode) navigatorNode.getTarget()));
+    }
+
+    private void parseArrowEdgeInfo(ArrowEdge edge, List<Rectangle2D> sources,
+            List<Rectangle2D> targets) {
         ArrowEdgeNode navigatorNode = (ArrowEdgeNode) edge.getNavigatorNode();
         sources.add(this.getBoundsForCellNode((CellNode) navigatorNode.getSource()));
         targets.add(this.getBoundsForCellNode((CellNode) navigatorNode.getTarget()));
@@ -138,6 +171,7 @@ public final class ProcessHierarchyGraphNode extends GraphNode implements Extern
 //        this.loadGraph();
     }
 
+    @Override
     public void loadGraph() throws FileNotFoundException, IOException, ClassNotFoundException {
         File file = new File(this.getRootDir().getPath() + File.separator + "graph.imj");
         FileInputStream fin = new FileInputStream(file);
@@ -192,6 +226,10 @@ public final class ProcessHierarchyGraphNode extends GraphNode implements Extern
             ArrowEdge edge = new ArrowEdge();
             this.findSourceAndTarget(edge, sourceIterator.next(), targetIterator.next());
             this.getGraph().addEdge(edge);
+        } else if (edgeClass.equals(LineEdge.class.getName())) {
+            LineEdge edge = new LineEdge();
+            this.findSourceAndTarget(edge, sourceIterator.next(), targetIterator.next());
+            this.getGraph().addEdge(edge);
         }
     }
 
@@ -214,7 +252,7 @@ public final class ProcessHierarchyGraphNode extends GraphNode implements Extern
 
     @Override
     public String getNotationId() {
-        return ProcessHierarchyNotation.NAME;
+        return ProcessHierarchyNotationId.NAME;
     }
 
     private class OpenAction extends AbstractAction implements Presenter.Popup {
@@ -227,14 +265,14 @@ public final class ProcessHierarchyGraphNode extends GraphNode implements Extern
         public void actionPerformed(ActionEvent e) {
             if (getGraph() == null) {
                 Graph graph = EditorProvider.getInstance().requestEditor(
-                        ProcessHierarchyNotation.NAME,
+                        ProcessHierarchyNotationId.NAME,
                         getDisplayName(),
                         getDisplayName(),
                         ProcessHierarchyGraphNode.this);
                 setGraph(graph);
             } else {
                 EditorProvider.getInstance().requestEditor(
-                        ProcessHierarchyNotation.NAME,
+                        ProcessHierarchyNotationId.NAME,
                         getDisplayName(),
                         getDisplayName(),
                         ProcessHierarchyGraphNode.this,

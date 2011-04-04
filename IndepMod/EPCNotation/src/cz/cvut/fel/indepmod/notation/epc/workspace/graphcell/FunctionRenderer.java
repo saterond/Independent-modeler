@@ -13,22 +13,32 @@ import org.jgraph.graph.VertexRenderer;
  *
  * @author Petr Vales
  */
-public class FunctionRenderer extends VertexRenderer  {
+public class FunctionRenderer extends VertexRenderer {
+
+    private FunctionCell cell;
 
     @Override
     public void paint(Graphics g) {
+        this.cell = (FunctionCell) this.view.getCell();
         Graphics2D g2 = (Graphics2D) g;
         boolean tmp = selected;
         if (super.isOpaque()) {
             this.drawOpaque(g, g2);
         }
-        try {
-            setBorder(null);
-            setOpaque(false);
-            selected = false;
-            super.paint(g);
-        } finally {
-            selected = tmp;
+//        try {
+//            setBorder(null);
+//            setOpaque(false);
+//            selected = false;
+//            super.paint(g);
+//        } finally {
+//            selected = tmp;
+//        }
+        if (cell.getType() == FunctionType.AND) {
+            this.drawAnd(g, g2);
+        } else if (cell.getType() == FunctionType.OR) {
+            this.drawOr(g, g2);
+        } else if (cell.getType() == FunctionType.XOR) {
+            this.drawXor(g, g2);
         }
         if (bordercolor != null) {
             this.drawBorder(g, g2);
@@ -36,6 +46,27 @@ public class FunctionRenderer extends VertexRenderer  {
         if (selected) {
             this.drawSelected(g, g2);
         }
+    }
+
+    private void drawAnd(Graphics g, Graphics2D g2) {
+        g.setColor(this.bordercolor);
+        g2.setStroke(new BasicStroke(this.borderWidth));
+        g.drawLine(this.getSize().width / 2, this.getSize().height / 10, this.getSize().width / 4, this.getSize().height * 9 / 10);
+        g.drawLine(this.getSize().width / 2, this.getSize().height / 10, this.getSize().width * 3 / 4, this.getSize().height * 9 / 10);
+    }
+
+    private void drawOr(Graphics g, Graphics2D g2) {
+        g.setColor(this.bordercolor);
+        g2.setStroke(new BasicStroke(this.borderWidth));
+        g.drawLine(this.getSize().width / 2, this.getSize().height * 9 / 10, this.getSize().width / 4, this.getSize().height / 10);
+        g.drawLine(this.getSize().width / 2, this.getSize().height * 9 / 10, this.getSize().width * 3 / 4, this.getSize().height / 10);
+    }
+
+    private void drawXor(Graphics g, Graphics2D g2) {
+        g.setColor(this.bordercolor);
+        g2.setStroke(new BasicStroke(this.borderWidth));
+        g.drawLine(this.getSize().width * 3 / 4, this.getSize().height * 9 / 10, this.getSize().width / 4, this.getSize().height / 10);
+        g.drawLine(this.getSize().width / 4, this.getSize().height * 9 / 10, this.getSize().width * 3 / 4, this.getSize().height / 10);
     }
 
     private void drawOpaque(Graphics g, Graphics2D g2) {
@@ -65,21 +96,19 @@ public class FunctionRenderer extends VertexRenderer  {
         g.fillRoundRect(
                 0 + this.borderWidth,
                 0 + this.borderWidth,
-                this.getSize().width - 2*this.borderWidth,
-                this.getSize().height - 2*this.borderWidth,
+                this.getSize().width - 2 * this.borderWidth,
+                this.getSize().height - 2 * this.borderWidth,
                 (this.getSize().width - this.borderWidth) / 3,
-                (this.getSize().height - this.borderWidth) / 3
-                );
+                (this.getSize().height - this.borderWidth) / 3);
     }
 
     private void drawShape(Graphics g) {
         g.drawRoundRect(
                 0 + this.borderWidth,
                 0 + this.borderWidth,
-                this.getSize().width - 2*this.borderWidth,
-                this.getSize().height - 2*this.borderWidth,
+                this.getSize().width - 2 * this.borderWidth,
+                this.getSize().height - 2 * this.borderWidth,
                 (this.getSize().width - this.borderWidth) / 3,
-                (this.getSize().height - this.borderWidth) / 3
-                );
+                (this.getSize().height - this.borderWidth) / 3);
     }
 }

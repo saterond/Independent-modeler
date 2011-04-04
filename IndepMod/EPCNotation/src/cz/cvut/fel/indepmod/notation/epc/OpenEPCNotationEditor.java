@@ -1,7 +1,7 @@
 package cz.cvut.fel.indepmod.notation.epc;
 
 import cz.cvut.fel.indepmod.editorprovider.EditorProvider;
-import cz.cvut.fel.indepmod.epcnotationid.EPCNotationId;
+import cz.cvut.fel.indepmod.epcnotation.id.EPCNotationId;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

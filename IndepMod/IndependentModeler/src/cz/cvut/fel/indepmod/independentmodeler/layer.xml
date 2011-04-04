@@ -61,9 +61,17 @@
     </folder>
     <folder name="Windows2">
         <folder name="Modes">
-            <folder name="explorer">
+            <folder name="project">
                 <file name="ProjectTopComponent.wstcref" url="ProjectTopComponentWstcref.xml"/>
             </folder>
+            <folder name="navigator">
+                <file name="Navigator.wstcref" url="NavigatorTopComponentWstcref.xml"/>
+            </folder>
+<!--            <folder name="explorer">
+                <file name="ProjectTopComponent.wstcref" url="ProjectTopComponentWstcref.xml"/>
+            </folder>-->
+            <file name="navigator.wsmode" url="navigatorWsmode.xml"/>
+            <file name="project.wsmode" url="projectWsmode.xml"/>
         </folder>
     </folder>
     <folder name="Toolbars">

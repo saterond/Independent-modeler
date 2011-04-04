@@ -1,5 +1,7 @@
 package cz.cvut.fel.indepmod.notationidentifikatorapi;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,7 +13,7 @@ import org.openide.nodes.Node;
  *
  * @author Petr Vales
  */
-abstract public class GraphNode extends AbstractNode {
+abstract public class GraphNode extends AbstractNode implements PropertyChangeListener {
 
     private File rootDir;
 
@@ -34,7 +36,7 @@ abstract public class GraphNode extends AbstractNode {
         if (this.getChildren() == Children.LEAF) {
             this.setChildren(new Children.Array());
         }
-        if(!this.containChildren(node)) {
+        if (!this.containChildren(node)) {
             this.getChildren().add(new Node[]{node});
             File _rootDir = new File(this.getRootDir() + File.separator
                     + node.getName() + File.separator);
@@ -46,7 +48,7 @@ abstract public class GraphNode extends AbstractNode {
     public boolean containChildren(GraphNode graphNode) {
         Node[] nodes = this.getChildren().getNodes();
         for (Node node : nodes) {
-            if(graphNode == node) {
+            if (graphNode == node) {
                 return true;
             }
         }
@@ -54,5 +56,13 @@ abstract public class GraphNode extends AbstractNode {
     }
 
     abstract public void saveGraph() throws FileNotFoundException, IOException;
-    abstract public void loadGraph() throws FileNotFoundException, IOException, ClassNotFoundException ;
+
+    abstract public void loadGraph() throws FileNotFoundException, IOException, ClassNotFoundException;
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("name")) {
+            this.fireDisplayNameChange((String) evt.getOldValue(), (String) evt.getNewValue());
+        }
+    }
 }

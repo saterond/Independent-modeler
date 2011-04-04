@@ -1,5 +1,6 @@
 package cz.cvut.fel.indepmod.independentmodeler.workspace;
 
+import cz.cvut.fel.indepmod.independentmodeler.api.IndependentModelerGraphModel;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.Cell;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.IndependentModelerCellViewFactory;
 import cz.cvut.fel.indepmod.independentmodeler.workspace.graphcells.nodes.NavigatorGraphNode;
@@ -8,11 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import org.jgraph.JGraph;
 import java.awt.geom.Point2D;
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.util.UUID;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphLayoutCache;
@@ -23,14 +20,17 @@ import org.openide.nodes.Node;
  *
  * @author Petr Vales
  */
-public class Graph extends JGraph implements Serializable {
+public class Graph extends JGraph {
 
     private NavigatorGraphNode navigatorNode;
     private transient GraphNode projectNode;
+    private IndependentModelerGraphModel api;
     private static final long serialVersionUID = 769541961;
+    private UUID uuid;
 
     public Graph() {
         super();
+        uuid = UUID.randomUUID();
     }
 
     public Graph(GraphModel gm, GraphLayoutCache glc) {
@@ -38,6 +38,7 @@ public class Graph extends JGraph implements Serializable {
         this.getGraphLayoutCache().setFactory(
                 new IndependentModelerCellViewFactory());
         this.navigatorNode = new NavigatorGraphNode(this);
+        uuid = UUID.randomUUID();
     }
 
     public void createCell(Cell[] cells) {
@@ -54,7 +55,7 @@ public class Graph extends JGraph implements Serializable {
             Node cellProjectNode = cell.getProjectNode();
             if (cellProjectNode != null) {
                 if (cellProjectNode instanceof GraphNode) {
-                        this.projectNode.addChildren((GraphNode) cellProjectNode);
+                    this.projectNode.addChildren((GraphNode) cellProjectNode);
                 }
 //                Node[] nodes = {cellProjectNode};
 //                this.projectNode.getChildren().add(nodes);
@@ -110,11 +111,15 @@ public class Graph extends JGraph implements Serializable {
         this.projectNode = projectNode;
     }
 
-    private void writeObject(ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
+    public IndependentModelerGraphModel getApi() {
+        return api;
     }
 
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
+    public void setApi(IndependentModelerGraphModel api) {
+        this.api = api;
+    }
+
+    public String getId() {
+        return this.uuid.toString();
     }
 }

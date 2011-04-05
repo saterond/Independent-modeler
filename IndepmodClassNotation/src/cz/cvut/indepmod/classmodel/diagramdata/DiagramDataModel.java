@@ -1,11 +1,12 @@
 package cz.cvut.indepmod.classmodel.diagramdata;
 
+import cz.cvut.indepmod.classmodel.Globals;
 import cz.cvut.indepmod.classmodel.api.model.DiagramType;
 import cz.cvut.indepmod.classmodel.api.model.IType;
+import cz.cvut.indepmod.classmodel.diagramdata.langs.Language;
 import cz.cvut.indepmod.classmodel.util.ClassModelLibrary;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraphModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelCellViewFactory;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,9 +32,9 @@ public class DiagramDataModel {
     private DiagramType diagramType;
 
     /**
-     * Set of static data types (String, int, ...)
+     * Language definition with set of static data types (String, int, ...)
      */
-    private Set<IType> staticDataTypes;
+    private Language language;
 
     /**
      * Set of dynamic data types which were added by the user. These data
@@ -49,10 +50,10 @@ public class DiagramDataModel {
         this(new GraphLayoutCache(
                 new ClassModelGraphModel(),
                 new ClassModelCellViewFactory()),
-             DiagramType.CLASS);
+             DiagramType.CLASS, null);
     }
 
-    public DiagramDataModel(GraphLayoutCache cache, DiagramType diagType) {
+    public DiagramDataModel(GraphLayoutCache cache, DiagramType diagType, String languageName) {
         this.layoutCache = cache;
         this.diagramType = diagType;
 
@@ -62,11 +63,19 @@ public class DiagramDataModel {
                     new ClassModelCellViewFactory());
         }
 
+        this.language = Globals.getInstance().getLangByName(languageName);
         this.dynamicDataTypes = new HashSet<IType>();
         this.stereotypes = new HashSet<String>();
 
-        this.initStaticTypes();
         this.initDefaultStereotypes();
+    }
+
+    /**
+     * Return the name of the language.
+     * @return
+     */
+    public String getLanguageName() {
+        return this.language.getLangName();
     }
 
     /**
@@ -90,7 +99,7 @@ public class DiagramDataModel {
      * @return
      */
     public Collection<IType> getStaticDataTypes() {
-        return new HashSet<IType>(this.staticDataTypes);
+        return new HashSet<IType>(this.language.getStaticDataTypes());
     }
 
     /**
@@ -106,7 +115,7 @@ public class DiagramDataModel {
      * @return
      */
     public Collection<IType> getDataTypes() {
-        Collection<IType> res = ClassModelLibrary.joinTypeCollections(this.staticDataTypes, this.dynamicDataTypes);
+        Collection<IType> res = ClassModelLibrary.joinTypeCollections(this.language.getStaticDataTypes(), this.dynamicDataTypes);
         return res;
     }
 
@@ -115,7 +124,7 @@ public class DiagramDataModel {
      * @param type
      */
     public void addDynamicDataType(IType type) {
-        if (this.staticDataTypes.contains(type)) {
+        if (this.language.getStaticDataTypes().contains(type)) {
             return;
         }
         this.dynamicDataTypes.add(type);
@@ -140,19 +149,19 @@ public class DiagramDataModel {
     /**
      * TODO - this will be loaded from a XML. Only temporary
      */
-    private void initStaticTypes() {
-        this.staticDataTypes = new HashSet<IType>();
-        this.staticDataTypes.add(new TypeModel("Object"));
-        this.staticDataTypes.add(new TypeModel("String"));
-        this.staticDataTypes.add(new TypeModel("int"));
-        this.staticDataTypes.add(new TypeModel("char"));
-        this.staticDataTypes.add(new TypeModel("boolean"));
-        this.staticDataTypes.add(new TypeModel("long"));
-        this.staticDataTypes.add(new TypeModel("double"));
-        this.staticDataTypes.add(new TypeModel("float"));
-        this.staticDataTypes.add(new TypeModel("void"));
-        this.staticDataTypes.add(new TypeModel(""));
-    }
+//    private void initStaticTypes() {
+//        this.staticDataTypes = new HashSet<IType>();
+//        this.staticDataTypes.add(new TypeModel("Object"));
+//        this.staticDataTypes.add(new TypeModel("String"));
+//        this.staticDataTypes.add(new TypeModel("int"));
+//        this.staticDataTypes.add(new TypeModel("char"));
+//        this.staticDataTypes.add(new TypeModel("boolean"));
+//        this.staticDataTypes.add(new TypeModel("long"));
+//        this.staticDataTypes.add(new TypeModel("double"));
+//        this.staticDataTypes.add(new TypeModel("float"));
+//        this.staticDataTypes.add(new TypeModel("void"));
+//        this.staticDataTypes.add(new TypeModel(""));
+//    }
 
     private void initDefaultStereotypes() {
         this.stereotypes = new HashSet<String>();

@@ -71,7 +71,9 @@ public final class ClassModelWizardWizardIterator implements WizardDescriptor.In
 
         Map<String, Object> attributes = new HashMap<String, Object>();
         DiagramType diagramType = (DiagramType)wizard.getProperty(NewFileConstants.TYPE);
+        String languageName = (String)wizard.getProperty(NewFileConstants.LANGUAGE);
         attributes.put("diagramType", diagramType.toString());
+        attributes.put("language", languageName);
 
         DataObject dobj = template.createFromTemplate(df, targetName, attributes);
         FileObject createdFile = dobj.getPrimaryFile();

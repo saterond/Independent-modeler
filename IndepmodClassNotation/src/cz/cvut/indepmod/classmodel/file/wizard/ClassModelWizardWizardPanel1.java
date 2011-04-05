@@ -98,6 +98,11 @@ public class ClassModelWizardWizardPanel1 implements WizardDescriptor.Panel {
             panel.setBusinessModelSelected(true);
         }
 
+        String langName = (String)this.wd.getProperty(NewFileConstants.LANGUAGE);
+        if (langName != null) {
+            panel.setSelectedLanguage(langName);
+        }
+
         String fileName = Templates.getTargetName(wd);
         panel.setFileName(fileName);
     }
@@ -107,6 +112,8 @@ public class ClassModelWizardWizardPanel1 implements WizardDescriptor.Panel {
         ClassModelWizardVisualPanel1 panel = ((ClassModelWizardVisualPanel1)this.getComponent());
 
         Templates.setTargetName(wd, panel.getFileName());
+
+        this.wd.putProperty(NewFileConstants.LANGUAGE, panel.getSelectedLanguage());
 
         if (panel.isClassModelSelected()) {
             this.wd.putProperty(NewFileConstants.TYPE, DiagramType.CLASS);

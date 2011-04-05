@@ -34,6 +34,6 @@ public class ClassModelDiagramModelPersistenceDelegate extends DefaultPersistenc
                 oldInstance,
                 oldInstance.getClass(),
                 "new",
-                new Object[]{c.getLayoutCache(), c.getDiagramType()});
+                new Object[]{c.getLayoutCache(), c.getDiagramType(), c.getLanguageName()});
     }
 }

@@ -5,5 +5,6 @@
   <object class="cz.cvut.indepmod.classmodel.api.model.DiagramType" method="valueOf">
    <string>${diagramType}</string>
   </object>
+  <string>${language}</string>
  </object>
 </java>

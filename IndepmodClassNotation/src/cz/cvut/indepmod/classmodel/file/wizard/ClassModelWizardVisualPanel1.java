@@ -1,10 +1,12 @@
 package cz.cvut.indepmod.classmodel.file.wizard;
 
+import cz.cvut.indepmod.classmodel.Globals;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.util.GridBagConstraintsUtils;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -19,19 +21,24 @@ public class ClassModelWizardVisualPanel1 extends JPanel {
 
     public static final String NAME_LABEL_TEXT = Resources.getString("new_file_wizard_panel1_name_label");
     public static final String TYPE_LABEL_TEXT = Resources.getString("new_file_wizard_panel1_model_type_label");
+    public static final String LANG_LABEL_TEXT = Resources.getString("new_file_wizard_panel1_model_lang_label");
     public static final String CLASS_MODEL_RADIO_TEXT = Resources.getString("new_file_wizard_panel1_class_model_label");
     public static final String BUSINESS_MODEL_RADIO_TEXT = Resources.getString("new_file_wizard_panel1_business_model_label");
 
     private JLabel nameLabel = new JLabel(NAME_LABEL_TEXT);
     private JLabel typeLabel = new JLabel(TYPE_LABEL_TEXT);
+    private JLabel langLabel = new JLabel(LANG_LABEL_TEXT);
     private JTextField nameField = new JTextField();
 
     private JRadioButton classModelRadio = new JRadioButton(CLASS_MODEL_RADIO_TEXT);
     private JRadioButton businessModelRadio = new JRadioButton(BUSINESS_MODEL_RADIO_TEXT);
     private ButtonGroup radioButtonGroup = new ButtonGroup();
 
+    private JComboBox languageComboBox = new JComboBox();
+
     public ClassModelWizardVisualPanel1() {
         this.initLayout();
+        this.initValues();
     }
 
     public String getFileName() {
@@ -40,6 +47,14 @@ public class ClassModelWizardVisualPanel1 extends JPanel {
 
     public void setFileName(String fileName) {
         this.nameField.setText(fileName);
+    }
+
+    public String getSelectedLanguage() {
+        return (String) this.languageComboBox.getSelectedItem();
+    }
+
+    public void setSelectedLanguage(String langName) {
+        this.languageComboBox.setSelectedItem(langName);
     }
 
     public boolean isClassModelSelected() {
@@ -87,6 +102,22 @@ public class ClassModelWizardVisualPanel1 extends JPanel {
         c.weightx = 0.5;
         c.anchor = GridBagConstraints.LINE_START;
         this.add(this.businessModelRadio, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(0, 3, 1, 1);
+        c.anchor = GridBagConstraints.LINE_START;
+        this.add(this.langLabel , c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(1, 3, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        this.add(this.languageComboBox, c);
+    }
+
+    private void initValues() {
+        this.languageComboBox.removeAllItems();
+        for (String langName : Globals.getInstance().getLanguageNames()) {
+            this.languageComboBox.addItem(langName);
+        }
     }
 
 }

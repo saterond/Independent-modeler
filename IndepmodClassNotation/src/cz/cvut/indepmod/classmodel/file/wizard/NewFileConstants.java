@@ -7,4 +7,6 @@ package cz.cvut.indepmod.classmodel.file.wizard;
 public interface NewFileConstants {
 
     public String TYPE = "TYPE";
+
+    public String LANGUAGE = "LANGUAGE";
 }

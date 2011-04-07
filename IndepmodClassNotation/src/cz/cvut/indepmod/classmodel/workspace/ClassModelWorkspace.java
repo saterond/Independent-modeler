@@ -23,6 +23,7 @@ import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
+import org.openide.awt.UndoRedo;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 import org.openide.windows.CloneableTopComponent;
@@ -41,6 +42,7 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
     private Map<Class<? extends ClassModelAbstractAction>, ClassModelAbstractAction> actions;
     private ToolChooserModel selectedTool;
     private ClassModelSaveCookie saveCookie;
+    private ClassModelUndoRedo undoRedo;
     private InstanceContent lookupContent = new InstanceContent();
     private boolean modified;
 
@@ -74,6 +76,11 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
     @Override
     public int getPersistenceType() {
         return TopComponent.PERSISTENCE_NEVER;
+    }
+
+    @Override
+    public UndoRedo getUndoRedo() {
+        return this.undoRedo;
     }
 
     @Override
@@ -115,6 +122,7 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
         this.graph = new ClassModelGraph(this.actions, this.selectedTool, this.diagramData.getLayoutCache());
         this.classModelAPI = new ClassModelModel(this.graph, this.diagramData);
         this.saveCookie = new ClassModelSaveCookie(this, this.diagramData);
+        this.undoRedo = new ClassModelUndoRedo(this.graph);
         this.modified = false;
 
         this.graph.setMarqueeHandler(new ClassModelMarqueeHandler(this.graph, this.selectedTool, this.actions));

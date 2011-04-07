@@ -78,8 +78,8 @@ private File f = new File(Common.FILE_NAME);
                 isVal2 = true;
             } else if (stereotype.equals(Common.ANOT2)) {
                 isAnot2 = true;
-            } else if (stereotype.equals("")) {
-                //Empty stereotype is there automatically
+            } else if (stereotype.equals("") || stereotype.equals("interface") || stereotype.equals("enumeration")) {
+                //Empty stereotype, interface and enumeration are there automatically
             } else {
                 fail("There is another stereotype!");
             }

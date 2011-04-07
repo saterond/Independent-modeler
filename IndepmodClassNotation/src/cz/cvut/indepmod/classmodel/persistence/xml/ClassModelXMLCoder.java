@@ -7,7 +7,10 @@ import cz.cvut.indepmod.classmodel.persistence.xml.delegate.AttributeModelPersis
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.CardinalityPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.ClassModelDiagramModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.AbstractElementlPersistenceDelegate;
+import cz.cvut.indepmod.classmodel.persistence.xml.delegate.ClassModelPersistenceDelegate;
+import cz.cvut.indepmod.classmodel.persistence.xml.delegate.EnumerationModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.HierarchyRelationModelPersistenceDelegate;
+import cz.cvut.indepmod.classmodel.persistence.xml.delegate.InterfaceModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.MethodModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.RelationModelPersistenceDelegate;
 import cz.cvut.indepmod.classmodel.persistence.xml.delegate.TypeModelPersistenceDelegate;
@@ -19,7 +22,10 @@ import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationMode
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.EnumerationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.HierarchyRelationModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.InterfaceModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.MethodModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.RelationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
@@ -176,6 +182,9 @@ public class ClassModelXMLCoder {
         encoder.setPersistenceDelegate(AnotationModel.class, new AnotationModelPersistenceDelegate());
         encoder.setPersistenceDelegate(AnotationAttributeModel.class, new AnotationAtributeModelPersistenceDelegate());
         encoder.setPersistenceDelegate(Cardinality.class, new CardinalityPersistenceDelegate());
+        encoder.setPersistenceDelegate(ClassModel.class, new ClassModelPersistenceDelegate());
+        encoder.setPersistenceDelegate(InterfaceModel.class, new InterfaceModelPersistenceDelegate());
+        encoder.setPersistenceDelegate(EnumerationModel.class, new EnumerationModelPersistenceDelegate());
 
         //GRAPH VIEWS===========================================================
 //        encoder.setPersistenceDelegate(AbstractCellView.class,

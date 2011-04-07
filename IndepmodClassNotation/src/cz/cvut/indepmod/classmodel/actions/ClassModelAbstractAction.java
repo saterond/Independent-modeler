@@ -14,4 +14,8 @@ public abstract class ClassModelAbstractAction extends AbstractAction {
         super(name, icon);
     }
 
+    public ClassModelAbstractAction() {
+        super();
+    }
+
 }

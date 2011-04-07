@@ -62,7 +62,7 @@ public class ClassModelTest {
     public void testClassInitialization() {
         AbstractElementModel m = null;
 
-        m = new ClassModel();
+        m = new ClassModel("");
         assertTrue(m.getAttributeModels().isEmpty());
         assertTrue(m.getMethodModels().isEmpty());
         assertNotNull(m.getTypeName());
@@ -129,7 +129,7 @@ public class ClassModelTest {
      */
     @Test
     public void testAddAttribute() {
-        AbstractElementModel m = new ClassModel();
+        AbstractElementModel m = new ClassModel("");
         assertEquals(0, m.getAttributeModels().size());
 
         m.addAttribute(new AttributeModel(new TypeModel(Common.TYPE_NAME), Common.ATTRIBUTE_NAME));
@@ -145,7 +145,7 @@ public class ClassModelTest {
      */
     @Test
     public void testRemoveAttribute() {
-        AbstractElementModel m = new ClassModel();
+        AbstractElementModel m = new ClassModel("");
         assertEquals(0, m.getAttributeModels().size());
 
         m.addAttribute(new AttributeModel(new TypeModel(Common.TYPE_NAME), Common.ATTRIBUTE_NAME));

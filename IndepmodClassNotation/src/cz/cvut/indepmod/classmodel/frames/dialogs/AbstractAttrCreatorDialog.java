@@ -1,17 +1,21 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
-import cz.cvut.indepmod.classmodel.actions.AttributeCreatorAddAnotation;
-import cz.cvut.indepmod.classmodel.actions.AttributeCreatorCreate;
-import cz.cvut.indepmod.classmodel.actions.AttributeCreatorRemoveAnotation;
+import cz.cvut.indepmod.classmodel.Globals;
+import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.model.IAnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IType;
 import cz.cvut.indepmod.classmodel.api.model.Visibility;
+import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import org.openide.windows.WindowManager;
 
 /**
  * Date: 17.10.2010
@@ -19,6 +23,7 @@ import javax.swing.DefaultListModel;
  * @author Lucky
  */
 public class AbstractAttrCreatorDialog extends AbstractAttrCreatorDialogView {
+
     private Collection<IType> availableTypes;
     private IAttribute returnValue;
     protected DefaultListModel anotationListModel;
@@ -42,7 +47,7 @@ public class AbstractAttrCreatorDialog extends AbstractAttrCreatorDialogView {
     public IAttribute getReturnValue() {
         return this.returnValue;
     }
-    
+
     public void setReturnValue(IAttribute attribute) {
         this.returnValue = attribute;
     }
@@ -66,9 +71,11 @@ public class AbstractAttrCreatorDialog extends AbstractAttrCreatorDialogView {
     }
 
     private void initAction() {
-        this.createButton.addActionListener(new AttributeCreatorCreate(this));
-        this.addAnotationButton.addActionListener(new AttributeCreatorAddAnotation(this));
-        this.removeAnotationButton.addActionListener(new AttributeCreatorRemoveAnotation(this));
+        this.createButton.addActionListener(new CreateAttributeAction());
+        this.addAnotationButton.addActionListener(new AddAnotationAction());
+        this.removeAnotationButton.addActionListener(new RemoveAnotationAction());
+
+        this.getRootPane().setDefaultButton(this.createButton);
     }
 
     private void initValues() {
@@ -89,5 +96,61 @@ public class AbstractAttrCreatorDialog extends AbstractAttrCreatorDialogView {
 
     private void initComponentBehavior() {
         this.attributeType.setEditable(true);
+    }
+
+    //==========================================================================
+    //============ INNER CLASS =================================================
+    //==========================================================================
+    private class CreateAttributeAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            DiagramDataModel diagramData = Globals.getInstance().getActualDiagramData();
+
+            String name = AbstractAttrCreatorDialog.this.getAttributeName();
+            Object dataTypeObj = AbstractAttrCreatorDialog.this.getSelectedAttributeType();
+            Visibility visibility = AbstractAttrCreatorDialog.this.getSelectedVisibility();
+
+            TypeModel dataType;
+            if (dataTypeObj instanceof String) {
+                dataType = new TypeModel((String) dataTypeObj);
+                diagramData.addDynamicDataType(dataType);
+            } else {
+                dataType = (TypeModel) dataTypeObj;
+            }
+
+            IAttribute attribute = new AttributeModel(dataType, name, visibility);
+
+            for (IAnotation anot : AbstractAttrCreatorDialog.this.getAnotationList()) {
+                attribute.addAnotation(anot);
+            }
+
+            AbstractAttrCreatorDialog.this.setReturnValue(attribute);
+            AbstractAttrCreatorDialog.this.dispose();
+        }
+    }
+
+    private class AddAnotationAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Frame window = WindowManager.getDefault().getMainWindow();
+            IAnotation anot = new AnotationCreatorDialog(window).getAnotation();
+
+            if (anot != null) {
+                AbstractAttrCreatorDialog.this.addAnotation(anot);
+            }
+        }
+    }
+
+    private class RemoveAnotationAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int index = AbstractAttrCreatorDialog.this.getSelectedAnotationIndex();
+            if (index != -1) {
+                AbstractAttrCreatorDialog.this.removeAnotationAt(index);
+            }
+        }
     }
 }

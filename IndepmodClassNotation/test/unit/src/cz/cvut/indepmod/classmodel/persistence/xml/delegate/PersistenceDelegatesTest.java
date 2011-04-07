@@ -1,7 +1,15 @@
 package cz.cvut.indepmod.classmodel.persistence.xml.delegate;
 
+import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttributeModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.EnumerationModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.HierarchyRelationModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.InterfaceModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.RelationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import cz.cvut.indepmod.classmodel.Common;
+import cz.cvut.indepmod.classmodel.api.model.DiagramType;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import java.util.Set;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
@@ -38,11 +46,19 @@ public class PersistenceDelegatesTest {
 
         try {
             this.encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(f)));
+            this.encoder.setPersistenceDelegate(DiagramDataModel.class, new ClassModelDiagramModelPersistenceDelegate());
             this.encoder.setPersistenceDelegate(AbstractElementModel.class, new AbstractElementlPersistenceDelegate());
-            this.encoder.setPersistenceDelegate(TypeModel.class, new TypeModelPersistenceDelegate());
             this.encoder.setPersistenceDelegate(AttributeModel.class, new AttributeModelPersistenceDelegate());
             this.encoder.setPersistenceDelegate(MethodModel.class, new MethodModelPersistenceDelegate());
+            this.encoder.setPersistenceDelegate(TypeModel.class, new TypeModelPersistenceDelegate());
+            this.encoder.setPersistenceDelegate(RelationModel.class, new RelationModelPersistenceDelegate());
+            this.encoder.setPersistenceDelegate(HierarchyRelationModel.class, new HierarchyRelationModelPersistenceDelegate());
             this.encoder.setPersistenceDelegate(AnotationModel.class, new AnotationModelPersistenceDelegate());
+            this.encoder.setPersistenceDelegate(AnotationAttributeModel.class, new AnotationAtributeModelPersistenceDelegate());
+            this.encoder.setPersistenceDelegate(Cardinality.class, new CardinalityPersistenceDelegate());
+            this.encoder.setPersistenceDelegate(ClassModel.class, new ClassModelPersistenceDelegate());
+            this.encoder.setPersistenceDelegate(InterfaceModel.class, new InterfaceModelPersistenceDelegate());
+            this.encoder.setPersistenceDelegate(EnumerationModel.class, new EnumerationModelPersistenceDelegate());
             this.encoder.setExceptionListener(new ExceptionListener() {
 
                 @Override
@@ -67,7 +83,7 @@ public class PersistenceDelegatesTest {
     public void testTypeModelEncodeDecode() {
         TypeModel tm = new TypeModel(Common.TYPE_NAME);
         TypeModel dtm = null;
-        
+
         this.encoder.writeObject(tm);
         this.encoder.close();
 
@@ -130,7 +146,33 @@ public class PersistenceDelegatesTest {
         assertEquals(Common.METHOD_NAME, dmm.getName());
         assertEquals(3, dmm.getAttributeModels().size());
     }
+    
+    @Test
+    public void testDiagramDataEncodeDecode() {
+        int classCounter = 10;
+        int interfaceCounter = 42;
+        int enumCounter = 21;
+        DiagramType diagType;
+        
+        DiagramDataModel model = new DiagramDataModel();
+        model.setClassCounter(classCounter);
+        model.setInterfaceCounter(interfaceCounter);
+        model.setEnumerationCounter(enumCounter);
+        diagType = model.getDiagramType();
+        
+        this.encoder.writeObject(model);
+        this.encoder.close();
+        
+        
+        model = (DiagramDataModel) this.decode(this.f);
+        assertEquals(classCounter, model.getClassCounter());
+        assertEquals(interfaceCounter, model.getInterfaceCounter());
+        assertEquals(enumCounter, model.getEnumerationCounter());
+        assertEquals(diagType, model.getDiagramType());
+        assertNotNull(diagType);
+    }
 
+    //========================== PRIVATE METHODS ===============================
 
     private Object decode(File f) {
         try {

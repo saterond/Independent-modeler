@@ -94,6 +94,8 @@ public class MethodCreatorDialog extends MethodCreatorDialogView {
                 dispose();
             }
         });
+
+        this.getRootPane().setDefaultButton(this.saveButton);
     }
 
     private void initValues() {
@@ -107,14 +109,9 @@ public class MethodCreatorDialog extends MethodCreatorDialogView {
         this.visibilityBox.addItem(Visibility.PROTECTED);
         this.visibilityBox.addItem(Visibility.PRIVATE);
         this.visibilityBox.addItem(Visibility.NONE);
-
-//        this.typeBox.setEditable(true);
-//        JTextComponent textComp = (JTextComponent) this.typeBox.getEditor().getEditorComponent();
-//        textComp.setDocument(new PlainDocument(){
-//            @Override
-//            public void insertString(int offs, String str, AttributeSet a) {
-//                TypeModel type = new TypeModel(str);
-//            }
-//        });
     }
+
+    //================== INNER CLASS WITH ACTION ===============================
+
+    //private class
 }

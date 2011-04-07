@@ -1,5 +1,6 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
+import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.model.IAnotation;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
@@ -17,7 +18,6 @@ import org.openide.windows.WindowManager;
 public class AnotationCreatorDialog extends AnotationCreatorDialogView {
 
     private static final Logger LOG = Logger.getLogger(AnotationCreatorDialog.class.getName());
-
     private IAnotation returnValue;
 
     public AnotationCreatorDialog(Frame owner) {
@@ -37,47 +37,56 @@ public class AnotationCreatorDialog extends AnotationCreatorDialogView {
     }
 
     private void initAction() {
-        this.createButton.addActionListener(new ActionListener() {
+        this.createButton.addActionListener(new CreateAction());
+        this.addValueButton.addActionListener(new AddValueAction());
+        this.removeValueButton.addActionListener(new RemoveValueAction());
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String name = anotationName.getText();
-                //TODO - verify filled data!
-                returnValue = new AnotationModel(name);
+        this.getRootPane().setDefaultButton(this.createButton);
+    }
 
-                Object[] atrList = valueListModel.toArray();
-                for (int i = 0; i < atrList.length; i++) {
-                    returnValue.addAttribute((AnotationAttributeModel) atrList[i]);
-                }
-                dispose();
+    //==========================================================================
+    //======================== INNER CLASS =====================================
+    //==========================================================================
+    private class CreateAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String name = anotationName.getText();
+            //TODO - verify filled data!
+            returnValue = new AnotationModel(name);
+
+            Object[] atrList = valueListModel.toArray();
+            for (int i = 0; i < atrList.length; i++) {
+                returnValue.addAttribute((AnotationAttributeModel) atrList[i]);
             }
-        });
+            dispose();
+        }
+    }
 
-        this.addValueButton.addActionListener(new ActionListener() {
+    private class AddValueAction extends ClassModelAbstractAction {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Frame window = WindowManager.getDefault().getMainWindow();
-                AnotationAttributeModel atr = new AnotationAttributeCreatorDialog(window).getReturnValue();
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Frame window = WindowManager.getDefault().getMainWindow();
+            AnotationAttributeModel atr = new AnotationAttributeCreatorDialog(window).getReturnValue();
 
-                if (atr != null) {
-                    valueListModel.addElement(atr);
-                    LOG.info("Added Anotation Attribute.");
-                } else {
-                    LOG.info("Anotation Attribute was not added.");
-                }
+            if (atr != null) {
+                valueListModel.addElement(atr);
+                LOG.info("Added Anotation Attribute.");
+            } else {
+                LOG.info("Anotation Attribute was not added.");
             }
-        });
+        }
+    }
 
-        this.removeValueButton.addActionListener(new ActionListener() {
+    private class RemoveValueAction extends ClassModelAbstractAction {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int index = valueList.getSelectedIndex();
-                if (index != -1) {
-                    valueListModel.remove(index);
-                }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int index = valueList.getSelectedIndex();
+            if (index != -1) {
+                valueListModel.remove(index);
             }
-        });
+        }
     }
 }

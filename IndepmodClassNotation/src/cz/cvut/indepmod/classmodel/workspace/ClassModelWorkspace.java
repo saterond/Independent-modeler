@@ -137,6 +137,7 @@ public class ClassModelWorkspace extends CloneableTopComponent implements GraphM
         this.lookupContent.add(this.selectedTool);
         this.lookupContent.add(this.classModelAPI);
         this.lookupContent.add(this.diagramData);
+        this.lookupContent.add(this.graph);
         this.lookupContent.add(new EditElementCookie(this.actions.get(EditAction.class)));
     }
 

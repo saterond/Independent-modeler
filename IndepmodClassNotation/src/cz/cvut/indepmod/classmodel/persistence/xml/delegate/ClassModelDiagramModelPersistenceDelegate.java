@@ -25,6 +25,10 @@ public class ClassModelDiagramModelPersistenceDelegate extends DefaultPersistenc
         for (String stereotype : c.getStereotypes()) {
             out.writeStatement(new Statement(oldInstance, "addStereotype", new Object[] {stereotype}));
         }
+
+        out.writeStatement(new Statement(oldInstance, "setClassCounter", new Object[] {c.getClassCounter()}));
+        out.writeStatement(new Statement(oldInstance, "setEnumerationCounter", new Object[] {c.getEnumerationCounter()}));
+        out.writeStatement(new Statement(oldInstance, "setInterfaceCounter", new Object[] {c.getInterfaceCounter()}));
     }
 
     @Override

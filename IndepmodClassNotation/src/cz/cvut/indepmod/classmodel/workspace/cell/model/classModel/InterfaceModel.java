@@ -13,15 +13,7 @@ import java.util.Set;
  */
 public class InterfaceModel extends AbstractElementModel {
 
-    private static int counter = 0;
-
     private static final String DEFAULT_STEREOTYPE = "interface";
-
-    public InterfaceModel() {
-        super("Interface"+ ++counter);
-
-        this.setStereotype(DEFAULT_STEREOTYPE);
-    }
 
     public InterfaceModel(String name) {
         super(name);

@@ -13,12 +13,6 @@ import java.util.Set;
  */
 public class ClassModel extends AbstractElementModel {
 
-    private static int counter = 0;
-
-    public ClassModel() {
-        super("Class"+ ++counter);
-    }
-
     public ClassModel(String name) {
         super(name);
     }

@@ -1,19 +1,15 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
 import cz.cvut.indepmod.classmodel.Globals;
-import cz.cvut.indepmod.classmodel.actions.CancelEditElementDialog;
-import cz.cvut.indepmod.classmodel.actions.EditElementDialogAddAnotation;
-import cz.cvut.indepmod.classmodel.actions.EditElementDialogAddAttribute;
-import cz.cvut.indepmod.classmodel.actions.EditElementDialogAddMethod;
-import cz.cvut.indepmod.classmodel.actions.EditElementDialogRemoveAnotation;
-import cz.cvut.indepmod.classmodel.actions.EditElementDialogRemoveAttribute;
-import cz.cvut.indepmod.classmodel.actions.EditElementDialogRemoveMethod;
-import cz.cvut.indepmod.classmodel.actions.SaveEditElementDialog;
+import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
+import cz.cvut.indepmod.classmodel.api.model.DiagramType;
 import cz.cvut.indepmod.classmodel.api.model.IAnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IElement;
 import cz.cvut.indepmod.classmodel.api.model.IMethod;
 import cz.cvut.indepmod.classmodel.api.model.IType;
+import cz.cvut.indepmod.classmodel.frames.dialogs.factory.AbstractDialogFactory;
+import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.util.ClassModelLibrary;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
@@ -22,13 +18,18 @@ import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractEleme
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.MethodModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ModelListener;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
+import org.openide.windows.WindowManager;
 
 /**
  * Date: 5.3.2011
@@ -37,13 +38,12 @@ import org.jgraph.graph.GraphConstants;
  */
 public class AbstractEditElementDialog extends AbstractEditElementDialogView implements ModelListener {
 
+    private static final Logger LOG = Logger.getLogger(AbstractEditElementDialog.class.getName());
     private static final int DEFAULT_WIDTH = 350;
     private static final int DEFAULT_HEIGTH = 450;
-
     private ClassModelGraph graph;
     private DefaultGraphCell cell;
     private AbstractElementModel elementModel;
-
     private DefaultListModel attributeListModel;
     private DefaultListModel methodListModel;
     private DefaultListModel anotationListModel;
@@ -68,7 +68,6 @@ public class AbstractEditElementDialog extends AbstractEditElementDialogView imp
         this.initHandlers();
         this.setSizes(DEFAULT_WIDTH, DEFAULT_HEIGTH);
     }
-
 
     /**
      * Returns Selected Anotation in the attribute list
@@ -103,7 +102,7 @@ public class AbstractEditElementDialog extends AbstractEditElementDialogView imp
     }
 
     public String getStereotype() {
-        String res = ((String)this.stereotypeField.getSelectedItem()).trim();
+        String res = ((String) this.stereotypeField.getSelectedItem()).trim();
         if (res.isEmpty()) {
             return null;
         } else {
@@ -174,7 +173,7 @@ public class AbstractEditElementDialog extends AbstractEditElementDialogView imp
             this.stereotypeField.addItem(s);
         }
         this.stereotypeField.setSelectedItem(stereotype);
-        
+
         this.classNameField.setText(typeName);
         this.classNameField.selectAll();
 
@@ -230,13 +229,183 @@ public class AbstractEditElementDialog extends AbstractEditElementDialogView imp
      */
     private void initAction() {
         //this.editAttributeButton.addActionListener(new ClassModelEditClassDialogEditAttribute(this));
-        this.removeAttributeButton.addActionListener(new EditElementDialogRemoveAttribute(this.elementModel, this));
-        this.addAnotationButton.addActionListener(new EditElementDialogAddAnotation(elementModel, this));
-        this.addAttributeButton.addActionListener(new EditElementDialogAddAttribute(this.elementModel, this));
-        this.addMethodButton.addActionListener(new EditElementDialogAddMethod(this.elementModel, this));
-        this.removeAnotationButton.addActionListener(new EditElementDialogRemoveAnotation(this.elementModel, this));
-        this.removeMethodButton.addActionListener(new EditElementDialogRemoveMethod(this.elementModel, this));
-        this.saveButton.addActionListener(new SaveEditElementDialog(this.elementModel, this));
-        this.cancelButton.addActionListener(new CancelEditElementDialog(this));
+        this.removeAttributeButton.addActionListener(new RemoveAttributeAction());
+        this.addAnotationButton.addActionListener(new AddAnotationAction());
+        this.addAttributeButton.addActionListener(new AddAttributeAction());
+        this.addMethodButton.addActionListener(new AddMethodAction());
+        this.removeAnotationButton.addActionListener(new RemoveAnotationAction());
+        this.removeMethodButton.addActionListener(new RemoveMethodAction());
+        this.saveButton.addActionListener(new SaveAction());
+        this.cancelButton.addActionListener(new CancelAction());
+
+        this.getRootPane().setDefaultButton(saveButton);
+    }
+
+    //==========================================================================
+    //======================== INNER CLASS =====================================
+    //==========================================================================
+    
+    private class RemoveAttributeAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            AttributeModel attr = AbstractEditElementDialog.this.getSelectedAttribute();
+            if (attr != null) {
+                AbstractEditElementDialog.this.elementModel.removeAttribute(attr);
+                AbstractEditElementDialog.this.updateCell();
+            }
+        }
+    }
+
+    private class AddAnotationAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Frame window = WindowManager.getDefault().getMainWindow();
+            IAnotation anot = new AnotationCreatorDialog(window).getAnotation();
+
+            if (anot != null) {
+                AbstractEditElementDialog.this.elementModel.addAnotation(anot);
+                AbstractEditElementDialog.this.updateCell();
+                LOG.info("Added anotation");
+            } else {
+                LOG.info("Anotation was not added");
+            }
+        }
+    }
+
+    private class AddAttributeAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            DiagramType diagramType = Globals.getInstance().getActualDiagramData().getDiagramType();
+
+            AbstractDialogFactory factory = AbstractDialogFactory.getFactory(diagramType);
+            IAttribute attr = factory.createAttributeCreatorDialog(
+                    AbstractEditElementDialog.this.getAllTypeModel()).getReturnValue();
+
+            if (attr != null) {
+                AbstractEditElementDialog.this.elementModel.addAttribute(attr);
+                AbstractEditElementDialog.this.updateCell();
+            }
+        }
+    }
+
+    private class AddMethodAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Frame window = WindowManager.getDefault().getMainWindow();
+            MethodModel method = new MethodCreatorDialog(
+                    window,
+                    AbstractEditElementDialog.this.getAllTypeModel()).getReturnValue();
+
+            if (method != null) {
+                AbstractEditElementDialog.this.elementModel.addMethod(method);
+                AbstractEditElementDialog.this.updateCell();
+            }
+        }
+    }
+
+    private class RemoveAnotationAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            AnotationModel anotation = AbstractEditElementDialog.this.getSelectedAnotation();
+            if (anotation != null) {
+                AbstractEditElementDialog.this.elementModel.removeAnotation(anotation);
+                AbstractEditElementDialog.this.updateCell();
+            }
+        }
+    }
+
+    private class RemoveMethodAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            MethodModel method = AbstractEditElementDialog.this.getSelectedMethod();
+            if (method != null) {
+                AbstractEditElementDialog.this.elementModel.removeMethod(method);
+                AbstractEditElementDialog.this.updateCell();
+            }
+        }
+    }
+
+    private class SaveAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            DiagramType diagramType = Globals.getInstance().getActualDiagramData().getDiagramType();
+            boolean isOk = false;
+            switch (diagramType) {
+                case CLASS:
+                    isOk = this.classDiagramEditSave();
+                    break;
+                case BUSINESS:
+                    isOk = this.businessDiagramEditSave();
+                    break;
+            }
+
+            if (isOk) {
+                AbstractEditElementDialog.this.updateCell();
+                AbstractEditElementDialog.this.dispose();
+            }
+        }
+
+        private boolean classDiagramEditSave() {
+            ClassModelGraph graph = Globals.getInstance().getAcualGraph();
+            String stereotype = AbstractEditElementDialog.this.getStereotype();
+            String newClassName = AbstractEditElementDialog.this.getClassName();
+            boolean isAbstract = AbstractEditElementDialog.this.isCheckedAbstract();
+
+            if (newClassName.matches("^([A-Za-z][0-9A-Za-z]*::)?[A-Za-z][0-9A-Za-z]*$")) {
+                if (!elementModel.getTypeName().equals(newClassName)) {
+                    if (graph.isElementNameFree(newClassName)) {
+                        LOG.info("Changing the name of the class (class diagram)");
+                        elementModel.setTypeName(newClassName);
+                    } else {
+                        LOG.warning("Class name already exists!");
+                        this.elementNameAlreadyExists();
+                        return false;
+                    }
+                }
+                elementModel.setStereotype(stereotype);
+                elementModel.setAbstract(isAbstract);
+                return true;
+            } else {
+                LOG.warning("Bad name of the class! (class diagram)");
+                return false;
+            }
+        }
+
+        private boolean businessDiagramEditSave() {
+            String stereotype = AbstractEditElementDialog.this.getStereotype();
+            String newClassName = AbstractEditElementDialog.this.getClassName();
+
+            if (!newClassName.isEmpty()) {
+                LOG.info("Changing the name of the class (business diagram)");
+                elementModel.setTypeName(newClassName);
+                elementModel.setStereotype(stereotype);
+                return true;
+            } else {
+                LOG.warning("Bad name of the class! (business diagram)");
+                return false;
+            }
+        }
+
+        private void elementNameAlreadyExists() {
+            NotifyDescriptor nd = new NotifyDescriptor.Message(
+                    Resources.getString("error_edit_element_name_exists"),
+                    NotifyDescriptor.WARNING_MESSAGE);
+            DialogDisplayer.getDefault().notify(nd);
+        }
+    }
+
+    private class CancelAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            AbstractEditElementDialog.this.dispose();
+        }
     }
 }

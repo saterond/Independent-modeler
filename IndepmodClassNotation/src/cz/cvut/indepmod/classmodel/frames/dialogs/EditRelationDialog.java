@@ -1,19 +1,24 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
-import cz.cvut.indepmod.classmodel.actions.EditRelationDialogSave;
+import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.model.IArrowableRelation;
 import cz.cvut.indepmod.classmodel.api.model.ICardinality;
+import cz.cvut.indepmod.classmodel.api.model.IRelation;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.logging.Logger;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.jgraph.graph.DefaultEdge;
+import org.jgraph.graph.GraphConstants;
 
 /**
  * Date: 21.11.2010
@@ -25,7 +30,6 @@ import org.jgraph.graph.DefaultEdge;
 public class EditRelationDialog extends EditRelationDialogView implements ItemListener {
 
     private static final Logger LOG = Logger.getLogger(EditRelationDialog.class.getName());
-
     private ClassModelGraph graph;
     private DefaultEdge edge;
     private IArrowableRelation model;
@@ -114,7 +118,9 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
     }
 
     private void initActions() {
-        this.saveButton.setAction(new EditRelationDialogSave(this.edge, this, this.graph));
+        this.saveButton.setAction(new SaveAction());
+
+        this.getRootPane().setDefaultButton(this.saveButton);
     }
 
     private class NameFieldDocListener implements DocumentListener {
@@ -132,6 +138,37 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
         @Override
         public void changedUpdate(DocumentEvent e) {
             changed = true;
+        }
+    }
+
+    //==========================================================================
+    //======================== INNER CLASS =====================================
+    //==========================================================================
+    private class SaveAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (EditRelationDialog.this.isChanged()) {
+                ICardinality startCard = EditRelationDialog.this.getStartingCardinality();
+                ICardinality endCard = EditRelationDialog.this.getEndingCardinality();
+                String relationName = EditRelationDialog.this.getRelationName();
+
+                int lineEnd = GraphConstants.getLineEnd(edge.getAttributes());
+                int newLineEnd = EditRelationDialog.this.isArrowChecked() ? GraphConstants.ARROW_SIMPLE : GraphConstants.ARROW_NONE;
+
+                IRelation userObj = (IRelation) EditRelationDialog.this.edge.getUserObject();
+                userObj.setRelationName(relationName);
+
+
+                Map attrMap = new Hashtable();
+                GraphConstants.setExtraLabels(attrMap, new ICardinality[]{startCard, endCard});
+                if (lineEnd != newLineEnd) {
+                    GraphConstants.setLineEnd(attrMap, newLineEnd);
+                }
+
+                EditRelationDialog.this.graph.getGraphLayoutCache().editCell(edge, attrMap);
+            }
+            EditRelationDialog.this.dispose();
         }
     }
 }

@@ -44,7 +44,16 @@ public class DiagramDataModel {
      */
     private Set<IType> dynamicDataTypes;
 
+    /**
+     * Set of stereotypes
+     */
     private Set<String> stereotypes;
+
+    private int classCounter;
+
+    private int interfaceCounter;
+
+    private int enumerationCounter;
 
     public DiagramDataModel() {
         this(new GraphLayoutCache(
@@ -66,6 +75,10 @@ public class DiagramDataModel {
         this.language = Globals.getInstance().getLangByName(languageName);
         this.dynamicDataTypes = new HashSet<IType>();
         this.stereotypes = new HashSet<String>();
+        this.classCounter = 0;
+        this.interfaceCounter = 0;
+        this.enumerationCounter = 0;
+
 
         this.initDefaultStereotypes();
     }
@@ -147,21 +160,42 @@ public class DiagramDataModel {
     }
 
     /**
-     * TODO - this will be loaded from a XML. Only temporary
+     * Returns class number.
+     * @return class number
      */
-//    private void initStaticTypes() {
-//        this.staticDataTypes = new HashSet<IType>();
-//        this.staticDataTypes.add(new TypeModel("Object"));
-//        this.staticDataTypes.add(new TypeModel("String"));
-//        this.staticDataTypes.add(new TypeModel("int"));
-//        this.staticDataTypes.add(new TypeModel("char"));
-//        this.staticDataTypes.add(new TypeModel("boolean"));
-//        this.staticDataTypes.add(new TypeModel("long"));
-//        this.staticDataTypes.add(new TypeModel("double"));
-//        this.staticDataTypes.add(new TypeModel("float"));
-//        this.staticDataTypes.add(new TypeModel("void"));
-//        this.staticDataTypes.add(new TypeModel(""));
-//    }
+    public int getClassCounter() {
+        return classCounter;
+    }
+
+    public void setClassCounter(int classCounter) {
+        this.classCounter = classCounter;
+    }
+
+    /**
+     * Returns enumeration counter
+     * @return enumeration counter
+     */
+    public int getEnumerationCounter() {
+        return enumerationCounter;
+    }
+
+    public void setEnumerationCounter(int enumerationCounter) {
+        this.enumerationCounter = enumerationCounter;
+    }
+
+    /**
+     * Returns interface counter
+     * @return interface counter
+     */
+    public int getInterfaceCounter() {
+        return interfaceCounter;
+    }
+
+    public void setInterfaceCounter(int interfaceCounter) {
+        this.interfaceCounter = interfaceCounter;
+    }
+
+    //===================== PRIVATE METHODS ====================================
 
     private void initDefaultStereotypes() {
         this.stereotypes = new HashSet<String>();

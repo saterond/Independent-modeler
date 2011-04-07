@@ -61,6 +61,15 @@ public class ClassModelGraph extends JGraph {
         return res;
     }
 
+    public boolean isElementNameFree(String name) {
+        for (IElement el : this.getAllClasses()) {
+            if (el.getTypeName().equals(name)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void insertCell(Point p) {
         LOG.fine("adding new cell");
         ToolChooserModel.Tool tool = this.selectedTool.getSelectedTool();

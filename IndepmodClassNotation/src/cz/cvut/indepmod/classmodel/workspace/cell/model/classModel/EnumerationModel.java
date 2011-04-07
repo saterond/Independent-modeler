@@ -1,6 +1,5 @@
 package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 
-import cz.cvut.indepmod.classmodel.Globals;
 import cz.cvut.indepmod.classmodel.api.model.ElementType;
 import cz.cvut.indepmod.classmodel.api.model.IAnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
@@ -14,15 +13,7 @@ import java.util.Set;
  */
 public class EnumerationModel extends AbstractElementModel {
 
-    private static int counter = 0;
-
     private static final String DEFAULT_STEREOTYPE = "enumeration";
-
-    public EnumerationModel() {
-        super("Enum"+ ++counter);
-
-        this.setStereotype(DEFAULT_STEREOTYPE);
-    }
 
     public EnumerationModel(String name) {
         super(name);

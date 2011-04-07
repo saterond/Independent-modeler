@@ -3,6 +3,7 @@ package cz.cvut.indepmod.classmodel;
 import cz.cvut.indepmod.classmodel.api.model.IType;
 import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModel;
 import cz.cvut.indepmod.classmodel.diagramdata.langs.Language;
+import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
 import java.util.Collection;
 import java.util.HashSet;
@@ -68,6 +69,11 @@ public class Globals {
      */
     public DiagramDataModel getActualDiagramData() {
         DiagramDataModel res = Utilities.actionsGlobalContext().lookup(DiagramDataModel.class);
+        return res;
+    }
+
+    public ClassModelGraph getAcualGraph() {
+        ClassModelGraph res = Utilities.actionsGlobalContext().lookup(ClassModelGraph.class);
         return res;
     }
 

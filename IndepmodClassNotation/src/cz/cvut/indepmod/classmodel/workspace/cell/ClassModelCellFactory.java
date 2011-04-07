@@ -1,7 +1,10 @@
 package cz.cvut.indepmod.classmodel.workspace.cell;
 
+import cz.cvut.indepmod.classmodel.Globals;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
 import cz.cvut.indepmod.classmodel.api.model.RelationType;
+import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModel;
+import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.ClassModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.EnumerationModel;
@@ -30,21 +33,31 @@ public class ClassModelCellFactory {
     private static final Logger LOG = Logger.getLogger(ClassModelCellFactory.class.getName());
 
     public static DefaultGraphCell createCell(Point2D point, ToolChooserModel.Tool selectedTool) {
-        DefaultGraphCell cell = null;
+        DefaultGraphCell cell = new ClassModelClassCell();
+        DiagramDataModel dataModel = Globals.getInstance().getActualDiagramData();
 
         switch (selectedTool) {
-            case TOOL_ADD_CLASS:
-                cell = new ClassModelClassCell();
-                cell.setUserObject(new ClassModel());
+            case TOOL_ADD_CLASS: {
+                String prefix = "Class";
+                int counter = getConvinientCounter(prefix, dataModel.getClassCounter() + 1);
+                dataModel.setClassCounter(counter);
+                cell.setUserObject(new ClassModel(prefix + counter));
                 break;
-            case TOOL_ADD_INTERFACE:
-                cell = new ClassModelClassCell();
-                cell.setUserObject(new InterfaceModel());
+            }
+            case TOOL_ADD_INTERFACE: {
+                String prefix = "Interface";
+                int counter = getConvinientCounter(prefix, dataModel.getInterfaceCounter() + 1);
+                dataModel.setInterfaceCounter(counter);
+                cell.setUserObject(new InterfaceModel(prefix + counter));
                 break;
-            case TOOL_ADD_ENUMERATION:
-                cell = new ClassModelClassCell();
-                cell.setUserObject(new EnumerationModel());
+            }
+            case TOOL_ADD_ENUMERATION: {
+                String prefix = "Enum";
+                int counter = getConvinientCounter(prefix, dataModel.getEnumerationCounter() + 1);
+                dataModel.setEnumerationCounter(counter);
+                cell.setUserObject(new EnumerationModel(prefix + counter));
                 break;
+            }
             default:
                 LOG.severe("Unknown selected tool");
         }
@@ -104,7 +117,7 @@ public class ClassModelCellFactory {
         //GraphConstants.setEndFill(edge.getAttributes(), true);
         GraphConstants.setLineStyle(edge.getAttributes(), GraphConstants.STYLE_ORTHOGONAL);
         GraphConstants.setLabelAlongEdge(edge.getAttributes(), true);
-        GraphConstants.setLabelPosition(edge.getAttributes(), new Point2D.Double(GraphConstants.PERMILLE/2, 10));
+        GraphConstants.setLabelPosition(edge.getAttributes(), new Point2D.Double(GraphConstants.PERMILLE / 2, 10));
         GraphConstants.setEditable(edge.getAttributes(), false);
         GraphConstants.setMoveable(edge.getAttributes(), true);
         GraphConstants.setDisconnectable(edge.getAttributes(), false);
@@ -117,5 +130,13 @@ public class ClassModelCellFactory {
         Point2D[] labPos = {new Point2D.Double(GraphConstants.PERMILLE / 8, 20), new Point2D.Double(GraphConstants.PERMILLE * 7 / 8, 20)};
         GraphConstants.setExtraLabelPositions(edge.getAttributes(), labPos);
         GraphConstants.setExtraLabels(edge.getAttributes(), labels);
+    }
+
+    private static int getConvinientCounter(String prefix, int counter) {
+        ClassModelGraph graph = Globals.getInstance().getAcualGraph();
+        while (!graph.isElementNameFree(prefix + counter)) {
+            counter++;
+        }
+        return counter;
     }
 }

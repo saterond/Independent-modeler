@@ -1,6 +1,7 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
+import cz.cvut.indepmod.classmodel.frames.dialogs.validation.AbstractDialogValidation;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttributeModel;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -41,16 +42,19 @@ public class AnotationAttributeCreatorDialog extends AnotationAttributeCreatorDi
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            AbstractDialogValidation val = AbstractDialogValidation.getValidation();
             String name = anotAtrName.getText();
-            //TODO - verify filled data
-            returnValue = new AnotationAttributeModel(name);
 
-            Object[] objs = valueListModel.toArray();
-            for (int i = 0; i < objs.length; i++) {
-                returnValue.addValue((String) objs[i]);
+            if (val.validateAnnotationAttributeName(name)) {
+                returnValue = new AnotationAttributeModel(name);
+
+                Object[] objs = valueListModel.toArray();
+                for (int i = 0; i < objs.length; i++) {
+                    returnValue.addValue((String) objs[i]);
+                }
+
+                dispose();
             }
-
-            dispose();
         }
     }
 
@@ -58,10 +62,13 @@ public class AnotationAttributeCreatorDialog extends AnotationAttributeCreatorDi
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            AbstractDialogValidation val = AbstractDialogValidation.getValidation();
             String name = valueName.getText();
 
-            if (!name.isEmpty()) {
+            if (val.validateAnnotationAttributeValue(name)) {
                 valueListModel.addElement(name);
+                valueName.setText("");
+                valueName.requestFocus();
             }
         }
     }

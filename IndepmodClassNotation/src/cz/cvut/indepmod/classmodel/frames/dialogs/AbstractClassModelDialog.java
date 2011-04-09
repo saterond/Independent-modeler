@@ -15,7 +15,7 @@ import javax.swing.KeyStroke;
  * Time: 12:10:02
  * @author Lucky
  */
-public class AbstractClassModelDialog extends JDialog {
+public abstract class AbstractClassModelDialog extends JDialog {
 
     public AbstractClassModelDialog(Frame owner, String title) {
         this(owner, title, true);
@@ -35,7 +35,7 @@ public class AbstractClassModelDialog extends JDialog {
 
     public void setSizes(int width, int height) {
         this.setSize(width, height);
-        
+
         Dimension dim = getToolkit().getScreenSize();
         setLocation((dim.width - width) / 2,
                 (dim.height - height) / 2);
@@ -45,20 +45,21 @@ public class AbstractClassModelDialog extends JDialog {
         this.requestFocus();
     }
 
+    //==================== PRIVATE METHODS =====================================
+
     private void initActions() {
         this.getRootPane().registerKeyboardAction(
                 new DisposeAction(),
-                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
     //================== INNER CLASS ===========================================
-
     private class DisposeAction implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             AbstractClassModelDialog.this.dispose();
         }
-
     }
 }

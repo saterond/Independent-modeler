@@ -2,11 +2,11 @@ package cz.cvut.indepmod.classmodel.frames.dialogs;
 
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.model.IAnotation;
+import cz.cvut.indepmod.classmodel.frames.dialogs.validation.AbstractDialogValidation;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.logging.Logger;
 import org.openide.windows.WindowManager;
 
@@ -51,15 +51,18 @@ public class AnotationCreatorDialog extends AnotationCreatorDialogView {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            AbstractDialogValidation val = AbstractDialogValidation.getValidation();
             String name = anotationName.getText();
-            //TODO - verify filled data!
-            returnValue = new AnotationModel(name);
 
-            Object[] atrList = valueListModel.toArray();
-            for (int i = 0; i < atrList.length; i++) {
-                returnValue.addAttribute((AnotationAttributeModel) atrList[i]);
+            if (val.validateAnnotationName(name)) {
+                returnValue = new AnotationModel(name);
+
+                Object[] atrList = valueListModel.toArray();
+                for (int i = 0; i < atrList.length; i++) {
+                    returnValue.addAttribute((AnotationAttributeModel) atrList[i]);
+                }
+                dispose();
             }
-            dispose();
         }
     }
 

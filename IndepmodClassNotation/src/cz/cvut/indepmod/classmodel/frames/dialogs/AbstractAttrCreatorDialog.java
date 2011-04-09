@@ -7,6 +7,7 @@ import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IType;
 import cz.cvut.indepmod.classmodel.api.model.Visibility;
 import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModel;
+import cz.cvut.indepmod.classmodel.frames.dialogs.validation.AbstractDialogValidation;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
 import java.awt.Frame;
@@ -106,27 +107,30 @@ public class AbstractAttrCreatorDialog extends AbstractAttrCreatorDialogView {
         @Override
         public void actionPerformed(ActionEvent e) {
             DiagramDataModel diagramData = Globals.getInstance().getActualDiagramData();
+            AbstractDialogValidation val = AbstractDialogValidation.getValidation(diagramData.getDiagramType());
 
             String name = AbstractAttrCreatorDialog.this.getAttributeName();
             Object dataTypeObj = AbstractAttrCreatorDialog.this.getSelectedAttributeType();
             Visibility visibility = AbstractAttrCreatorDialog.this.getSelectedVisibility();
 
-            TypeModel dataType;
-            if (dataTypeObj instanceof String) {
-                dataType = new TypeModel((String) dataTypeObj);
-                diagramData.addDynamicDataType(dataType);
-            } else {
-                dataType = (TypeModel) dataTypeObj;
+            if (val.validateAttributeName(name)) {
+                TypeModel dataType;
+                if (dataTypeObj instanceof String) {
+                    dataType = new TypeModel((String) dataTypeObj);
+                    diagramData.addDynamicDataType(dataType);
+                } else {
+                    dataType = (TypeModel) dataTypeObj;
+                }
+
+                IAttribute attribute = new AttributeModel(dataType, name, visibility);
+
+                for (IAnotation anot : AbstractAttrCreatorDialog.this.getAnotationList()) {
+                    attribute.addAnotation(anot);
+                }
+
+                AbstractAttrCreatorDialog.this.setReturnValue(attribute);
+                AbstractAttrCreatorDialog.this.dispose();
             }
-
-            IAttribute attribute = new AttributeModel(dataType, name, visibility);
-
-            for (IAnotation anot : AbstractAttrCreatorDialog.this.getAnotationList()) {
-                attribute.addAnotation(anot);
-            }
-
-            AbstractAttrCreatorDialog.this.setReturnValue(attribute);
-            AbstractAttrCreatorDialog.this.dispose();
         }
     }
 

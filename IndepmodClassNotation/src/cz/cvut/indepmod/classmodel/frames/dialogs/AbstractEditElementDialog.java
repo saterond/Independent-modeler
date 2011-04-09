@@ -9,7 +9,7 @@ import cz.cvut.indepmod.classmodel.api.model.IElement;
 import cz.cvut.indepmod.classmodel.api.model.IMethod;
 import cz.cvut.indepmod.classmodel.api.model.IType;
 import cz.cvut.indepmod.classmodel.frames.dialogs.factory.AbstractDialogFactory;
-import cz.cvut.indepmod.classmodel.resources.Resources;
+import cz.cvut.indepmod.classmodel.frames.dialogs.validation.AbstractDialogValidation;
 import cz.cvut.indepmod.classmodel.util.ClassModelLibrary;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
@@ -27,8 +27,6 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
-import org.openide.DialogDisplayer;
-import org.openide.NotifyDescriptor;
 import org.openide.windows.WindowManager;
 
 /**
@@ -244,7 +242,6 @@ public class AbstractEditElementDialog extends AbstractEditElementDialogView imp
     //==========================================================================
     //======================== INNER CLASS =====================================
     //==========================================================================
-    
     private class RemoveAttributeAction extends ClassModelAbstractAction {
 
         @Override
@@ -336,68 +333,20 @@ public class AbstractEditElementDialog extends AbstractEditElementDialogView imp
         @Override
         public void actionPerformed(ActionEvent e) {
             DiagramType diagramType = Globals.getInstance().getActualDiagramData().getDiagramType();
-            boolean isOk = false;
-            switch (diagramType) {
-                case CLASS:
-                    isOk = this.classDiagramEditSave();
-                    break;
-                case BUSINESS:
-                    isOk = this.businessDiagramEditSave();
-                    break;
-            }
+            AbstractDialogValidation val = AbstractDialogValidation.getValidation(diagramType);
 
-            if (isOk) {
-                AbstractEditElementDialog.this.updateCell();
-                AbstractEditElementDialog.this.dispose();
-            }
-        }
-
-        private boolean classDiagramEditSave() {
-            ClassModelGraph graph = Globals.getInstance().getAcualGraph();
             String stereotype = AbstractEditElementDialog.this.getStereotype();
             String newClassName = AbstractEditElementDialog.this.getClassName();
             boolean isAbstract = AbstractEditElementDialog.this.isCheckedAbstract();
 
-            if (newClassName.matches("^([A-Za-z][0-9A-Za-z]*::)?[A-Za-z][0-9A-Za-z]*$")) {
-                if (!elementModel.getTypeName().equals(newClassName)) {
-                    if (graph.isElementNameFree(newClassName)) {
-                        LOG.info("Changing the name of the class (class diagram)");
-                        elementModel.setTypeName(newClassName);
-                    } else {
-                        LOG.warning("Class name already exists!");
-                        this.elementNameAlreadyExists();
-                        return false;
-                    }
-                }
-                elementModel.setStereotype(stereotype);
-                elementModel.setAbstract(isAbstract);
-                return true;
-            } else {
-                LOG.warning("Bad name of the class! (class diagram)");
-                return false;
-            }
-        }
-
-        private boolean businessDiagramEditSave() {
-            String stereotype = AbstractEditElementDialog.this.getStereotype();
-            String newClassName = AbstractEditElementDialog.this.getClassName();
-
-            if (!newClassName.isEmpty()) {
-                LOG.info("Changing the name of the class (business diagram)");
+            if (val.validateClassName(newClassName, elementModel)) {
                 elementModel.setTypeName(newClassName);
                 elementModel.setStereotype(stereotype);
-                return true;
-            } else {
-                LOG.warning("Bad name of the class! (business diagram)");
-                return false;
-            }
-        }
+                elementModel.setAbstract(isAbstract);
 
-        private void elementNameAlreadyExists() {
-            NotifyDescriptor nd = new NotifyDescriptor.Message(
-                    Resources.getString("error_edit_element_name_exists"),
-                    NotifyDescriptor.WARNING_MESSAGE);
-            DialogDisplayer.getDefault().notify(nd);
+                AbstractEditElementDialog.this.updateCell();
+                AbstractEditElementDialog.this.dispose();
+            }
         }
     }
 

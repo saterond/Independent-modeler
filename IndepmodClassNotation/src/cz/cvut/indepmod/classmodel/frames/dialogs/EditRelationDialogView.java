@@ -22,6 +22,7 @@ public class EditRelationDialogView extends AbstractClassModelDialog {
     public static final String SOURCE_CARD_LABEL_TEXT = Resources.getString("dialog_edit_relation_source_card");
     public static final String TARGET_CARD_LABEL_TEXT = Resources.getString("dialog_edit_relation_target_card");
     public static final String ARROW_LABEL = Resources.getString("dialog_edit_relation_arrow");
+    public static final String NAME_ALONG_EDGE_LABEL = Resources.getString("dialog_edit_relation_name_along");
     public static final String SAVE_TEXT = Resources.getString("dialog_edit_relation_save");
     public static final String CANCEL_TEXT = Resources.getString("dialog_edit_relation_cancel");
 
@@ -33,6 +34,8 @@ public class EditRelationDialogView extends AbstractClassModelDialog {
     protected JComboBox targetCardinality;
     protected JLabel arrowLabel;
     protected JCheckBox arrowCheck;
+    protected JLabel nameAlongLabel;
+    protected JCheckBox nameAlongCheck;
     protected JButton saveButton;
     protected JButton cancelButton;
 
@@ -43,7 +46,7 @@ public class EditRelationDialogView extends AbstractClassModelDialog {
     }
 
     private void initLayout() {
-        this.setLayout(new GridLayout(5, 2));
+        this.setLayout(new GridLayout(6, 2));
 
         this.nameLabel = new JLabel(NAME_LABEL_TEXT);
         this.nameField = new JTextField();
@@ -53,6 +56,8 @@ public class EditRelationDialogView extends AbstractClassModelDialog {
         this.targetCardinality = new JComboBox();
         this.arrowLabel = new JLabel(ARROW_LABEL);
         this.arrowCheck = new JCheckBox();
+        this.nameAlongLabel = new JLabel(NAME_ALONG_EDGE_LABEL);
+        this.nameAlongCheck = new JCheckBox();
         this.saveButton = new JButton(SAVE_TEXT);
         this.cancelButton = new JButton(CANCEL_TEXT);
 //        this.sourceCardinalityVisible = new JCheckBox("", true);
@@ -69,6 +74,9 @@ public class EditRelationDialogView extends AbstractClassModelDialog {
         
         this.add(this.arrowLabel);
         this.add(this.arrowCheck);
+
+        this.add(this.nameAlongLabel);
+        this.add(this.nameAlongCheck);
 
         this.add(this.saveButton);
         this.add(this.cancelButton);

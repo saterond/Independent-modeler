@@ -102,6 +102,9 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
         this.targetCardinality.setSelectedItem(this.model.getEndCardinality());
 
         this.arrowCheck.setSelected(this.model.isArrowOnEnd());
+
+        boolean nameAlongEdge = GraphConstants.isLabelAlongEdge(this.edge.getAttributes());
+        this.nameAlongCheck.setSelected(nameAlongEdge);
     }
 
     private void initHandlers() {
@@ -115,14 +118,24 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
                 changed = true;
             }
         });
+        this.nameAlongCheck.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                changed = true;
+            }
+        });
     }
 
     private void initActions() {
-        this.saveButton.setAction(new SaveAction());
+        this.saveButton.addActionListener(new SaveAction());
 
         this.getRootPane().setDefaultButton(this.saveButton);
     }
 
+    //==========================================================================
+    //======================== INNER CLASS =====================================
+    //==========================================================================
     private class NameFieldDocListener implements DocumentListener {
 
         @Override
@@ -141,9 +154,6 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
         }
     }
 
-    //==========================================================================
-    //======================== INNER CLASS =====================================
-    //==========================================================================
     private class SaveAction extends ClassModelAbstractAction {
 
         @Override
@@ -154,7 +164,7 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
                 String relationName = EditRelationDialog.this.getRelationName();
 
                 int lineEnd = GraphConstants.getLineEnd(edge.getAttributes());
-                int newLineEnd = EditRelationDialog.this.isArrowChecked() ? GraphConstants.ARROW_SIMPLE : GraphConstants.ARROW_NONE;
+                int newLineEnd = isArrowChecked() ? GraphConstants.ARROW_SIMPLE : GraphConstants.ARROW_NONE;
 
                 IRelation userObj = (IRelation) EditRelationDialog.this.edge.getUserObject();
                 userObj.setRelationName(relationName);
@@ -165,6 +175,7 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
                 if (lineEnd != newLineEnd) {
                     GraphConstants.setLineEnd(attrMap, newLineEnd);
                 }
+                GraphConstants.setLabelAlongEdge(attrMap, nameAlongCheck.isSelected());
 
                 EditRelationDialog.this.graph.getGraphLayoutCache().editCell(edge, attrMap);
             }

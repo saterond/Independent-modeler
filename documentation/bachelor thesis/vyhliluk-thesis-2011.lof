@@ -1,21 +1,29 @@
 \select@language {english}
 \select@language {english}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {1.1}{\ignorespaces Example of a class diagram}}{2}{figure.1.1}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Class Diagram Metamodel}}{5}{figure.2.1}
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Example of a class diagram}}{3}{figure.2.1}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Relations examples}}{5}{figure.2.2}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {An Association example}}}{5}{figure.2.2}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {An Aggregation example}}}{5}{figure.2.2}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {A Composition example}}}{5}{figure.2.2}
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {A Generalization example}}}{5}{figure.2.2}
+\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {A Realisation example}}}{5}{figure.2.2}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Screenshot of the program}}{9}{figure.3.1}
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Component diagram of Editor and ToolChooser Modules}}{10}{figure.3.2}
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Example of ClassModel API Tree}}{12}{figure.3.3}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {A class diagram}}}{12}{figure.3.3}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {A tree representing the class diagram}}}{12}{figure.3.3}
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Class Diagram of ToolChooser API package}}{12}{figure.3.4}
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Class Diagram of ToolChooser Module}}{13}{figure.3.5}
-\contentsline {figure}{\numberline {3.6}{\ignorespaces Simplified sequence diagram of ClassModelWorkspace initialization}}{15}{figure.3.6}
-\contentsline {figure}{\numberline {3.7}{\ignorespaces Structure of classes which render the class cell}}{17}{figure.3.7}
-\contentsline {figure}{\numberline {3.8}{\ignorespaces Sequence Diagram of class creation}}{18}{figure.3.8}
-\contentsline {figure}{\numberline {3.9}{\ignorespaces Class diagrams of MVC Design patterns}}{19}{figure.3.9}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Standard MVC Design Pattern}}}{19}{figure.3.9}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {MVC Design Pattern used in the Indepmod Class Notation}}}{19}{figure.3.9}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Class Diagram Metamodel}}{9}{figure.3.1}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Screenshot of the program}}{13}{figure.5.1}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Component diagram of Editor and ToolChooser Modules}}{14}{figure.5.2}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Example of ClassModel API Tree}}{16}{figure.5.3}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {A class diagram}}}{16}{figure.5.3}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {A tree representing the class diagram}}}{16}{figure.5.3}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Class Diagram of ToolChooser API package}}{17}{figure.5.4}
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Class Diagram of ToolChooser Module}}{17}{figure.5.5}
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Simplified sequence diagram of ClassModelWorkspace initialization}}{19}{figure.5.6}
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Structure of classes which render the class cell}}{21}{figure.5.7}
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Sequence Diagram of class creation}}{22}{figure.5.8}
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Class diagrams of MVC Design patterns}}{23}{figure.5.9}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Standard MVC Design Pattern}}}{23}{figure.5.9}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {MVC Design Pattern used in the Indepmod Class Notation}}}{23}{figure.5.9}
 \addvspace {10\p@ }

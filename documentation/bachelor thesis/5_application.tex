@@ -86,9 +86,9 @@ The ClassModel API can be treated as a tree. The root node of the tree is IClass
 
 \subsection{ToolChooser API}
 
-The main part of this module is ToolChooserModel class. Instance of this class represents the actual selected tool. ToolChooserModel implements the Observer design pattern so you can register your listener which will be called anytime the model changes.
+ToolChooser API is used to hold information about the selected tool of Editor module. The main part of this module is ToolChooserModel class. Instance of this class represents the actual selected tool. ToolChooserModel implements the Observer design pattern so you can register your listener which will be called anytime the model changes.
 
-This package is used by both ToolChooser and Editor modules. Workspace (part of Editor Module) has an instance of ToolChooserModel in it's lookup. This means that Editor module leaves the tool selection on someone else.
+The API is used by both ToolChooser and Editor modules. Workspace (part of Editor Module) has an instance of ToolChooserModel in it's lookup. This means that Editor module leaves the tool selection on someone else.
 
 ToolChooser uses this instance (from the lookup of active workspace) to set the desired tool (e.g. new class).  But it is also possible to make another plugin that will do this (e.g. in the toolbar). Structure of this package is really simple and you can see it in the Figure \ref{f-ModuleAPIToolChooserModel}.
 
@@ -207,11 +207,11 @@ So problem is solved. Some information like the name are stored inside the User 
 \end{center}
 \end{figure}
 
-\subsection{Forms}
+\subsection{Dialogs}
 
-Forms (most of them are dialogs) of the Indepmod Class Notation plugin is created on Swing technology. Their classes are located in cz.cvut.indepmod.classmodel.frames.dialogs package.
+Dialogs of the Indepmod Class Notation plugin is created on Swing technology. Their classes are located in cz.cvut.indepmod.classmodel.frames.dialogs package.
 
-Every form uses the special case of MVC\footnote{MVC - Model View Controller} design pattern. Standard MVC design pattern has three single components:
+Every dialog uses the special case of MVC\footnote{MVC - Model View Controller} design pattern. Standard MVC design pattern has three single components:
  \begin{itemize}
     \item a model - represents the data that is processed. It can be e.g. a class instance that holds this data.
     \item a view - presents the data to the user. It is e.g. a form with single components but it does not have to be only the form. It can be also an image or a chart. The view holds the pointer to its model so it can be refreshed when there is a change in the model.
@@ -274,9 +274,11 @@ If you want to know more about how XMLEncoder or XMLDecoder works, please take a
 \subsection{Netbeans File Association}
 \label{subsection:fileAssociation}
 
-Netbeans platform allows its plugins to recognize new types of files. So when you want to associate new file type with your plugin, you can do it easily. If you are not familiar with this, you can find it in \cite{netbeans6.9DevGuide} in the chapter called Data System.
+When you want to open a file that is associated with your application (or with your plugin) in a standard Netbeans way, you have to tell the Netbeans which file type is of you application/plugin. 
 
-The file type association settings can be found in layer.xml file. At present there is settings of file type association and settings of wizard that can be used to create new class diagram file. In this wizard user sets the name of the file, type of the diagram and the language (Java, C++, etc.). Files that are associated with this plugin are XML files with .cls suffix. Content of these files will be discussed later.
+Netbeans platform allows its plugins to recognize new types of files. So when you want to associate new file type with your plugin, you can do it easily. The configuration of the file association is, like any other configuration, done via the layer.xml configuration file. If you are not familiar with this, you can find it in \cite{netbeans6.9DevGuide} in the chapter called Data System.
+
+The file type association settings, as have been already written, can be found in layer.xml file. At present there is settings of file type association and settings of wizard that can be used to create new class diagram file. In this wizard user sets the name of the file, type of the diagram and the language (Java, C++, etc.). Files that are associated with this plugin are XML files with .cls suffix. Content of these files will be discussed later.
 
 \subsection{Lookup}
 \label{subsection:lookup}

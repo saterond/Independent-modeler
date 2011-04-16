@@ -1,0 +1,27 @@
+\chapter{Implementation Platform and Frameworks}
+
+\section{Netbeans API}
+\label{section:netbeansAPI}
+
+All desktop applications have several common things. They use for example windows, menus (file, edit, etc.), docking panels, help system, online update system, etc. This functionality can be created over and over again for each new desktop application but it takes a lot of time and effort to create it. And this is the reason why the frameworks are used. Advantage is that a developer (or a group of developers) creates and updates the framework that solves certain problem. Another developer can then use this framework so he does not have to implement it again. If the developer solved the problem himself, he would either create not so robust solution or spend a lot of time (maybe years) to create it. Another advantage of framework using is that it is better tested and errors are repaired in one place. If the framework is used by lot of developers, they can find another bugs, which was not found during the testing part of development, and report them to the framework's creator. He can consequently repair the bug and provide another version of the framework.
+
+The Netbeans platform is an open source application framework based on well known Swing Technology. It can be used to simplify the desktop application development by providing many techniques and design patterns. The Netbeans platform gives the developer a tool to create a robust desktop application much faster and better. Thus, the developer can focus on the application's business logic creation instead of dealing with the work that has been already done.
+
+Basic concept of the Netbeans API is that the application can be divided into several loosely coupled modules. This is very useful especially when the application starts to be complex. Netbeans API uses a virtual filesystem (hierarchical structure of directories and files), also called as central registry, for its configuration. Every module which is deployed into the application can add some information into this virtual filesystem and thus it can add some functionality. This is described later in the section \ref{section:toolChooserModule}.
+
+Another useful feature of the Netbeans platform is the extended visibility settings. We can set which parts of a module will be public and which will not. This means that we can use the public visibility inside the module and specify which package will be visible outside the module. The result of this is that we can access properties of a class directly and we don't have to worry that some other package could do the same thing.
+
+The Netbeans platform can be used either to create the whole desktop application or to create a plugin for an existing one. Both whole applications and plugins can be consisted of several (or of many) independent modules. For this project I chose the creation of a plugin. The Netbeans platform provides a lot of functionality and if you want to know more about it, please take look at \cite{netbeans6.9DevGuide}.
+
+\section{JGraph}
+\label{section:JGraph}
+
+JGraph is an opensource graph visualisation library which is based on Java Swing technology. It gives the developer great means to create a generic diagram, which is consisted of nodes and edges. JGraph provides several prefabricated components for graph nodes shapes or for edges shapes that connect these nodes. So if you want to create simple diagram you can use these prefabricated components. Of course, there is the possibility to create your own shapes too so if you want to create diagram with nodes of some special shapes you can do it.
+
+Except the diagram visualisation, JGraph provides some other functionality like zooming of the drawing area, undo/redo support, drag\&drop of nodes and edges and many other. This framework will be used for visualisation of the class diagram. More information about this framework can be found in \cite{jgraphmanual}.
+
+\section{Environment}
+
+Because this thesis is about the Netbeans plugin creation and Netbeans platform is based on the Java language, there wasn't any other option than use the Java language. But it is not bad at all. Java is widely used object oriented programming language and thanks to its portability, the application can run on a lot of operating systems like Windows, Linux and so on.
+
+As a programming enviroment I use the Netbeans IDE. The Netbeans IDE is the best choice because it is created on the same platform as the plugin. Netbeans IDE provides the full support (Wizards, etc.) for the Netbeans plugin (or module and whole applications based on this platform) creation. The Netbeans platform is described in section \ref{section:netbeansAPI}.

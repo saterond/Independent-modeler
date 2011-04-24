@@ -4,6 +4,7 @@ import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IType;
 import cz.cvut.indepmod.classmodel.api.model.Visibility;
+import cz.cvut.indepmod.classmodel.frames.dialogs.validation.AbstractDialogValidation;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.MethodModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
@@ -68,8 +69,11 @@ public class MethodCreatorDialog extends MethodCreatorDialogView {
             String name = nameField.getText();
             TypeModel returnType = (TypeModel) typeBox.getSelectedItem();
             Visibility vis = (Visibility) visibilityBox.getSelectedItem();
+            boolean isAbstract = isAbstractBox.isSelected();
+            boolean isStatic = isStaticBox.isSelected();
 
-            if (name.matches("^[A-Za-z][0-9A-Za-z]*$")) {
+            AbstractDialogValidation val = AbstractDialogValidation.getValidation();
+            if (val.validateMethod(vis, isAbstract, isStatic, name)) {
                 Set<IAttribute> attrs = new HashSet<IAttribute>();
                 int size = attributeListModel.size();
                 for (int i = 0; i < size; i++) {
@@ -78,6 +82,8 @@ public class MethodCreatorDialog extends MethodCreatorDialogView {
                 }
 
                 returnValue = new MethodModel(returnType, name, attrs, vis);
+                returnValue.setAbstract(isAbstract);
+                returnValue.setStatic(isStatic);
                 dispose();
             }
         }

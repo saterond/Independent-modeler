@@ -348,6 +348,60 @@ You can see the package structure in this directory tree:
 }
 \parindent=\luckyparindent
 
+\chapter{Abstract Factory Code Example}
+\label{abstractFactoryCodeExample}
+
+\lstset{language=Java, numbers=left, rulesepcolor=\color{gray}, breaklines=true}
+\begin{lstlisting}
+public abstract class AbstractGUIFactory {
+
+  private static AbstactGUIFactory linuxFactory = null;
+  private static AbstractGUIFactory windowsFactory = null;
+
+  public static AbstractGUIFactory getFactory() {
+    String osName = System.getProperty("os.name");
+    if (osName.startsWith("Windows")) {
+      if (windowsFactory == null) {
+        windowsFactory = new WindowsGUIFactory();
+      }
+      return windowsFactory;
+    } else if (osName.equals("Linux")) {
+      if (linuxFactory == null) {
+        linuxFactory = new LinuxGUIFactory();
+      }
+      return linuxFactory;
+    } else {
+      //For example throw an exception
+    }
+  }
+
+  public abstract JButton createButton();
+  public abstract JLabel createLabel();
+}
+
+public class WindowsGUIFactory extends AbstractGUIFactory {
+
+  public JButton createButton() {
+    return new WindowsButton();
+  }
+
+  public JLabel createLabel() {
+    return new WindowsLabel();
+  }
+}
+
+public class LinuxGUIGactory extends AbstractGUIFactory {
+  
+  public JButton createButton() {
+    return new LinuxButton();
+  }
+
+  public JLabel createLabel() {
+    return new LinuxLabel();
+  }
+}
+\end{lstlisting}
+
 \chapter{Graphic User Interface Test Cases}
 
 TODO

@@ -7,6 +7,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -28,6 +29,8 @@ public class MethodCreatorDialogView extends AbstractClassModelDialog {
     public static final String LABEL_NAME = Resources.getString("dialog_method_creator_name");
     public static final String LABEL_TYPE = Resources.getString("dialog_method_creator_type");
     public static final String LABEL_VISIBILITY = Resources.getString("dialog_method_creator_visibility");
+    public static final String IS_STATIC = Resources.getString("dialog_method_creator_is_static");
+    public static final String IS_ABSTRACT = Resources.getString("dialog_method_creator_is_abstract");
     public static final String REM_ATTR_BUTTON = Resources.getString("dialog_method_creator_rem_attr");
     public static final String SAVE_BUTTON = Resources.getString("dialog_method_creator_save");
 
@@ -38,6 +41,8 @@ public class MethodCreatorDialogView extends AbstractClassModelDialog {
     protected JTextField nameField = new JTextField();
     protected JComboBox typeBox = new JComboBox();
     protected JComboBox visibilityBox = new JComboBox();
+    protected JCheckBox isStaticBox = new JCheckBox(IS_STATIC);
+    protected JCheckBox isAbstractBox = new JCheckBox(IS_ABSTRACT);
     protected JButton saveButton = new JButton(SAVE_BUTTON);
     protected JButton cancelButton = new JButton(CANCEL_BUTTON);
     protected JButton addAttrButton = new JButton(ADD_ATTR_BUTTON);
@@ -83,29 +88,35 @@ public class MethodCreatorDialogView extends AbstractClassModelDialog {
         c.weightx = 0.5;
         this.add(this.visibilityBox, c);
 
-        c = GridBagConstraintsUtils.createNewConstraints(0, 3, 1, 1);
+        c = GridBagConstraintsUtils.createNewConstraints(1, 3, 1, 1);
+        this.add(this.isStaticBox, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(2, 3, 1, 1);
+        this.add(this.isAbstractBox, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(0, 4, 1, 1);
         c.anchor = GridBagConstraints.LINE_START;
         this.add(this.attrLabel, c);
 
-        c = GridBagConstraintsUtils.createNewConstraints(1, 3, 1, 3);
+        c = GridBagConstraintsUtils.createNewConstraints(1, 4, 1, 3);
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 0.5;
         c.weighty = 0.5;
         this.add(new JScrollPane(this.attrList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), c);
 
-        c = GridBagConstraintsUtils.createNewConstraints(2, 3, 1, 1);
+        c = GridBagConstraintsUtils.createNewConstraints(2, 4, 1, 1);
         c.fill = GridBagConstraints.HORIZONTAL;
         this.add(this.addAttrButton, c);
 
-        c = GridBagConstraintsUtils.createNewConstraints(2, 4, 1, 1);
+        c = GridBagConstraintsUtils.createNewConstraints(2, 5, 1, 1);
         c.fill = GridBagConstraints.HORIZONTAL;
         this.add(this.remAttrButton, c);
 
-        c = GridBagConstraintsUtils.createNewConstraints(1, 6, 1, 1);
+        c = GridBagConstraintsUtils.createNewConstraints(1, 7, 1, 1);
         c.anchor = GridBagConstraints.LINE_END;
         this.add(this.saveButton, c);
 
-        c = GridBagConstraintsUtils.createNewConstraints(2, 6, 1, 1);
+        c = GridBagConstraintsUtils.createNewConstraints(2, 7, 1, 1);
         c.anchor = GridBagConstraints.LINE_START;
         this.add(this.cancelButton, c);
     }

@@ -26,7 +26,7 @@ public class ClassModelValidation extends AbstractDialogValidation {
 
     @Override
     public boolean validateClassName(String className, AbstractElementModel elModel) {
-        if (!className.matches("^([A-Za-z][0-9A-Za-z_]*::)?[A-Za-z][0-9A-Za-z_]*$")) {
+        if (!className.matches("^([A-Za-z][0-9A-Za-z_]*(\\.[A-Za-z][0-9A-Za-z_]*)*::)?[A-Za-z][0-9A-Za-z_]*$")) {
             String msg = Resources.getString("error_edit_element_name_validation");
             this.showErrorMessage(msg);
             return false;

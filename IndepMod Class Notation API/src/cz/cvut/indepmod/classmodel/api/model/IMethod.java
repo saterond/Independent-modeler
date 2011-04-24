@@ -40,4 +40,29 @@ public interface IMethod {
      */
     public IType getType();
 
+    /**
+     * Returns true if the method is static
+     * @return
+     */
+    public boolean isStatic();
+
+    /**
+     * Sets whether is this method static or not
+     * @param isStatic
+     * @return
+     */
+    public void setStatic(boolean isStatic);
+
+    /**
+     * Returns true if the method is abstract
+     * @return
+     */
+    public boolean isAbstract();
+
+    /**
+     * Sets whether is this method abstract or not
+     * @param isAbstract
+     */
+    public void setAbstract(boolean isAbstract);
+
 }

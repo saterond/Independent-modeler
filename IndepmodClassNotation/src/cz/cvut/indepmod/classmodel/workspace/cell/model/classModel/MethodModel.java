@@ -18,6 +18,8 @@ public class MethodModel extends AbstractModel implements IMethod {
     private String name;
     private Set<IAttribute> attributeModels;
     private Visibility visibility;
+    private boolean isAbstract;
+    private boolean isStatic;
 
     public MethodModel(TypeModel typeModel, String name, Set<IAttribute> attributeModels) {
         this(typeModel, name, attributeModels, Visibility.PUBLIC);
@@ -71,8 +73,14 @@ public class MethodModel extends AbstractModel implements IMethod {
         StringBuilder bfr = new StringBuilder(30);
         bfr.append(this.visibility.toString());
         bfr.append(" ");
-        bfr.append(this.type.toString());
-        bfr.append(" ");
+
+        if (this.isAbstract) {
+            bfr.append("abstract ");
+        }
+        if (this.isStatic) {
+            bfr.append("static ");
+        }
+
         bfr.append(this.name);
         bfr.append("(");
 
@@ -87,7 +95,8 @@ public class MethodModel extends AbstractModel implements IMethod {
             bfr.append(attr.getType());
         }
 
-        bfr.append(")");
+        bfr.append(") : ");
+        bfr.append(this.type.toString());
 
         return bfr.toString();
     }
@@ -95,5 +104,25 @@ public class MethodModel extends AbstractModel implements IMethod {
     @Override
     public Visibility getVisibility() {
         return this.visibility;
+    }
+
+    @Override
+    public boolean isStatic() {
+        return this.isStatic;
+    }
+
+    @Override
+    public boolean isAbstract() {
+        return this.isAbstract;
+    }
+
+    @Override
+    public void setStatic(boolean isStatic) {
+        this.isStatic = isStatic;
+    }
+
+    @Override
+    public void setAbstract(boolean isAbstract) {
+        this.isAbstract = isAbstract;
     }
 }

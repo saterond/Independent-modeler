@@ -2,6 +2,7 @@ package cz.cvut.indepmod.classmodel.frames.dialogs.validation;
 
 import cz.cvut.indepmod.classmodel.Globals;
 import cz.cvut.indepmod.classmodel.api.model.DiagramType;
+import cz.cvut.indepmod.classmodel.api.model.Visibility;
 import cz.cvut.indepmod.classmodel.resources.Resources;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
 import org.openide.DialogDisplayer;
@@ -48,6 +49,25 @@ public abstract class AbstractDialogValidation {
     //==========================================================================
     //==========================================================================
     //==========================================================================
+
+    public boolean validateMethod(Visibility visibility, boolean isAbstract, boolean isStatic, String name) {
+        if (!name.matches("^[A-Za-z][0-9A-Za-z]*$")) {
+            String msg = Resources.getString("error_create_method_name_validation");
+            this.showErrorMessage(msg);
+            return false;
+        }
+        if (isAbstract && visibility.equals(Visibility.PRIVATE)) {
+            String msg = Resources.getString("error_create_method_abstract_private");
+            this.showErrorMessage(msg);
+            return false;
+        }
+        if (isAbstract && isStatic) {
+            String msg = Resources.getString("error_create_method_abstract_static");
+            this.showErrorMessage(msg);
+            return false;
+        }
+        return true;
+    }
 
     public boolean validateAnnotationAttributeValue(String value) {
         if (value.isEmpty()) {

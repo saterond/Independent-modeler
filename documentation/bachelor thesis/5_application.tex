@@ -237,7 +237,19 @@ For better view of the MVC design pattern you can take a look at the Figures \re
 \end{center}
 \end{figure}
 
-Another design pattern that some forms use is the Abstract Factory in conjunction with Template method. Usage of this design pattern was necessary because Indepmod Class Notation creates two types of diagrams - class and business diagram. The class diagram lets the user edit all elements of classes (attributes, annotations, methods) but the business diagram lets the user edit only the attributes. When user make the action to edit the class, Indepmod Class Notation shows appropriate dialog according to the type of the model.
+Another design pattern that some forms use is the Abstract Factory in conjunction with Template method. The Abstract Factory design pattern solves the problem when we want to create an implementation \textit{A} of an interface under any conditions and another implementation \textit{B} of the same interface under any other conditions. It consists of three parts. The first part is an abstract class which is the abstract factory. This class defines the interface for concrete classes (concrete factories) and a static method which returns an implementation of concrete factory. This static method can accept some parameters from which it decides which concrete factory to return. The second part is consisted of these concrete factories. Their responsibility is to create single components according to the interface of the abstract factory. The third part is consisted of components which are created by these concrete factories.
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics[]{img/AbstractFactoryExample.png}
+\caption{Abstract Factory design pattern example}
+\label{f-AbstractFactoryExample}
+\end{center}
+\end{figure}
+
+You can see an example of Abstract factory design pattern in the Figure \ref{f-AbstractFactoryExample}. Imagine that your application will be used on both Windows and Linux and that you want to use different GUI component on these platforms. The solution is depicted in the example. You will create GUI components by use of AbstractGUIFactory. AbstractGUIFactory will find out on which platform the application is running and returns either WindowsGUIFactory or LinuxGUIFactory. Nevertheless, you won't think much about what factory implementation is returned. These concrete factories are returned as their parent class type - AbstractGUIFactory. The only thing you will do is call appropriate method on the returned object which will get you the component you wish. An that is all. For better imagination I will show an example in the Appendix \ref{abstractFactoryCodeExample}.
+
+Usage of this design pattern was necessary because Indepmod Class Notation creates two types of diagrams - class and business diagram. The class diagram lets the user edit all elements of classes (attributes, annotations, methods) but the business diagram lets the user edit only the attributes. When user make the action to edit the class, Indepmod Class Notation shows appropriate dialog according to the type of the model.
 
 Forms that are based on this design pattern are forms for class edition and attribute creation. In this thesis I will explain only the principle of the form for class edition. The form for attribute creation is analogous.
 
@@ -256,11 +268,7 @@ These methods are treated as template methods so they can be overrode. The abstr
 
 The BusinessModelEditClassDialog is extended from the abstract controller and overrides methods that creates annotation and method panels. It overrides them in a way that it returns an null pointer. The abstract view compose its UI of these parts and when a part is null, it is not added there. The ClassModelEditClassDialog does not override any method because all desired functionality is done in its predecessors.
 
-These dialogs are created by an Abstract Factory. The Abstract Factory design consists of three parts. The first part is an abstract class (the abstract factory). This class defines the interface for concrete classes and a static method that returns an implementation of concrete factory. The second part is consisted of these concrete factories. Their responsibility is to create single components according to the interface of the abstract factory. The third part is consisted of components which are created by these concrete factories.
-
-TODO - The image of abstract factory.
-
-The Abstract Factory is situated in the cz.cvut.indepmod.classmodel.frames.dialogs.factory package and is called AbstractDialogFactory. It has a static method which accepts the type of the diagram and returns an instance of a concrete factory. This concrete factory creates the dialog. Please take a look at the javadoc of this project for more information about the names of methods, etc. For more information about the Abstract Factory design pattern take a look at the \cite{DesignPatterns}.
+These dialogs are created by an Abstract Factory. The Abstract Factory is situated in the cz.cvut.indepmod.classmodel.frames.dialogs.factory package and is called AbstractDialogFactory. It has a static method which accepts the type of the diagram and returns an instance of a concrete factory. This concrete factory creates the dialog. Please take a look at the javadoc of this project for more information about the names of methods, etc. For more information about the Abstract Factory design pattern take a look at the \cite{DesignPatterns}.
 
 \subsection{Persistence}
 \label{subsection:persistence}
@@ -323,5 +331,6 @@ public final class MyAction implements ActionListener {
         } else {
             // You have a class model, start to do something...
         }
+    }
 }
 \end{lstlisting}

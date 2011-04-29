@@ -7,28 +7,27 @@ package cz.cvut.indepmod.sequencemodel.editor;
 
 import cz.cvut.indepmod.sequencemodel.api.ToolChooserModel;
 import cz.cvut.indepmod.sequencemodel.editor.actions.SequenceModelAbstractAction;
+import cz.cvut.indepmod.sequencemodel.editor.actions.SequenceModelDeleteAction;
 import cz.cvut.indepmod.sequencemodel.editor.actions.SequenceModelEditAction;
+import cz.cvut.indepmod.sequencemodel.editor.file.SequenceModelDataObject;
+import cz.cvut.indepmod.sequencemodel.editor.file.SequenceModelSaveCookie;
+import cz.cvut.indepmod.sequencemodel.editor.persistence.xml.SequenceModelXMLCoder;
 import cz.cvut.indepmod.sequencemodel.modelFactory.SequenceModelDiagramModelFactory;
-import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import org.jgraph.JGraph;
 import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphModelListener;
-import org.jgraph.graph.DefaultCellViewFactory;
-import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
-import org.jgraph.graph.DefaultPort;
-import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
-import org.openide.util.NbBundle;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
+import org.openide.windows.CloneableTopComponent;
 import org.openide.windows.Mode;
 import org.openide.windows.TopComponent;
 import org.openide.windows.WindowManager;
@@ -39,21 +38,37 @@ import org.openide.windows.WindowManager;
  * @author hegladan <hegladan@fel.cvut.cz>
  */
 
-public class SequenceModelWorkspace extends TopComponent implements GraphModelListener {
+public class SequenceModelWorkspace extends CloneableTopComponent implements GraphModelListener {
 
     private GraphModel model;
     private GraphLayoutCache view;
     private SequenceModelGraph graph;
     private ToolChooserModel selectedTool;
+    private Map<String, SequenceModelAbstractAction> actions;
     private JPopupMenu popupMenu;
     private InstanceContent lookupContent = new InstanceContent();
+    private SequenceModelSaveCookie saveCookie;
+    private boolean modified;
     private static SequenceModelWorkspace instance;
     private static final String PREFERRED_ID = "SequenceModelWorkspace";
 
     public SequenceModelWorkspace(){
         this.init(SequenceModelDiagramModelFactory.getInstance().createEmptyDiagramModel().getLayoutCache());
-        setName(NbBundle.getMessage(SequenceModelWorkspace.class, "CTL_Editor"));
-        setToolTipText(NbBundle.getMessage(SequenceModelWorkspace.class, "HINT_Editor"));
+        //setName(NbBundle.getMessage(SequenceModelWorkspace.class, "CTL_Editor"));
+        //setToolTipText(NbBundle.getMessage(SequenceModelWorkspace.class, "HINT_Editor"));
+    }
+
+    public SequenceModelWorkspace(SequenceModelDataObject dataObject) {
+        String fileName = dataObject.getPrimaryFile().getPath();
+        System.out.println(fileName);
+        GraphLayoutCache cache = SequenceModelXMLCoder.getInstance().decode(fileName);
+
+        if (cache != null) {
+            this.init(cache);
+        } else {
+            this.init(SequenceModelDiagramModelFactory.getInstance().createEmptyDiagramModel().getLayoutCache());
+        }
+        this.lookupContent.add(dataObject);
     }
 
     public static synchronized SequenceModelWorkspace getDefault() {
@@ -62,6 +77,7 @@ public class SequenceModelWorkspace extends TopComponent implements GraphModelLi
         }
         return instance;
     }
+
 
     public static synchronized SequenceModelWorkspace findInstance() {
         TopComponent win = WindowManager.getDefault().findTopComponent(PREFERRED_ID);
@@ -81,10 +97,10 @@ public class SequenceModelWorkspace extends TopComponent implements GraphModelLi
 
     @Override
     public int getPersistenceType() {
-        return TopComponent.PERSISTENCE_ALWAYS;
+        return TopComponent.PERSISTENCE_NEVER;
     }
 
-        @Override
+    @Override
     public void open() {
         Mode mode = WindowManager.getDefault().findMode("editor");
         if (mode != null) {
@@ -94,30 +110,57 @@ public class SequenceModelWorkspace extends TopComponent implements GraphModelLi
         }
 
     private void init(GraphLayoutCache cache) {
+        this.actions = new HashMap<String, SequenceModelAbstractAction>();
         this.model = new DefaultGraphModel();
         this.selectedTool = new ToolChooserModel();
         this.popupMenu = new JPopupMenu();
+        this.modified = false;
         //this.view = new GraphLayoutCache(model, new DefaultCellViewFactory());
 
         this.graph = new SequenceModelGraph(selectedTool);
         this.graph.setMarqueeHandler(new SequenceModelMarqueeHandler(this.graph,selectedTool,this.popupMenu));
         this.graph.setGraphLayoutCache(cache);
         this.graph.getModel().addGraphModelListener(this);
+        this.saveCookie = new SequenceModelSaveCookie(this,this.graph);
 
-        initLookup();
-        initPopupMenu();
+        this.initLookup();
+        this.initActions();
+        this.initPopupMenu();
         this.setLayout(new GridLayout(1,1));
         this.add(new JScrollPane(this.graph));
 
     }
 
-        private void initPopupMenu() {
-        //SequenceModelAbstractAction deleteAction = this.actions.get(SequenceModelDeleteAction.ACTION_NAME);
-        //deleteAction.setEnabled(true);
+    /**
+     * This method inititalizes actions
+     */
+    private void initActions() {
+        this.actions.put(
+                SequenceModelDeleteAction.ACTION_NAME,
+                new SequenceModelDeleteAction(this.graph));
 
-        SequenceModelAbstractAction editAction = new SequenceModelEditAction(this.graph);
+        this.actions.put(
+                SequenceModelEditAction.ACTION_NAME,
+                new SequenceModelEditAction(this.graph));
+         /*
+        this.actions.put(
+                SequenceModelUndoAction.ACTION_NAME,
+                new SequenceModelUndoAction());
 
-        //this.popupMenu.add(deleteAction);
+        this.actions.put(
+                SequenceModelRedoAction.ACTION_NAME,
+                new SequenceModelRedoAction());
+        */
+    }
+
+    private void initPopupMenu() {
+
+        SequenceModelAbstractAction deleteAction = this.actions.get(SequenceModelDeleteAction.ACTION_NAME);
+        deleteAction.setEnabled(true);
+
+        SequenceModelAbstractAction editAction = this.actions.get(SequenceModelEditAction.ACTION_NAME);
+
+        this.popupMenu.add(deleteAction);
         this.popupMenu.add(editAction);
     }
 
@@ -129,7 +172,22 @@ public class SequenceModelWorkspace extends TopComponent implements GraphModelLi
 
     @Override
     public void graphChanged(GraphModelEvent gme) {
-        //throw new UnsupportedOperationException("Not supported yet.");
+        this.setModified(true);
+        for (DefaultGraphCell fragment : this.graph.getAllFragmentCells()) {
+            this.graph.setMessageToFragmentModel(fragment);
+        }
     }
+
+
+    public void setModified(boolean modified) {
+        if (!this.modified && modified) {
+            this.modified = modified;
+            this.lookupContent.add(this.saveCookie);
+        } else if (this.modified && !modified) {
+            this.modified = modified;
+            this.lookupContent.remove(this.saveCookie);
+        }
+    }
+
 
 }

@@ -11,18 +11,18 @@ public class ToolChooserModel {
 
     public static final String TOOL_CHOOSER_TITLE = "ToolChooser";
 
-    public static final String TOOL_INTERACTION_NAME = "interaction";
-    public static final String TOOL_LIFELINE_NAME = "lifeline";
-    public static final String TOOL_MESSAGE_NAME = "message";
-    public static final String TOOL_RETURN_NAME = "return";
-    public static final String TOOL_FRAGMENT_NAME = "fragment";
+    public static final String TOOL_CONTROL_NAME = "Control";
+    public static final String TOOL_LIFELINE_NAME = "Object";
+    public static final String TOOL_MESSAGE_NAME = "Message";
+    public static final String TOOL_RETURN_NAME = "Return message";
+    public static final String TOOL_FRAGMENT_NAME = "Fragment";
 
     public static enum Tool {
         TOOL_LIFELINE,
         TOOL_MESSAGE,
-        TOOL_INTERACTION,
+        TOOL_CONTROL,
         TOOL_RETURN,
-        TOOL_FRAGMENT
+        TOOL_FRAGMENT,
     }
 
     public static final String SELECTED_TOOL_PROPERTY = "selectedTool";
@@ -33,7 +33,7 @@ public class ToolChooserModel {
 
 
     public ToolChooserModel() {
-        this.selectedTool = Tool.TOOL_INTERACTION;
+        this.selectedTool = Tool.TOOL_CONTROL;
         this.lsnrs = new LinkedList<ToolChooserModelListener>();
     }
 

@@ -5,11 +5,13 @@
 
 package cz.cvut.indepmod.sequencemodel.editor.cell.model;
 
+import cz.cvut.indepmod.sequencemodel.api.model.IType;
+
 /**
  *
  * @author hegladan <hegladan@fel.cvut.cz>
  */
-public class TypeModel extends AbstractModel{
+public class TypeModel extends AbstractModel implements IType{
 
     private String typeName;
 
@@ -27,6 +29,7 @@ public class TypeModel extends AbstractModel{
      *
      * @return the name
      */
+    @Override
     public String getTypeName() {
         return typeName;
     }

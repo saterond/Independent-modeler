@@ -4,6 +4,8 @@
  */
 package cz.cvut.indepmod.sequencemodel.editor.cell.model;
 
+import cz.cvut.indepmod.sequencemodel.api.model.IMessage;
+import cz.cvut.indepmod.sequencemodel.api.model.ISequenceObject;
 import java.util.HashSet;
 import java.util.Set;
 import org.jgraph.graph.DefaultGraphCell;
@@ -12,13 +14,15 @@ import org.jgraph.graph.DefaultGraphCell;
  *
  * @author hegladan <hegladan@fel.cvut.cz>
  */
-public class MessageModel extends AbstractModel {
+public class MessageModel extends AbstractMessageModel implements IMessage{
 
     private static int counter = 0;
-    private DefaultGraphCell cell;
     private TypeModel type;
     private String name;
     private Set<AttributeModel> attributeModels;
+    private ReturnMessageModel returnModel;
+    private SequenceObjectModel sourceSeqObject;
+    private SequenceObjectModel targetSeqObject;
 
     public MessageModel() {
         this("Message" + ++counter);
@@ -30,8 +34,23 @@ public class MessageModel extends AbstractModel {
         this.attributeModels = new HashSet<AttributeModel>();
     }
 
+    public MessageModel(String name,DefaultGraphCell cell) {
+        this.name = name;
+        this.type = new TypeModel("void");
+        this.attributeModels = new HashSet<AttributeModel>();
+        super.cell = cell;
+    }
+
+    public void setSourceSeqObject(SequenceObjectModel sourceSeqObject) {
+        this.sourceSeqObject = sourceSeqObject;
+    }
+
+    public void setTargetSeqObject(SequenceObjectModel targetSeqObject) {
+        this.targetSeqObject = targetSeqObject;
+    }
+
     /**
-     * Creates new ClassModel with no attributeModels and no methodModels
+     * Creates new MessageModel with no attributeModels and no methodModels
      *
      * @param name name of new class
      */
@@ -44,18 +63,17 @@ public class MessageModel extends AbstractModel {
         } else {
             this.attributeModels = new HashSet<AttributeModel>();
         }
-        this.cell = null;
+        super.cell = null;
     }
 
     public MessageModel(MessageModel model) {
         this.name = model.toString();
-        this.cell = model.cell;
+        this.associateMessage = model.associateMessage;
+        this.attributeModels = model.getAttributeModels();
+        super.cell = model.cell;
     }
 
-    public void setCell(DefaultGraphCell cell) {
-        this.cell = cell; //TODO - shouldn't this throw an exception when the cell is already sat?
-    }
-
+    @Override
     public TypeModel getType() {
         return this.type;
     }
@@ -72,6 +90,8 @@ public class MessageModel extends AbstractModel {
         this.name = name;
     }
 
+
+    @Override
     public Set<AttributeModel> getAttributeModels() {
         return new HashSet<AttributeModel>(this.attributeModels);
     }
@@ -103,4 +123,15 @@ public class MessageModel extends AbstractModel {
 
         return bfr.toString();
     }
+
+    @Override
+    public ISequenceObject getSourceSequenceObject() {
+        return sourceSeqObject;
+    }
+
+    @Override
+    public ISequenceObject getTargetSequenceObject() {
+        return targetSeqObject;
+    }
+
 }

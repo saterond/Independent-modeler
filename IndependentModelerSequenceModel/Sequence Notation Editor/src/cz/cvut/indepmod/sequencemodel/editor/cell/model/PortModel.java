@@ -16,18 +16,18 @@ public class PortModel extends AbstractModel{
     private String name;
 
     public PortModel(){
-        this(null,"port");
+        this("port",null);
     }
 
     public PortModel(MessageModel message) {
-        this(message,"port");
+        this("port",message);
     }
 
     public PortModel(String name){
-        this(null,name);
+        this(name,null);
     }
 
-    public PortModel(MessageModel message,String name) {
+    public PortModel(String name,MessageModel message) {
         this.message = message;
         this.name = name + ++counter;
     }

@@ -8,6 +8,7 @@
             <module-dependencies/>
             <public-packages>
                 <package>cz.cvut.indepmod.sequencemodel.api</package>
+                <package>cz.cvut.indepmod.sequencemodel.api.model</package>
             </public-packages>
         </data>
     </configuration>

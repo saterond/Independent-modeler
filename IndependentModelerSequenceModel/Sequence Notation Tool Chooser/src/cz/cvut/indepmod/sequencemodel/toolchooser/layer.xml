@@ -19,11 +19,11 @@
     </folder>
     <folder name="Windows2">
         <folder name="Components">
-            <file name="ToolChooserTopComponent.settings" url="ToolChooserTopComponentSettings.xml"/>
+            <file name="ToolChooser.settings" url="ToolChooserSettings.xml"/>
         </folder>
         <folder name="Modes">
             <folder name="rightSlidingSide">
-                <file name="ToolChooserTopComponent.wstcref" url="ToolChooserTopComponentWstcref.xml"/>
+                <file name="ToolChooser.wstcref" url="ToolChooserWstcref.xml"/>
             </folder>
         </folder>
     </folder>

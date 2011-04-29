@@ -5,11 +5,13 @@
 
 package cz.cvut.indepmod.sequencemodel.editor.cell.model;
 
+import cz.cvut.indepmod.sequencemodel.api.model.IAttribute;
+
 /**
  *
  * @author hegladan <hegladan@fel.cvut.cz>
  */
-public class AttributeModel extends AbstractModel{
+public class AttributeModel extends AbstractModel implements IAttribute{
 
     private TypeModel type;
     private String name;
@@ -24,7 +26,7 @@ public class AttributeModel extends AbstractModel{
      *
      * @return Type instantion
      */
-    //@Override
+    @Override
     public TypeModel getType() {
         return type;
     }
@@ -34,7 +36,7 @@ public class AttributeModel extends AbstractModel{
      *
      * @return the name of this attribute
      */
-    //@Override
+    @Override
     public String getName() {
         return name;
     }
@@ -43,4 +45,5 @@ public class AttributeModel extends AbstractModel{
     public String toString() {
         return this.name + " : " + this.type.getTypeName();
     }
+
 }

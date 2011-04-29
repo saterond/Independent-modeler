@@ -2,14 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cz.cvut.indepmod.sequencemodel.editor.actions;
 
 import cz.cvut.indepmod.sequencemodel.editor.SequenceModelGraph;
-import cz.cvut.indepmod.sequencemodel.editor.cell.model.LifelineModel;
+import cz.cvut.indepmod.sequencemodel.editor.cell.model.FragmentModel;
+import cz.cvut.indepmod.sequencemodel.editor.cell.model.SequenceObjectModel;
 import cz.cvut.indepmod.sequencemodel.editor.cell.model.MessageModel;
-import cz.cvut.indepmod.sequencemodel.editor.frames.dialogs.SequenceModelEditLifelineDialog;
+import cz.cvut.indepmod.sequencemodel.editor.cell.model.ReturnMessageModel;
+import cz.cvut.indepmod.sequencemodel.editor.frames.dialogs.SequenceModelEditFragmentDialog;
+import cz.cvut.indepmod.sequencemodel.editor.frames.dialogs.SequenceModelEditSequenceObjectDialog;
 import cz.cvut.indepmod.sequencemodel.editor.frames.dialogs.SequenceModelEditMessageDialog;
+import cz.cvut.indepmod.sequencemodel.editor.frames.dialogs.SequenceModelEditReturnMessageDialog;
 import java.awt.event.ActionEvent;
 import java.util.logging.Logger;
 import org.jgraph.graph.DefaultGraphCell;
@@ -34,23 +37,43 @@ public class SequenceModelEditAction extends SequenceModelAbstractAction {
     public void actionPerformed(ActionEvent event) {
         try {
             DefaultGraphCell cell = (DefaultGraphCell) this.graph.getSelectionCell();
-            cell = (DefaultGraphCell) cell.getChildAt(0);
-            if(cell.getUserObject() instanceof MessageModel){
-            MessageModel model = (MessageModel) cell.getUserObject();
+            DefaultGraphCell cellChild = null;
+            if (!cell.isLeaf()) {
+                cellChild = (DefaultGraphCell) cell.getChildAt(0);
+            }
+            if (cell.getUserObject() instanceof FragmentModel) {
+                FragmentModel model = (FragmentModel) cell.getUserObject();
 
-            SequenceModelEditMessageDialog dialog = new SequenceModelEditMessageDialog(
-                    WindowManager.getDefault().getMainWindow(),
-                    graph,
-                    cell,
-                    model);
-            }else if(cell.getUserObject() instanceof LifelineModel){
-            LifelineModel model = (LifelineModel) cell.getUserObject();
+                SequenceModelEditFragmentDialog dialog = new SequenceModelEditFragmentDialog(
+                        WindowManager.getDefault().getMainWindow(),
+                        graph,
+                        cell,
+                        model);
+            } else if (cell.getUserObject() instanceof MessageModel) {
+                MessageModel model = (MessageModel) cell.getUserObject();
 
-            SequenceModelEditLifelineDialog dialog = new SequenceModelEditLifelineDialog(
-                    WindowManager.getDefault().getMainWindow(),
-                    graph,
-                    cell,
-                    model);
+                SequenceModelEditMessageDialog dialog = new SequenceModelEditMessageDialog(
+                        WindowManager.getDefault().getMainWindow(),
+                        graph,
+                        cell,
+                        model);
+            } else if (cell.getUserObject() instanceof ReturnMessageModel) {
+                ReturnMessageModel model = (ReturnMessageModel) cell.getUserObject();
+
+                SequenceModelEditReturnMessageDialog dialog = new SequenceModelEditReturnMessageDialog(
+                        WindowManager.getDefault().getMainWindow(),
+                        graph,
+                        cell,
+                        model);
+
+            } else if (cellChild.getUserObject() instanceof SequenceObjectModel) {
+                SequenceObjectModel model = (SequenceObjectModel) cellChild.getUserObject();
+
+                SequenceModelEditSequenceObjectDialog dialog = new SequenceModelEditSequenceObjectDialog(
+                        WindowManager.getDefault().getMainWindow(),
+                        graph,
+                        cellChild,
+                        model);
             }
 
             //this.graph.getGraphLayoutCache().editCell(cell, map);
@@ -58,7 +81,9 @@ public class SequenceModelEditAction extends SequenceModelAbstractAction {
             LOG.severe("Edit Action was performed even is no cell was selected!");
         } catch (ClassCastException ex) {
             LOG.severe("Edit Action was performed on different vertex than class");
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            LOG.severe("Edit Action was performed on vertex without edit action");
+            ex.printStackTrace();
         }
     }
 }
-

@@ -48,7 +48,7 @@ public class ToolChooser extends ToolChooserView {
         this.initActions();
     }
 
-    /*
+
     @Override
     public List<Mode> availableModes(List<Mode> modes) {
         for (Mode mode : modes) {
@@ -58,8 +58,8 @@ public class ToolChooser extends ToolChooserView {
         }
         return modes;
     }
-    */
 
+    /*
     @Override
     public void open() {
         Mode mode = WindowManager.getDefault().findMode("rightSlidingSide");
@@ -68,7 +68,7 @@ public class ToolChooser extends ToolChooserView {
         }
         super.open();
         }
-
+    */
 
     public ToolChooserModel getModel() {
         return model;
@@ -84,7 +84,7 @@ public class ToolChooser extends ToolChooserView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 LOG.fine("controll tool choosed");
-                model.setSelectedTool(ToolChooserModel.Tool.TOOL_INTERACTION);
+                model.setSelectedTool(ToolChooserModel.Tool.TOOL_CONTROL);
             }
         });
 
@@ -203,7 +203,7 @@ public class ToolChooser extends ToolChooserView {
         public void selectedToolChanged(ToolChooserModel.Tool newTool) {
             ToolChooserModel.Tool tool = newTool;
             switch (tool) {
-                case TOOL_INTERACTION:
+                case TOOL_CONTROL:
                     interactionButton.doClick();
                     break;
                 case TOOL_LIFELINE:

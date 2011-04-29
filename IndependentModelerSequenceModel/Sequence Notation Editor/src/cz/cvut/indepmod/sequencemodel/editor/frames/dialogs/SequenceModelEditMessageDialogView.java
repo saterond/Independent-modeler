@@ -65,8 +65,8 @@ public class SequenceModelEditMessageDialogView extends SequenceModelAbstractDia
         this.add(this.parametersLabel);
         this.add(this.parametersList);
 
-        this.add(this.returnLabel);
-        this.add(this.returnCheckBox);
+        //this.add(this.returnLabel);
+        //this.add(this.returnCheckBox);
 
         this.add(this.saveButton);
         this.add(this.cancelButton);

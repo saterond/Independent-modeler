@@ -17,7 +17,7 @@ public class ToolChooserView extends TopComponent {
     
 
     private ButtonGroup buttonGroup = new ButtonGroup();
-    protected JToggleButton interactionButton = new JToggleButton(ToolChooserModel.TOOL_INTERACTION_NAME);
+    protected JToggleButton interactionButton = new JToggleButton(ToolChooserModel.TOOL_CONTROL_NAME);
     protected JToggleButton lifelineButton = new JToggleButton(ToolChooserModel.TOOL_LIFELINE_NAME);
     protected JToggleButton messageButton = new JToggleButton(ToolChooserModel.TOOL_MESSAGE_NAME);
     protected JToggleButton returnButton = new JToggleButton(ToolChooserModel.TOOL_RETURN_NAME);

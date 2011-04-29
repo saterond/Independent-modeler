@@ -95,6 +95,16 @@ public class Globals {
         javaTypes.add(new TypeModel("void"));
         javaTypes.add(new TypeModel(""));
         this.langs.add(new Language("Java", javaTypes));
+
+        Set<IType> cSharpTypes = new HashSet<IType>();
+        cSharpTypes.add(new TypeModel("object"));
+        cSharpTypes.add(new TypeModel("string"));
+        cSharpTypes.add(new TypeModel("int"));
+        cSharpTypes.add(new TypeModel("bool"));
+        cSharpTypes.add(new TypeModel("char"));
+        cSharpTypes.add(new TypeModel("void"));
+        cSharpTypes.add(new TypeModel(""));
+        this.langs.add(new Language("C#", cSharpTypes));
     }
 
 }

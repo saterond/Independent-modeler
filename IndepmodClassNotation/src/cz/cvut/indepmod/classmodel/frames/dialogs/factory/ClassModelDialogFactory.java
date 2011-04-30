@@ -1,5 +1,6 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs.factory;
 
+import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IType;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractAttrCreatorDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditElementDialog;
@@ -30,9 +31,15 @@ public class ClassModelDialogFactory extends AbstractDialogFactory {
 
     @Override
     public AbstractAttrCreatorDialog createAttributeCreatorDialog(Collection<IType> types) {
+        return this.createAttributeCreatorDialog(types, null);
+    }
+
+    @Override
+    public AbstractAttrCreatorDialog createAttributeCreatorDialog(Collection<IType> types, IAttribute attribute) {
         AbstractAttrCreatorDialog dialog = new ClassModelAttrCreatorDialog(
                 WindowManager.getDefault().getMainWindow(),
-                types);
+                types,
+                attribute);
         return dialog;
     }
 

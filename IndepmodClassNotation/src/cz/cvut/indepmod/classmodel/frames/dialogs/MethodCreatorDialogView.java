@@ -24,6 +24,7 @@ public class MethodCreatorDialogView extends AbstractClassModelDialog {
     public static final String TITLE = Resources.getString("dialog_method_creator_title");
 
     public static final String ADD_ATTR_BUTTON = Resources.getString("dialog_method_creator_add_attr");
+    public static final String EDIT_ATTR_BUTTON = Resources.getString("dialog_method_creator_edit_attr");
     public static final String CANCEL_BUTTON = Resources.getString("dialog_method_creator_cancel");
     public static final String LABEL_ATTRIBUTE = Resources.getString("dialog_method_creator_attr_list");
     public static final String LABEL_NAME = Resources.getString("dialog_method_creator_name");
@@ -46,6 +47,7 @@ public class MethodCreatorDialogView extends AbstractClassModelDialog {
     protected JButton saveButton = new JButton(SAVE_BUTTON);
     protected JButton cancelButton = new JButton(CANCEL_BUTTON);
     protected JButton addAttrButton = new JButton(ADD_ATTR_BUTTON);
+    protected JButton editAttrButton = new JButton(EDIT_ATTR_BUTTON);
     protected JButton remAttrButton = new JButton(REM_ATTR_BUTTON);
     protected DefaultListModel attributeListModel = new DefaultListModel();
     protected JList attrList = new JList(this.attributeListModel);
@@ -98,7 +100,7 @@ public class MethodCreatorDialogView extends AbstractClassModelDialog {
         c.anchor = GridBagConstraints.LINE_START;
         this.add(this.attrLabel, c);
 
-        c = GridBagConstraintsUtils.createNewConstraints(1, 4, 1, 3);
+        c = GridBagConstraintsUtils.createNewConstraints(1, 4, 1, 4);
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 0.5;
         c.weighty = 0.5;
@@ -110,13 +112,17 @@ public class MethodCreatorDialogView extends AbstractClassModelDialog {
 
         c = GridBagConstraintsUtils.createNewConstraints(2, 5, 1, 1);
         c.fill = GridBagConstraints.HORIZONTAL;
+        this.add(this.editAttrButton, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(2, 6, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
         this.add(this.remAttrButton, c);
 
-        c = GridBagConstraintsUtils.createNewConstraints(1, 7, 1, 1);
+        c = GridBagConstraintsUtils.createNewConstraints(1, 8, 1, 1);
         c.anchor = GridBagConstraints.LINE_END;
         this.add(this.saveButton, c);
 
-        c = GridBagConstraintsUtils.createNewConstraints(2, 7, 1, 1);
+        c = GridBagConstraintsUtils.createNewConstraints(2, 8, 1, 1);
         c.anchor = GridBagConstraints.LINE_START;
         this.add(this.cancelButton, c);
     }

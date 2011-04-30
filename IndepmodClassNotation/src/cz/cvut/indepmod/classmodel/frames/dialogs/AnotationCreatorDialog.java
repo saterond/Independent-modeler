@@ -1,7 +1,8 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
-import cz.cvut.indepmod.classmodel.api.model.IAnotation;
+import cz.cvut.indepmod.classmodel.api.model.IAnnotation;
+import cz.cvut.indepmod.classmodel.api.model.IAnotationValue;
 import cz.cvut.indepmod.classmodel.frames.dialogs.validation.AbstractDialogValidation;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
@@ -18,21 +19,22 @@ import org.openide.windows.WindowManager;
 public class AnotationCreatorDialog extends AnotationCreatorDialogView {
 
     private static final Logger LOG = Logger.getLogger(AnotationCreatorDialog.class.getName());
-    private IAnotation returnValue;
+    private IAnnotation returnValue;
 
     public AnotationCreatorDialog(Frame owner) {
         this(owner, null);
     }
 
-    public AnotationCreatorDialog(Frame owner, IAnotation returnValue) {
+    public AnotationCreatorDialog(Frame owner, IAnnotation returnValue) {
         super(owner);
 
         this.returnValue = returnValue;
+        this.initValues();
         this.initAction();
         this.setSizes();
     }
 
-    public IAnotation getAnotation() {
+    public IAnnotation getAnotation() {
         return this.returnValue;
     }
 
@@ -42,6 +44,15 @@ public class AnotationCreatorDialog extends AnotationCreatorDialogView {
         this.removeValueButton.addActionListener(new RemoveValueAction());
 
         this.getRootPane().setDefaultButton(this.createButton);
+    }
+
+    private void initValues() {
+        if (this.returnValue != null) {
+            this.anotationName.setText(this.returnValue.getName());
+            for (IAnotationValue anotVal : this.returnValue.getAttributes()) {
+                this.valueListModel.addElement(anotVal);
+            }
+        }
     }
 
     //==========================================================================
@@ -55,7 +66,14 @@ public class AnotationCreatorDialog extends AnotationCreatorDialogView {
             String name = anotationName.getText();
 
             if (val.validateAnnotationName(name)) {
-                returnValue = new AnotationModel(name);
+                if (returnValue == null) {
+                    returnValue = new AnotationModel(name);
+                } else {
+                    returnValue.setName(name);
+                    for (IAnotationValue anotVal : returnValue.getAttributes()) {
+                        returnValue.removeAttribute(anotVal);
+                    }
+                }
 
                 Object[] atrList = valueListModel.toArray();
                 for (int i = 0; i < atrList.length; i++) {

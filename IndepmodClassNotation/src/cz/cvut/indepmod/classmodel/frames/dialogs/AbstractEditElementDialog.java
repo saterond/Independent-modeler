@@ -3,7 +3,7 @@ package cz.cvut.indepmod.classmodel.frames.dialogs;
 import cz.cvut.indepmod.classmodel.Globals;
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.model.DiagramType;
-import cz.cvut.indepmod.classmodel.api.model.IAnotation;
+import cz.cvut.indepmod.classmodel.api.model.IAnnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IElement;
 import cz.cvut.indepmod.classmodel.api.model.IMethod;
@@ -147,7 +147,7 @@ public class AbstractEditElementDialog extends AbstractEditElementDialogView imp
     public void modelChanged() {
         this.loadAttributeListValues();
         this.loadMethodsListValues();
-        this.loadAnotationListValues();
+        this.loadAnnotationListValues();
     }
 
     /**
@@ -181,7 +181,7 @@ public class AbstractEditElementDialog extends AbstractEditElementDialogView imp
         this.methodList.setModel(this.methodListModel);
         this.anotationList.setModel(this.anotationListModel);
 
-        this.loadAnotationListValues();
+        this.loadAnnotationListValues();
         this.loadAttributeListValues();
         this.loadMethodsListValues();
     }
@@ -190,10 +190,10 @@ public class AbstractEditElementDialog extends AbstractEditElementDialogView imp
      * Loads list of anotations into the anotation list which is situated in the
      * dialog
      */
-    private void loadAnotationListValues() {
-        Set<IAnotation> anots = this.elementModel.getAnotations();
+    private void loadAnnotationListValues() {
+        Set<IAnnotation> anots = this.elementModel.getAnotations();
         this.anotationListModel.clear();
-        for (IAnotation anot : anots) {
+        for (IAnnotation anot : anots) {
             this.anotationListModel.addElement(anot);
         }
     }
@@ -226,7 +226,9 @@ public class AbstractEditElementDialog extends AbstractEditElementDialogView imp
      * Initializes actions (for saving, canceling, ...)
      */
     private void initAction() {
-        //this.editAttributeButton.addActionListener(new ClassModelEditClassDialogEditAttribute(this));
+        this.editAnnotationButton.addActionListener(new EditAnnotationAction());
+        this.editAttributeButton.addActionListener(new EditAttributeAction());
+        this.editMethodButton.addActionListener(new EditMethodAction());
         this.removeAttributeButton.addActionListener(new RemoveAttributeAction());
         this.addAnotationButton.addActionListener(new AddAnotationAction());
         this.addAttributeButton.addActionListener(new AddAttributeAction());
@@ -254,12 +256,62 @@ public class AbstractEditElementDialog extends AbstractEditElementDialogView imp
         }
     }
 
+    private class EditAnnotationAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            AnotationModel anotation = AbstractEditElementDialog.this.getSelectedAnotation();
+            if (anotation != null) {
+                Frame window = WindowManager.getDefault().getMainWindow();
+                IAnnotation anot = new AnotationCreatorDialog(window, anotation).getAnotation();
+
+                AbstractEditElementDialog.this.updateCell();
+                AbstractEditElementDialog.this.loadAnnotationListValues();
+                LOG.info("Annotation edited");
+            }
+        }
+    }
+
+    private class EditAttributeAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            DiagramType diagramType = Globals.getInstance().getActualDiagramData().getDiagramType();
+            AttributeModel attr = AbstractEditElementDialog.this.getSelectedAttribute();
+            if (attr != null) {
+                AbstractDialogFactory factory = AbstractDialogFactory.getFactory(diagramType);
+                factory.createAttributeCreatorDialog(
+                        AbstractEditElementDialog.this.getAllTypeModel(), attr).getReturnValue();
+                AbstractEditElementDialog.this.updateCell();
+                AbstractEditElementDialog.this.loadAttributeListValues();
+            }
+        }
+    }
+
+    private class EditMethodAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            MethodModel method = AbstractEditElementDialog.this.getSelectedMethod();
+            if (method != null) {
+
+                Frame window = WindowManager.getDefault().getMainWindow();
+                new MethodCreatorDialog(
+                        window,
+                        AbstractEditElementDialog.this.getAllTypeModel(),
+                        method).getReturnValue();
+                AbstractEditElementDialog.this.updateCell();
+                AbstractEditElementDialog.this.loadMethodsListValues();
+            }
+        }
+    }
+
     private class AddAnotationAction extends ClassModelAbstractAction {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             Frame window = WindowManager.getDefault().getMainWindow();
-            IAnotation anot = new AnotationCreatorDialog(window).getAnotation();
+            IAnnotation anot = new AnotationCreatorDialog(window).getAnotation();
 
             if (anot != null) {
                 AbstractEditElementDialog.this.elementModel.addAnotation(anot);

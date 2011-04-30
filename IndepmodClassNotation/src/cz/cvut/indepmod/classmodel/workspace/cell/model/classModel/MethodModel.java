@@ -2,6 +2,7 @@ package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IMethod;
+import cz.cvut.indepmod.classmodel.api.model.IType;
 import cz.cvut.indepmod.classmodel.api.model.Visibility;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +15,7 @@ import java.util.Set;
  */
 public class MethodModel extends AbstractModel implements IMethod {
 
-    private TypeModel type;
+    private IType type;
     private String name;
     private Set<IAttribute> attributeModels;
     private Visibility visibility;
@@ -37,34 +38,18 @@ public class MethodModel extends AbstractModel implements IMethod {
         }
     }
 
-    /**
-     * Returns Type instantion represeting the return type of this method
-     *
-     * @return Type instantion
-     */
     @Override
-    public TypeModel getType() {
+    public IType getType() {
         return this.type;
     }
 
-    /**
-     * Returns the name of the method
-     *
-     * @return name of the method
-     */
     @Override
     public String getName() {
         return this.name;
     }
 
-    /**
-     * Returns an unmodifiable view of the attributes set
-     *
-     * @return an unmodifiable view of the attributes set
-     */
     @Override
     public Set<IAttribute> getAttributeModels() {
-        //return Collections.unmodifiableSet(this.attributeModels);
         return new HashSet<IAttribute>(this.attributeModels);
     }
 
@@ -124,5 +109,35 @@ public class MethodModel extends AbstractModel implements IMethod {
     @Override
     public void setAbstract(boolean isAbstract) {
         this.isAbstract = isAbstract;
+    }
+
+    @Override
+    public void addAttribute(IAttribute attribute) {
+        this.attributeModels.add(attribute);
+    }
+
+    @Override
+    public void removeAttribute(IAttribute attribute) {
+        this.attributeModels.remove(attribute);
+    }
+
+    @Override
+    public void setAttributeModels(Set<IAttribute> attributes) {
+        this.attributeModels = new HashSet<IAttribute>(attributes);
+    }
+
+    @Override
+    public void setVisibility(Visibility vis) {
+        this.visibility = vis;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void setType(IType type) {
+        this.type = type;
     }
 }

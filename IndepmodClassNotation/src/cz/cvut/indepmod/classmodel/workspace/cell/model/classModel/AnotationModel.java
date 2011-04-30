@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 
-import cz.cvut.indepmod.classmodel.api.model.IAnotation;
+import cz.cvut.indepmod.classmodel.api.model.IAnnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAnotationValue;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,7 +12,7 @@ import java.util.List;
  * Time: 16:24:20
  * @author Lucky
  */
-public class AnotationModel extends AbstractModel implements IAnotation {
+public class AnotationModel extends AbstractModel implements IAnnotation {
 
     private String name;
     private List<IAnotationValue> values;
@@ -83,6 +83,16 @@ public class AnotationModel extends AbstractModel implements IAnotation {
         int hash = 3;
         hash = 59 * hash + (this.name != null ? this.name.hashCode() : 0);
         return hash;
+    }
+
+    @Override
+    public void removeAttribute(IAnotationValue attr) {
+        this.values.remove(attr);
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 
 

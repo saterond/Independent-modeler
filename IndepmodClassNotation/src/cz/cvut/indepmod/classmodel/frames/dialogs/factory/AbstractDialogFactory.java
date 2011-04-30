@@ -1,6 +1,7 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs.factory;
 
 import cz.cvut.indepmod.classmodel.api.model.DiagramType;
+import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IType;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractAttrCreatorDialog;
 import cz.cvut.indepmod.classmodel.frames.dialogs.AbstractEditElementDialog;
@@ -43,4 +44,7 @@ public abstract class AbstractDialogFactory {
 
     public abstract AbstractAttrCreatorDialog createAttributeCreatorDialog(
             Collection<IType> types);
+
+    public abstract AbstractAttrCreatorDialog createAttributeCreatorDialog(
+            Collection<IType> types, IAttribute attribute);
 }

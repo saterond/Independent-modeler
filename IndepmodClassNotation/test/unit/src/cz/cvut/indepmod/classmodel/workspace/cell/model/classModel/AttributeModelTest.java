@@ -8,7 +8,7 @@ package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 import java.util.HashSet;
 import java.util.Set;
 import cz.cvut.indepmod.classmodel.Common;
-import cz.cvut.indepmod.classmodel.api.model.IAnotation;
+import cz.cvut.indepmod.classmodel.api.model.IAnnotation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,7 +56,7 @@ public class AttributeModelTest {
         assertEquals(2, this.model.getAnotations().size());
 
         boolean isAnot1 = false, isAnot2 = false;
-        for (IAnotation anot : this.model.getAnotations()) {
+        for (IAnnotation anot : this.model.getAnotations()) {
             if (anot.getName().equals(Common.ANOT1)) {
                 isAnot1 = true;
             } else if (anot.getName().equals(Common.ANOT2)) {

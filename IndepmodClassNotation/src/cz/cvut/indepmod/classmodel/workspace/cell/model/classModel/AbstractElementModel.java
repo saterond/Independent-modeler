@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 
-import cz.cvut.indepmod.classmodel.api.model.IAnotation;
+import cz.cvut.indepmod.classmodel.api.model.IAnnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IElement;
 import cz.cvut.indepmod.classmodel.api.model.IMethod;
@@ -28,7 +28,7 @@ public abstract class AbstractElementModel extends TypeModel implements IElement
     
     private Set<IMethod> methodModels;
     private Set<IAttribute> attributeModels;
-    private Set<IAnotation> anotationModels;
+    private Set<IAnnotation> anotationModels;
     private Visibility visibility;
     private String stereotype;
     private boolean isElemAbstract;
@@ -48,7 +48,7 @@ public abstract class AbstractElementModel extends TypeModel implements IElement
 
         this.methodModels = new HashSet<IMethod>(model.getMethodModels());
         this.attributeModels = new HashSet<IAttribute>(model.getAttributeModels());
-        this.anotationModels = new HashSet<IAnotation>(model.getAnotations());
+        this.anotationModels = new HashSet<IAnnotation>(model.getAnotations());
         this.visibility = Visibility.PUBLIC;
         this.stereotype = model.getStereotype();
         this.isElemAbstract = model.isElemAbstract;
@@ -62,7 +62,7 @@ public abstract class AbstractElementModel extends TypeModel implements IElement
      * @param methodModels    Set of methodModels of this class. This class will create new Set according to this.
      * @param attributeModels Set of attributeModels of this class. This class will create new Set according to this.
      */
-    public AbstractElementModel(String name, Set<IMethod> methodModels, Set<IAttribute> attributeModels, Set<IAnotation> anotationModels) {
+    public AbstractElementModel(String name, Set<IMethod> methodModels, Set<IAttribute> attributeModels, Set<IAnnotation> anotationModels) {
         super(name);
 
         if (methodModels != null) {
@@ -78,9 +78,9 @@ public abstract class AbstractElementModel extends TypeModel implements IElement
         }
 
         if (anotationModels != null) {
-            this.anotationModels = new HashSet<IAnotation>(anotationModels);
+            this.anotationModels = new HashSet<IAnnotation>(anotationModels);
         } else {
-            this.anotationModels = new HashSet<IAnotation>();
+            this.anotationModels = new HashSet<IAnnotation>();
         }
 
         this.visibility = Visibility.PUBLIC;
@@ -119,12 +119,12 @@ public abstract class AbstractElementModel extends TypeModel implements IElement
     }
 
     @Override
-    public Set<IAnotation> getAnotations() {
-        return new HashSet<IAnotation>(this.anotationModels);
+    public Set<IAnnotation> getAnotations() {
+        return new HashSet<IAnnotation>(this.anotationModels);
     }
 
     @Override
-    public void addAnotation(IAnotation anot) {
+    public void addAnotation(IAnnotation anot) {
         if (anot != null) {
             this.anotationModels.add(anot);
             this.fireModelChanged();
@@ -132,7 +132,7 @@ public abstract class AbstractElementModel extends TypeModel implements IElement
     }
 
     @Override
-    public void removeAnotation(IAnotation anot) {
+    public void removeAnotation(IAnnotation anot) {
         this.anotationModels.remove(anot);
         this.fireModelChanged();
     }

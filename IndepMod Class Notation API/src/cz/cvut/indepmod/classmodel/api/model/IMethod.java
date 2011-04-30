@@ -20,11 +20,35 @@ public interface IMethod {
     public Visibility getVisibility();
 
     /**
+     * Sets the visibility of this method
+     * @param vis
+     */
+    public void setVisibility(Visibility vis);
+
+    /**
      * Returns an unmodifiable view of the attributes set
      *
      * @return an unmodifiable view of the attributes set
      */
     public Set<IAttribute> getAttributeModels();
+
+    /**
+     * Adds an attribute
+     * @param attribute
+     */
+    public void addAttribute(IAttribute attribute);
+
+    /**
+     * Removes an attribute
+     * @param attribute
+     */
+    public void removeAttribute(IAttribute attribute);
+
+    /**
+     * Sets a new collection of attributes
+     * @param attributes
+     */
+    public void setAttributeModels(Set<IAttribute> attributes);
 
     /**
      * Returns the name of the method
@@ -34,11 +58,23 @@ public interface IMethod {
     public String getName();
 
     /**
+     * Sets the name of the method
+     * @param name
+     */
+    public void setName(String name);
+
+    /**
      * Returns Type instantion represeting the return type of this method
      *
      * @return Type instantion
      */
     public IType getType();
+
+    /**
+     * Sets the new type of this method
+     * @param type
+     */
+    public void setType(IType type);
 
     /**
      * Returns true if the method is static

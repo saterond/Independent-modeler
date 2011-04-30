@@ -3,7 +3,7 @@ package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 import cz.cvut.indepmod.classmodel.Common;
 import org.jgraph.graph.DefaultEdge;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel.Tool;
-import cz.cvut.indepmod.classmodel.api.model.IAnotation;
+import cz.cvut.indepmod.classmodel.api.model.IAnnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IMethod;
 import cz.cvut.indepmod.classmodel.api.model.IRelation;
@@ -44,7 +44,7 @@ public class ClassModelTest {
         methods.add(new MethodModel(new TypeModel(Common.TYPE_NAME), Common.METHOD_NAME, null));
         methods.add(new MethodModel(new TypeModel(Common.TYPE_NAME2), Common.METHOD_NAME2, null));
 
-        Set<IAnotation> anotations = new HashSet<IAnotation>();
+        Set<IAnnotation> anotations = new HashSet<IAnnotation>();
         anotations.add(new AnotationModel(Common.ANOT1));
         anotations.add(new AnotationModel(Common.ANOT2));
         anotations.add(new AnotationModel(Common.ANOT3));
@@ -299,7 +299,7 @@ public class ClassModelTest {
 
     private void doAnotationTest(AbstractElementModel cm) {
         boolean isAnot1 = false, isAnot2 = false, isAnot3 = false;
-        for (IAnotation anot : model.getAnotations()) {
+        for (IAnnotation anot : model.getAnotations()) {
             if (anot.getName().equals(Common.ANOT1)) {
                 isAnot1 = true;
             } else if (anot.getName().equals(Common.ANOT2)) {

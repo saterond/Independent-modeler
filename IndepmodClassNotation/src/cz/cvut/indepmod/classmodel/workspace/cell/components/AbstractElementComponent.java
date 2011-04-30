@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.workspace.cell.components;
 
-import cz.cvut.indepmod.classmodel.api.model.IAnotation;
+import cz.cvut.indepmod.classmodel.api.model.IAnnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IMethod;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
@@ -58,7 +58,7 @@ public abstract class AbstractElementComponent extends JComponent {
         return new JLabel("<<"+ this.model.getStereotype() +">>");
     }
 
-    protected JLabel createAnnotationLabel(IAnotation anot) {
+    protected JLabel createAnnotationLabel(IAnnotation anot) {
         return new JLabel(anot.toString());
     }
 
@@ -112,8 +112,8 @@ public abstract class AbstractElementComponent extends JComponent {
         JPanel res = new JPanel(new GridBagLayout());
         res.setBorder(new LineBorder(Color.BLACK));
 
-        Set<IAnotation> anots = this.model.getAnotations();
-        for (IAnotation anot : anots ) {
+        Set<IAnnotation> anots = this.model.getAnotations();
+        for (IAnnotation anot : anots ) {
             GridBagConstraints c = new GridBagConstraints();
             c.gridx = 0;
             c.gridy = GridBagConstraints.RELATIVE;

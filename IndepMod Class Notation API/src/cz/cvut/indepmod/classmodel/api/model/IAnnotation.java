@@ -9,10 +9,10 @@ import java.util.Collection;
  *
  * Represents Anotatin of the class
  */
-public interface IAnotation {
+public interface IAnnotation {
 
     /**
-     * Returns the name of the anotation. Name is only the name (e.g. in Java
+     * Returns the name of the annotation. Name is only the name (e.g. in Java
      * if there is anotation @Anotation, getName will return only Anotation -
      * without sign '@'.). This is beacuse of the sign @ is sign that is used in
      * java language to indicate that this is an anotation. In an other language
@@ -22,15 +22,26 @@ public interface IAnotation {
     public String getName();
 
     /**
+     * Sets the name of the annotation.
+     * @param name
+     */
+    public void setName(String name);
+
+    /**
      * Returns a collection of IAnotationValues
      * @return A collection of IAnotationValues
      */
     public Collection<IAnotationValue> getAttributes();
 
     /**
-     * Adds an atribute to this anotation
+     * Adds an atribute to this annotation
      * @param attr new attribute to be added
      */
     public void addAttribute(IAnotationValue attr);
+
+    /**
+     * Returns an atribute from this annotation
+     */
+    public void removeAttribute(IAnotationValue attr);
 
 }

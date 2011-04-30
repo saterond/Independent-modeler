@@ -1,7 +1,8 @@
 package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 
-import cz.cvut.indepmod.classmodel.api.model.IAnotation;
+import cz.cvut.indepmod.classmodel.api.model.IAnnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
+import cz.cvut.indepmod.classmodel.api.model.IType;
 import cz.cvut.indepmod.classmodel.api.model.Visibility;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,9 +16,9 @@ import java.util.List;
  */
 public class AttributeModel extends AbstractModel implements IAttribute {
 
-    private TypeModel type;
+    private IType type;
     private String name;
-    private List<IAnotation> anotations;
+    private List<IAnnotation> anotations;
     private Visibility visibility;
 
     public AttributeModel(TypeModel typeModel, String name) {
@@ -29,7 +30,7 @@ public class AttributeModel extends AbstractModel implements IAttribute {
         this.type = typeModel;
         this.name = name;
 
-        this.anotations = new ArrayList<IAnotation>();
+        this.anotations = new ArrayList<IAnnotation>();
     }
 
     /**
@@ -38,7 +39,7 @@ public class AttributeModel extends AbstractModel implements IAttribute {
      * @return Type instantion
      */
     @Override
-    public TypeModel getType() {
+    public IType getType() {
         return type;
     }
 
@@ -63,7 +64,7 @@ public class AttributeModel extends AbstractModel implements IAttribute {
 
         if (!this.anotations.isEmpty()) {
             res.append(" [");
-            for (IAnotation anot : this.anotations) {
+            for (IAnnotation anot : this.anotations) {
                 res.append(anot.toString());
             }
             res.append("]");
@@ -72,24 +73,39 @@ public class AttributeModel extends AbstractModel implements IAttribute {
     }
 
     @Override
-    public Collection<IAnotation> getAnotations() {
-        return new ArrayList<IAnotation>(this.anotations);
+    public Collection<IAnnotation> getAnotations() {
+        return new ArrayList<IAnnotation>(this.anotations);
     }
 
     @Override
-    public void addAnotation(IAnotation anot) {
+    public void addAnotation(IAnnotation anot) {
         if (anot != null && !this.anotations.contains(anot)) {
             this.anotations.add(anot);
         }
     }
 
     @Override
-    public void removeAnotation(IAnotation anot) {
+    public void removeAnotation(IAnnotation anot) {
         this.anotations.remove(anot);
     }
 
     @Override
     public Visibility getVisibility() {
         return this.visibility;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void setVisibility(Visibility visibility) {
+        this.visibility = visibility;
+    }
+
+    @Override
+    public void setType(IType type) {
+        this.type = type;
     }
 }

@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel;
 
-import cz.cvut.indepmod.classmodel.api.model.IAnotation;
+import cz.cvut.indepmod.classmodel.api.model.IAnnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IMethod;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
@@ -38,7 +38,7 @@ public class Common {
     public static final String COUNT_NAME = "count";
     private static Set<IAttribute> atts = null;
     private static Set<IMethod> methods = null;
-    private static Set<IAnotation> anotations = null;
+    private static Set<IAnnotation> anotations = null;
 
     public static Set<IAttribute> getAttributes() {
         if (atts == null) {
@@ -61,9 +61,9 @@ public class Common {
         return methods;
     }
 
-    public static Set<IAnotation> getAnotations() {
+    public static Set<IAnnotation> getAnotations() {
         if (anotations == null) {
-            anotations = new HashSet<IAnotation>();
+            anotations = new HashSet<IAnnotation>();
             anotations.add(new AnotationModel(Common.ANOT1));
             anotations.add(new AnotationModel(Common.ANOT2));
             anotations.add(new AnotationModel(Common.ANOT3));

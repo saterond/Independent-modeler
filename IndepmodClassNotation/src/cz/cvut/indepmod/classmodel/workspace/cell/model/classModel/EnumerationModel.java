@@ -1,7 +1,7 @@
 package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 
 import cz.cvut.indepmod.classmodel.api.model.ElementType;
-import cz.cvut.indepmod.classmodel.api.model.IAnotation;
+import cz.cvut.indepmod.classmodel.api.model.IAnnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IMethod;
 import java.util.Set;
@@ -20,7 +20,7 @@ public class EnumerationModel extends AbstractElementModel {
         this.setStereotype(DEFAULT_STEREOTYPE);
     }
 
-    public EnumerationModel(String name, Set<IMethod> methodModels, Set<IAttribute> attributeModels, Set<IAnotation> anotationModels) {
+    public EnumerationModel(String name, Set<IMethod> methodModels, Set<IAttribute> attributeModels, Set<IAnnotation> anotationModels) {
         super(name, methodModels, attributeModels, anotationModels);
         this.setStereotype(DEFAULT_STEREOTYPE);
     }

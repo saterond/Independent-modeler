@@ -6,7 +6,6 @@ import cz.cvut.indepmod.classmodel.util.GridBagConstraintsUtils;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -27,6 +26,7 @@ public class AbstractAttrCreatorDialogView extends AbstractClassModelDialog {
 
     public static final String ADD_ANOT_BUTTON_TITLE = Resources.getString("dialog_attribute_creator_add_anot");
     public static final String CREATE_BUTTON_TITLE = Resources.getString("dialog_attribute_creator_create");
+    public static final String EDIT_ANOT_BUTTON_TITLE = Resources.getString("dialog_attribute_creator_edit_anot");
     public static final String REM_ANOT_BUTTON_TITLE = Resources.getString("dialog_attribute_creator_rem_anot");
     public static final String ATTRIBUTE_TYPE_LABEL = Resources.getString("dialog_attribute_creator_attribute_type");
     public static final String ATTRIBUTE_NAME_LABEL = Resources.getString("dialog_attribute_creator_name");
@@ -42,6 +42,7 @@ public class AbstractAttrCreatorDialogView extends AbstractClassModelDialog {
     protected JTextField attributeName = new JTextField();
     protected JButton createButton = new JButton(CREATE_BUTTON_TITLE);
     protected JButton addAnotationButton = new JButton(ADD_ANOT_BUTTON_TITLE);
+    protected JButton editAnotationButton = new JButton(EDIT_ANOT_BUTTON_TITLE);
     protected JButton removeAnotationButton = new JButton(REM_ANOT_BUTTON_TITLE);
     
     protected JList anotationList = new JList();
@@ -115,7 +116,7 @@ public class AbstractAttrCreatorDialogView extends AbstractClassModelDialog {
         res.setBorder(new TitledBorder(ANOTATION_LIST_LABEL));
         GridBagConstraints c = null;
 
-        c = GridBagConstraintsUtils.createNewConstraints(0, 0, 1, 3);
+        c = GridBagConstraintsUtils.createNewConstraints(0, 0, 1, 4);
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 0.5;
         c.weighty = 0.5;
@@ -126,6 +127,10 @@ public class AbstractAttrCreatorDialogView extends AbstractClassModelDialog {
         res.add(this.addAnotationButton, c);
 
         c = GridBagConstraintsUtils.createNewConstraints(1, 1, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        res.add(this.editAnotationButton, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(1, 2, 1, 1);
         c.fill = GridBagConstraints.HORIZONTAL;
         res.add(this.removeAnotationButton, c);
 

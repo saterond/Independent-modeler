@@ -35,6 +35,9 @@ public abstract class AbstractEditElementDialogView extends AbstractClassModelDi
     public static final String ADD_ATTRIBUTE_BUTTON = Resources.getString("dialog_edit_class_add_attribute");
     public static final String ADD_ANOT_BUTTON = Resources.getString("dialog_edit_class_add_anotation");
     public static final String ADD_METHOD_BUTTON = Resources.getString("dialog_edit_class_add_method");
+    public static final String EDIT_ANNOTATION_BUTTON = Resources.getString("dialog_edit_class_edit_annotation");
+    public static final String EDIT_ATTRIBUTE_BUTTON = Resources.getString("dialog_edit_class_edit_attribute");
+    public static final String EDIT_METHOD_BUTTON = Resources.getString("dialog_edit_class_edit_method");
     public static final String REMOVE_ATTRIBUTE_BUTTON = Resources.getString("dialog_edit_class_rem_attribute");
     public static final String REMOVE_METHOD_BUTTON = Resources.getString("dialog_edit_class_rem_method");
     public static final String REMOVE_ANOT_BUTTON = Resources.getString("dialog_edit_class_rem_anotation");
@@ -44,10 +47,13 @@ public abstract class AbstractEditElementDialogView extends AbstractClassModelDi
     protected JTextField classNameField = new JTextField();
     protected JCheckBox abstractCheckBox = new JCheckBox(ABSTRACT_LABEL);
     protected JButton addAnotationButton = new JButton(ADD_ANOT_BUTTON);
+    protected JButton editAnnotationButton = new JButton(EDIT_ANNOTATION_BUTTON);
     protected JButton removeAnotationButton = new JButton(REMOVE_ANOT_BUTTON);
     protected JButton addAttributeButton = new JButton(ADD_ATTRIBUTE_BUTTON);
+    protected JButton editAttributeButton = new JButton(EDIT_ATTRIBUTE_BUTTON);
     protected JButton removeAttributeButton = new JButton(REMOVE_ATTRIBUTE_BUTTON);
     protected JButton addMethodButton = new JButton(ADD_METHOD_BUTTON);
+    protected JButton editMethodButton = new JButton(EDIT_METHOD_BUTTON);
     protected JButton removeMethodButton = new JButton(REMOVE_METHOD_BUTTON);
     protected JButton saveButton = new JButton(SAVE_BUTTON);
     protected JButton cancelButton = new JButton(CANCEL_BUTTON);
@@ -103,7 +109,7 @@ public abstract class AbstractEditElementDialogView extends AbstractClassModelDi
         res.setBorder(new TitledBorder(ANOT_LABEL));
         GridBagConstraints c = null;
 
-        c = GridBagConstraintsUtils.createNewConstraints(0, 0, 1, 3);
+        c = GridBagConstraintsUtils.createNewConstraints(0, 0, 1, 4);
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 0.5;
         c.weighty = 0.5;
@@ -115,6 +121,10 @@ public abstract class AbstractEditElementDialogView extends AbstractClassModelDi
 
         c = GridBagConstraintsUtils.createNewConstraints(1, 1, 1, 1);
         c.fill = GridBagConstraints.HORIZONTAL;
+        res.add(this.editAnnotationButton, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(1, 2, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
         res.add(this.removeAnotationButton, c);
 
         return res;
@@ -125,7 +135,7 @@ public abstract class AbstractEditElementDialogView extends AbstractClassModelDi
         res.setBorder(new TitledBorder(ATTRIBUTES_LABEL));
         GridBagConstraints c = null;
 
-        c = GridBagConstraintsUtils.createNewConstraints(0, 0, 1, 3);
+        c = GridBagConstraintsUtils.createNewConstraints(0, 0, 1, 4);
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 0.5;
         c.weighty = 0.5;
@@ -137,6 +147,10 @@ public abstract class AbstractEditElementDialogView extends AbstractClassModelDi
 
         c = GridBagConstraintsUtils.createNewConstraints(1, 1, 1, 1);
         c.fill = GridBagConstraints.HORIZONTAL;
+        res.add(this.editAttributeButton, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(1, 2, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
         res.add(this.removeAttributeButton, c);
 
         return res;
@@ -147,7 +161,7 @@ public abstract class AbstractEditElementDialogView extends AbstractClassModelDi
         res.setBorder(new TitledBorder(METHODS_LABEL));
         GridBagConstraints c = null;
 
-        c = GridBagConstraintsUtils.createNewConstraints(0, 0, 1, 3);
+        c = GridBagConstraintsUtils.createNewConstraints(0, 0, 1, 4);
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 0.5;
         c.weighty = 0.5;
@@ -158,6 +172,10 @@ public abstract class AbstractEditElementDialogView extends AbstractClassModelDi
         res.add(this.addMethodButton, c);
 
         c = GridBagConstraintsUtils.createNewConstraints(1, 1, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        res.add(this.editMethodButton, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(1, 2, 1, 1);
         c.fill = GridBagConstraints.HORIZONTAL;
         res.add(this.removeMethodButton, c);
 

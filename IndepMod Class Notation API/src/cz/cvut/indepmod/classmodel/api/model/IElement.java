@@ -64,19 +64,19 @@ public interface IElement extends IType {
      * Returns a collection of anotations
      * @return a collection of anotations
      */
-    public Set<IAnotation> getAnotations();
+    public Set<IAnnotation> getAnotations();
 
     /**
      * Adds an anotation
      * @param anot the anotation to be added
      */
-    public void addAnotation(IAnotation anot);
+    public void addAnotation(IAnnotation anot);
 
     /**
      * Removes an anotation
      * @param anot The anotation to be removed
      */
-    public void removeAnotation(IAnotation anot);
+    public void removeAnotation(IAnnotation anot);
 
     /**
      * Adds new attribute to this class model. If this attribute is already here

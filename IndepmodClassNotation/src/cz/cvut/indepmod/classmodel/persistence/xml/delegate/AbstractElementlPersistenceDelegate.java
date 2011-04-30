@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.persistence.xml.delegate;
 
-import cz.cvut.indepmod.classmodel.api.model.IAnotation;
+import cz.cvut.indepmod.classmodel.api.model.IAnnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IMethod;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractElementModel;
@@ -26,7 +26,7 @@ public class AbstractElementlPersistenceDelegate extends DefaultPersistenceDeleg
         AbstractElementModel cm = (AbstractElementModel)oldInstance;
         Set<IMethod> methods = cm.getMethodModels();
         Set<IAttribute> attributes = cm.getAttributeModels();
-        Set<IAnotation> anotations = cm.getAnotations();
+        Set<IAnnotation> anotations = cm.getAnotations();
 
         for (IMethod m : methods) {
             out.writeStatement(new Statement(oldInstance, "addMethod", new Object[] {m}));
@@ -36,7 +36,7 @@ public class AbstractElementlPersistenceDelegate extends DefaultPersistenceDeleg
             out.writeStatement(new Statement(oldInstance, "addAttribute", new Object[] {a}));
         }
 
-        for (IAnotation a : anotations) {
+        for (IAnnotation a : anotations) {
             out.writeStatement(new Statement(oldInstance, "addAnotation", new Object[] {a}));
         }
 

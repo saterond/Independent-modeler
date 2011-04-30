@@ -10,12 +10,17 @@ import java.awt.GridBagConstraints;
 public class GridBagConstraintsUtils {
 
     public static GridBagConstraints createNewConstraints(int gridx, int gridy, int gridwidth, int gridheight) {
+        return createNewConstraints(gridx, gridy, gridwidth, gridheight, GridBagConstraints.CENTER);
+    }
+
+    public static GridBagConstraints createNewConstraints(int gridx, int gridy, int gridwidth, int gridheight, int anchor) {
         GridBagConstraints res = new GridBagConstraints();
 
         res.gridx = gridx;
         res.gridy = gridy;
         res.gridwidth = gridwidth;
         res.gridheight = gridheight;
+        res.anchor = anchor;
 
         return res;
     }

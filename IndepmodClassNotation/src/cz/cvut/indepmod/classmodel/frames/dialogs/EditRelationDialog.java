@@ -1,13 +1,15 @@
 package cz.cvut.indepmod.classmodel.frames.dialogs;
 
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
-import cz.cvut.indepmod.classmodel.api.model.IArrowableRelation;
+import cz.cvut.indepmod.classmodel.api.model.IMultidirectionalRelation;
 import cz.cvut.indepmod.classmodel.api.model.ICardinality;
 import cz.cvut.indepmod.classmodel.api.model.IRelation;
+import cz.cvut.indepmod.classmodel.api.model.RelationDirection;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Hashtable;
@@ -32,10 +34,10 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
     private static final Logger LOG = Logger.getLogger(EditRelationDialog.class.getName());
     private ClassModelGraph graph;
     private DefaultEdge edge;
-    private IArrowableRelation model;
+    private IMultidirectionalRelation model;
     private boolean changed;
 
-    public EditRelationDialog(Frame owner, ClassModelGraph graph, DefaultEdge edge, IArrowableRelation model) {
+    public EditRelationDialog(Frame owner, ClassModelGraph graph, DefaultEdge edge, IMultidirectionalRelation model) {
         super(owner);
 
         this.graph = graph;
@@ -72,8 +74,11 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
         }
     }
 
-    public boolean isArrowChecked() {
-        return this.arrowCheck.isSelected();
+    public RelationDirection getRelationDirection() {
+        if (this.unidirectional.isSelected()) {
+            return RelationDirection.UNIDIRECTIONAL;
+        }
+        return RelationDirection.BIDIRECTIONAL;
     }
 
     @Override
@@ -101,34 +106,35 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
         this.sourceCardinality.setSelectedItem(this.model.getStartCardinality());
         this.targetCardinality.setSelectedItem(this.model.getEndCardinality());
 
-        this.arrowCheck.setSelected(this.model.isArrowOnEnd());
+        if (this.model.getDirection().equals(RelationDirection.UNIDIRECTIONAL)) {
+            this.unidirectional.setSelected(true);
+        } else {
+            this.bidirectional.setSelected(true);
+        }
 
         boolean nameAlongEdge = GraphConstants.isLabelAlongEdge(this.edge.getAttributes());
         this.nameAlongCheck.setSelected(nameAlongEdge);
+
+        if (GraphConstants.getLineEnd(this.edge.getAttributes()) == GraphConstants.ARROW_SIMPLE) {
+            this.arrowCheck.setSelected(true);
+        }
     }
 
     private void initHandlers() {
         this.sourceCardinality.addItemListener(this);
         this.targetCardinality.addItemListener(this);
         this.nameField.getDocument().addDocumentListener(new NameFieldDocListener());
-        this.arrowCheck.addChangeListener(new ChangeListener() {
 
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                changed = true;
-            }
-        });
-        this.nameAlongCheck.addChangeListener(new ChangeListener() {
-
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                changed = true;
-            }
-        });
+        ChangeListener editRelChange = new EditRelationChangeListener();
+        this.arrowCheck.addChangeListener(editRelChange);
+        this.unidirectional.addChangeListener(editRelChange);
+        this.bidirectional.addChangeListener(editRelChange);
+        this.nameAlongCheck.addChangeListener(editRelChange);
     }
 
     private void initActions() {
         this.saveButton.addActionListener(new SaveAction());
+        this.cancelButton.addActionListener(new CancelAction());
 
         this.getRootPane().setDefaultButton(this.saveButton);
     }
@@ -136,6 +142,15 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
     //==========================================================================
     //======================== INNER CLASS =====================================
     //==========================================================================
+    private class EditRelationChangeListener implements ChangeListener {
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            changed = true;
+        }
+
+    }
+
     private class NameFieldDocListener implements DocumentListener {
 
         @Override
@@ -163,23 +178,44 @@ public class EditRelationDialog extends EditRelationDialogView implements ItemLi
                 ICardinality endCard = EditRelationDialog.this.getEndingCardinality();
                 String relationName = EditRelationDialog.this.getRelationName();
 
-                int lineEnd = GraphConstants.getLineEnd(edge.getAttributes());
-                int newLineEnd = isArrowChecked() ? GraphConstants.ARROW_SIMPLE : GraphConstants.ARROW_NONE;
+                model.setRelationDirection(getRelationDirection());
 
                 IRelation userObj = (IRelation) EditRelationDialog.this.edge.getUserObject();
                 userObj.setRelationName(relationName);
 
-
                 Map attrMap = new Hashtable();
                 GraphConstants.setExtraLabels(attrMap, new ICardinality[]{startCard, endCard});
-                if (lineEnd != newLineEnd) {
-                    GraphConstants.setLineEnd(attrMap, newLineEnd);
-                }
                 GraphConstants.setLabelAlongEdge(attrMap, nameAlongCheck.isSelected());
+
+                int lineBegin = GraphConstants.getLineBegin(edge.getAttributes());
+                int newLineBegin = lineBegin;
+                int newLineEnd;
+                if (arrowCheck.isSelected()) {
+                    newLineEnd = GraphConstants.ARROW_SIMPLE;
+                    if (newLineBegin == GraphConstants.ARROW_NONE || newLineBegin == GraphConstants.ARROW_SIMPLE) {
+                        newLineBegin = getRelationDirection() == RelationDirection.BIDIRECTIONAL ? GraphConstants.ARROW_SIMPLE : GraphConstants.ARROW_NONE;
+                    }
+                } else {
+                    newLineEnd = GraphConstants.ARROW_NONE;
+                    if (newLineBegin == GraphConstants.ARROW_NONE || newLineBegin == GraphConstants.ARROW_SIMPLE) {
+                        newLineBegin = GraphConstants.ARROW_NONE;
+                    }
+                }
+                GraphConstants.setLineBegin(attrMap, newLineBegin);
+                GraphConstants.setLineEnd(attrMap, newLineEnd);
 
                 EditRelationDialog.this.graph.getGraphLayoutCache().editCell(edge, attrMap);
             }
             EditRelationDialog.this.dispose();
         }
+    }
+
+    private class CancelAction implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            dispose();
+        }
+
     }
 }

@@ -1,7 +1,8 @@
 package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 
-import cz.cvut.indepmod.classmodel.api.model.IArrowableRelation;
+import cz.cvut.indepmod.classmodel.api.model.IMultidirectionalRelation;
 import cz.cvut.indepmod.classmodel.api.model.ICardinality;
+import cz.cvut.indepmod.classmodel.api.model.RelationDirection;
 import cz.cvut.indepmod.classmodel.api.model.RelationType;
 import org.jgraph.graph.GraphConstants;
 
@@ -12,13 +13,15 @@ import org.jgraph.graph.GraphConstants;
  *
  * Model of the relation.
  */
-public class RelationModel extends AbstractRelationModel implements IArrowableRelation {
+public class RelationModel extends AbstractRelationModel implements IMultidirectionalRelation {
 
     private RelationType type;
+    private RelationDirection direction;
     
     public RelationModel(RelationType type) {
         this.type = type;
         this.cell = null;
+        this.direction = RelationDirection.UNIDIRECTIONAL;
     }
 
     @Override
@@ -36,15 +39,6 @@ public class RelationModel extends AbstractRelationModel implements IArrowableRe
         return this.type;
     }
 
-    @Override
-    public boolean isArrowOnEnd() {
-        return this.getLineEnd() == GraphConstants.ARROW_SIMPLE;
-    }
-
-    private int getLineEnd() {
-        return GraphConstants.getLineEnd(this.cell.getAttributes());
-    }
-
     private Cardinality getCardinality(int index) {
         Cardinality res = null;
         try {
@@ -57,5 +51,15 @@ public class RelationModel extends AbstractRelationModel implements IArrowableRe
         }
 
         return res;
+    }
+
+    @Override
+    public RelationDirection getDirection() {
+        return this.direction;
+    }
+
+    @Override
+    public void setRelationDirection(RelationDirection direction) {
+        this.direction = direction;
     }
 }

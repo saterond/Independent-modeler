@@ -1,8 +1,10 @@
 package cz.cvut.indepmod.classmodel.workspace.cell;
 
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AbstractRelationModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.RelationModel;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.DefaultEdge;
+import org.jgraph.graph.GraphConstants;
 
 /**
  * Date: 21.11.2010

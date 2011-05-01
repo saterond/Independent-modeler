@@ -2,22 +2,24 @@
 
 \section{Future works}
 
-Of course, there are many other things that could be done on this project. I will mention some of them, but it will not be all - the imagination has no limits. The things that I will mention could be implemented in a related bachelor, master or semestral project. These new functionalities are e.g.:
+Indepmod Class Notation plugin is already an useful class modeling tool. It provides standard class modeling functionality, plus the annotation modeling feature. On the other hand, there some other things that could be done on this project. I will mention some of them, but it will not be all - the imagination has no limits. The things that I will mention could be implemented in a related bachelor, master or semestral project. These new functionalities are e.g.:
 
 \begin{itemize}
     \item Ability to keep more information about elements (classes, interfaces, ...) and relations like its description, version, complexity, OCL\footnote{OCL - Object Constraint Language} support, and so on.
-    \item The list of languages (that are displayed during the diagram creation) could be loaded from an XML (or any other) file.
-    \item User Interface improvements (design and control improvements).
-    \item More options of persistence (e.g. a relational database).
-    \item Indepmod class notation plugin could allow to create a hierarchic structure of class diagrams (class diagrams on package level).
+    \item The list of languages (that are displayed during the diagram creation) could be loaded from an XML (or any other) file. This could be done e.g. by usage of JAXB\footnote{JAXB - Java Api for Xml Binding} technology.
+    \item User Interface (design and control) improvements. E.g. the key shortcuts addition or transformation of the tool chooser panel into the Netbeans palette.
+    \item More options of persistence (e.g. a relational database) - possibility to choose if diagrams will be stored into a xml file, into a relational database or into something else.
+    \item Indepmod class notation plugin could allow to create a hierarchic structure of class diagrams. Every level would depicts the class diagram of a package. This would be very useful in conjunction with source code generation.
 \end{itemize}
 
-Because this project is a part of several related projects, there is another thing that could be done. All of these projects are aimed on the Netbeans Plugin creation. These plugins provides, like this one, the creation of an UML diagram but they are not joined together. Some other project could improve this problem. It could be done e.g. by some root plugin. The root plugin would implement the common functionality for all notations and provide services for other plugins. These other plugins would implement the functionality for particular diagram.
+Because this project is a part of several related projects, there is another thing that could be done. All of these projects are aimed on the Netbeans Plugin creation. These plugins provides, like this one, the creation of an UML diagram but they are not joined together. Some other project could solve this problem. It could be done e.g. by some root plugin. The root plugin would implement the common functionality for all notations and provide services for other plugins. These other plugins would implement the functionality for particular diagram.
 
-\section{Evaluation}
+\section{Summary}
 
-In this project I dealt with the creation of the Class modeling tool, called Indepmod Class Notation Plugin. Thanks to this project I gain an experience with new technologies like Netbeans platform and JGraph framework for which I am very thankful. The task of this project was accomplished properly. Plus, there was added another functionality like language selection in new diagram creation.
+In this project I dealt with the creation of the rich client class modeling tool, called Indepmod Class Notation Plugin. Thanks to this project I gain an experience with new technologies like Netbeans platform and JGraph framework for which I am very thankful. 
+
+The task of this project was accomplished properly. Plus, there was added another functionality like language selection in new diagram creation. The importance of this feature is very important for class diagram modeling on platform level and has been already described in the section \ref{ClassDiagramDiagramTypes}.
 
 Among the project's benefit I would like to mention especially the annotation modeling support. I think that this functionality is very useful and I think that some of existing applications should implement it too (I wonder why it hasn't yet been implemented).
 
-Among things that could have been done better is e.g. the impossibility to compose class diagrams into the hierarchical structure. This is done e.g. in the Enterprise Architect. On the other hand, this project is only at the beginning of its lifetime, so this, and another else, functionality can be implemented in future. In short, this application can not be compared with existing solutions for now, but one time, maybe, it will.
+Thing that could have been done better is e.g. the impossibility to compose class diagrams into the hierarchical structure. This is done e.g. in the Enterprise Architect. On the other hand, this project is only at the beginning of its lifetime, so this, and another else, functionality can be implemented in future. In short, this application can not be compared with existing solutions for now, but one time, maybe, it will.

@@ -321,7 +321,7 @@ Očekávají se cca 1 -- 2 odstavce, maximálně půl stránky.
 %*****************************************************************************
 \appendix
 
-\chapter{Package Structure}
+\chapter{Package Structure of Editor Module}
 
 You can see the package structure in this directory tree:
 \renewcommand*\DTstylecomment{\rmfamily\color{black}\textsc}
@@ -329,17 +329,20 @@ You can see the package structure in this directory tree:
 \dirtree{%
 .1 cz.cvut.indepmod.classmodel.
 .1 actions\DTcomment{Actions for buttons etc.}.
+.2 nbfolders\DTcomment{Actions which are registered in layer.xml}.
+.1 diagramdata\DTcomment{Classes which stores the information about the diagram}.
+.2 langs\DTcomment{Definition of language specific features (e.g. the data type names)}.
 .1 file\DTcomment{SaveCookie and file type association support}.
 .2 wizard\DTcomment{Wizard for creation of new class model file}.
 .1 frames.
-.2 dialogs.
-.1 modelfactory.
-.2 diagrammodel.
-.1 persistence\DTcomment{layer for data saving}.
+.2 dialogs\DTcomment{GUI dialogs}.
+.3 factory\DTcomment{Factories for some dialogs}.
+.3 validation\DTcomment{Validation of values from dialogs}.
+.1 persistence\DTcomment{Layer for data saving}.
 .2 xml\DTcomment{implementation of persistence for saving into a XML file}.
 .3 delegate\DTcomment{XML Delegates for mapping into xml}.
-.1 resources.
-.1 util.
+.1 resources\DTcomment{Bundle util}.
+.1 util\DTcomment{Utility classes}.
 .1 workspace\DTcomment{Main package containing the TopComponent with JGraph}.
 .2 cell\DTcomment{Cells, renderers, VertexViews, etc. for JGraph}.
 .3 components\DTcomment{Component for JGraph}.
@@ -403,7 +406,70 @@ public class LinuxGUIGactory extends AbstractGUIFactory {
 \end{lstlisting}
 
 \chapter{Graphic User Interface Test Cases}
+\label{appendixUITC}
 
-TODO
+\section{TC0 - Create class diagram}
+
+Prerequisite: Open an Java project with an package.
+
+\begin{itemize}
+    \item Right click on a package \ding{213} new \ding{213} Other \ding{213} IndepMod \ding{213} New Class Diagram \ding{213} Next
+    \item Fill Name: ClassModel, select class model in model type, Java in Language selection and click on Finish
+    \item System will show an empty class diagram
+    \item Open the Tool Chooser (Windows \ding{213} Tool Chooser), select a class in it and add it into the class diagram.
+    \item System will show an class with name: "Class1"
+    \item Right click the class and select Edit
+    \item System will show an edit dialog with fields:
+    \begin{itemize}
+        \item Name
+        \item Stereotype
+        \item Abstract checkbox
+        \item Annotation list with buttons for creation/edition/deletion
+        \item Attribute list with buttons for creation/edition/deletion
+        \item Method list with buttons for creation/edition/deletion
+        \item Buttons save/cancel
+    \end{itemize}
+\end{itemize}
+
+\section{TC1 - Create business diagram}
+
+Prerequisite: Open an Java project with an package.
+
+\begin{itemize}
+    \item Right click on a package \ding{213} new \ding{213} Other \ding{213} IndepMod \ding{213} New Class Diagram \ding{213} Next
+    \item Fill Name: BusinessModel, select business model in model type, Java in Language selection and click on Finish
+    \item System will show an empty class diagram
+    \item Open the Tool Chooser (Windows \ding{213} Tool Chooser), select a class in it and add it into the class diagram.
+    \item System will show an class with name: "Class1"
+    \item Right click the class and select Edit
+    \item System will show an edit dialog with fields:
+    \begin{itemize}
+        \item Name
+        \item Stereotype
+        \item Attribute list with buttons for creation/edition/deletion
+        \item Buttons save/cancel
+    \end{itemize}
+\end{itemize}
+
+\section{TC2 - Test Elements}
+
+Prerequisite: Created and opened an empty class diagram.
+
+\begin{itemize}
+    \item Add a class in the diagram
+    \item Open an edit dialog of the class and fill the name field as 'Parent'
+    \item Click on add annotation button and create an annotation with name 'version' and one attribute with name 'value' and value 'v1.1'
+    \item Click on add attribute button and create an attribute with name 'firstname', data type 'String', private visibility and one annotation with name 'Length' and attribute with name 'value' and value '20'
+    \item Click on add attribute button and create an attribute with name 'surname', data type 'String', private visibility and one annotation with name 'Length' and attribute with name 'value' and value '25'
+    \item Click on add method button and create a method with name 'getSurname', data type 'String', public visibility and no attribute
+    \item Click on add method button and create a method with name 'setSurname', data type 'void', public visibility and one attribute 'surname' of 'String' type
+    \item Save the class and verify that all information are shown
+    \item Create an interface and set its name as 'AnInterface', save it and verify that the name is changed
+    \item Create a realisation relation between the 'Parent' class and 'AnInterface' interface; verify that the relation is shown properly
+    \item Create class with name 'Child'
+    \item Create a generalization between the 'Child' and 'Parent'; verify that the relation is shown properly
+    \item Create an enumeration with name 'Gender' with attributes 'MALE' and 'FEMALE'; verify that enumeration is shown properly
+    \item Create an association between 'Child' and 'Gender'; Set its name to 'hasGender', source cardinality to '*', target cardinality '1', unidirectional relation and visible arrows; verify that relation is shown properly
+\end{itemize}
 
 \end{document}

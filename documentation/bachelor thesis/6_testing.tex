@@ -4,13 +4,13 @@ Software testing is very important part of whole development process. There has 
 
 Testing could be done manually or automatically. Manual testing is suitable in case that we don't want to repeat testing procedure a lot and thus the creation of automatic test would be harder than manual testing. Automatic tests are very helpful when we want to run them repeatedly. On the other hand, the developer who would test the same functionality again and again could miss out something important.
 
-Automatic tests can be run whenever we want and can verify that all functions works properly. Automated test are very often used e.g. when there is a new functionality added into the application. In this case we want to verify that the new functionality did not violate any of yet existing ones. Another example can be a refactoring. Refactoring is the change of the program structure without the change of it's behavior. When we run the test before (test has to work fine before the refactoring) and after the refactoring, we can find out if the refactoring was successful (all functionality still work) or not. Of course, tests will help us only if they are created properly. It means that they test every functionality in a detail.
+Automatic tests can be run whenever we want and can verify that all functions works properly. Automated test are very often used e.g. when there is a new functionality added into the application. In this case we want to verify that the new functionality did not violate any of yet existing ones. Another example can be a refactoring. Refactoring is the change of the program structure without the change of it's behavior. When we run the test before (test has to work fine before the refactoring) and after the refactoring, we can find out if the refactoring was successful (all functionality still work) or not. Of course, tests will help us only if they are created properly. It means that they test each functionality in a detail.
 
 \section{JUnit}
 
 Because this project uses an agile methodology to create a product, the testing is slightly limited in comparison with other methodologies. For automatic test purposes I use the JUnit framework. The JUnit is well known framework which is used for unit tests creation in Java platform.
 
-An Unit test is a test which tests the units\footnote{Unit is the smallest part of our application which can be tested alone. It means that it can be build and run.} of our application without the others. In procedural programming this unit can be an function or a procedure. In Object Oriented programming (OOP), this unit is often a class. The Unit test then tests methods of this class. Despite of the fact that Unit tests are primarily intended to test units, they are very often used for testing of class ensemble as well. If you don't know the JUnit framework, you can find some useful information in \cite{JUnitWeb}.
+An Unit test is a test which tests the units\footnote{Unit is the smallest part of our application which can be tested alone. It means that it can be built and run.} of our application apart the others. In procedural programming this unit can be an function or a procedure. In Object Oriented programming (OOP), this unit is often a class. The Unit test then tests methods of this class. Despite of the fact that Unit tests are primarily intended to test units, they are very often used for testing of class ensemble as well. If you don't know the JUnit framework, you can find some useful information in \cite{JUnitWeb}.
 
 The question is which parts of the application to test and which not to test. The best and simplest answer is to test everything. This approach would result in 100\% tested application but for what price? Tests would cover all functionality, which is great. But even the functionality which does not have to be tested, like implementation of user interface (UI) and so on. This means that the test creation would take a very long time and it is quite worthless.
 
@@ -22,9 +22,25 @@ Among the parts that are not so dangerous belongs e.g. the User Interface (UI). 
 
 For UI, more precisely GUI\footnote{GUI - Graphic User Interface}, testing there are different tools than JUnit. Some of them are suitable for desktop application GUI testing (e.g. Abbot - more info can be found in \cite{AbbotWeb}), some of them are suitable for a web application GUI testing (e.g. Selenium - more info can be found in \cite{SeleniumWeb}), etc. 
 
-Because I don't want to test the UI repeatedly (or not very often) I decided to test the GUI manually. I chose two environments on which I will test the application GUI. The single test cases and their results are shown in the Appendix:
+Because I don't want to test the UI repeatedly (or not very often) I decided to test the GUI manually. Single test cases are shown in the Appendix \ref{appendixUITC} and their results are shown in this section in the Table \ref{tab:UITCResults}. I chose two environments on which I will test the application GUI:
 
 \begin{itemize}
     \item Acer Aspire 3810TZ with Windows 7 Professional (64bit)
     \item Acer Aspire 3810TZ with Ubuntu 10.10 Maverick Meerkat (32bit)
 \end{itemize}
+
+\begin{table}[!ht]
+\begin{center}
+\begin{tabular}{|l|c|c|}
+	\hline
+	{ \bf Test Case Name } & { \bf Windows } & { \bf Ubuntu } \\
+	\hline \hline
+	TC0      & Not run yet & Not run yet  \\
+	TC1      & Not run yet & Not run yet  \\
+   TC2      & Not run yet & Not run yet  \\
+	\hline
+\end{tabular}
+\caption{User Interface Test Cases Results}
+\label{tab:UITCResults}
+\end{center}
+\end{table}

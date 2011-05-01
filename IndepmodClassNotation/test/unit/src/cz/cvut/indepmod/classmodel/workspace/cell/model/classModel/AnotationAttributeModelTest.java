@@ -20,11 +20,11 @@ import static org.junit.Assert.*;
  */
 public class AnotationAttributeModelTest {
 
-    private AnotationAttributeModel model;
+    private AnnotationAttributeModel model;
 
     @Before
     public void setUp() {
-        this.model = new AnotationAttributeModel(Common.ATTRIBUTE_NAME);
+        this.model = new AnnotationAttributeModel(Common.ATTRIBUTE_NAME);
     }
 
     @After
@@ -32,7 +32,7 @@ public class AnotationAttributeModelTest {
     }
 
     /**
-     * Test of getName method, of class AnotationAttributeModel.
+     * Test of getName method, of class AnnotationAttributeModel.
      */
     @Test
     public void testGetName() {
@@ -41,7 +41,7 @@ public class AnotationAttributeModelTest {
     }
 
     /**
-     * Test of getValues method, of class AnotationAttributeModel.
+     * Test of getValues method, of class AnnotationAttributeModel.
      */
     @Test
     public void testAddGetValues() {
@@ -62,10 +62,29 @@ public class AnotationAttributeModelTest {
         }
 
         assertTrue(isVal1);
-        assertTrue(isVal1);
+        assertTrue(isVal2);
 
-        this.model.addValue(new String(Common.VAL1));
+        this.model.addValue(Common.VAL1);
 
         assertEquals(2, this.model.getValues().size());
+    }
+
+    @Test
+    public void testEqualsHashCode() {
+        AnnotationAttributeModel model2 = new AnnotationAttributeModel(Common.ATTRIBUTE_NAME);
+        AnnotationAttributeModel model3 = new AnnotationAttributeModel(Common.ATTRIBUTE_NAME2);
+        assertTrue(model.equals(model2));
+        assertFalse(model.equals(model3));
+
+        assertFalse(model.equals(null));
+        assertFalse(model.equals("Ahoj"));
+
+        assertEquals(model.hashCode(), model2.hashCode());
+    }
+
+    @Test
+    public void testToString() {
+        assertNotNull(this.model.toString());
+        assertTrue(this.model.toString().length() > 0);
     }
 }

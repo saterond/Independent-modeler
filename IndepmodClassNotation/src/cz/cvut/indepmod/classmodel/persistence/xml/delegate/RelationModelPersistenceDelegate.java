@@ -17,6 +17,7 @@ public class RelationModelPersistenceDelegate extends DefaultPersistenceDelegate
     protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder out) {
         RelationModel mm = (RelationModel) oldInstance;
         out.writeStatement(new Statement(oldInstance, "setRelationDirection", new Object []{mm.getDirection()}));
+        out.writeStatement(new Statement(oldInstance, "setRelationName", new Object []{mm.getRelationName()}));
     }
 
 

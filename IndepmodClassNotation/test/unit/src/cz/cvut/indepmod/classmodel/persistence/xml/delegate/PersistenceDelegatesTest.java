@@ -1,7 +1,7 @@
 package cz.cvut.indepmod.classmodel.persistence.xml.delegate;
 
 import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModel;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttributeModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnnotationAttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.EnumerationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.HierarchyRelationModel;
@@ -54,7 +54,7 @@ public class PersistenceDelegatesTest {
             this.encoder.setPersistenceDelegate(RelationModel.class, new RelationModelPersistenceDelegate());
             this.encoder.setPersistenceDelegate(HierarchyRelationModel.class, new HierarchyRelationModelPersistenceDelegate());
             this.encoder.setPersistenceDelegate(AnotationModel.class, new AnotationModelPersistenceDelegate());
-            this.encoder.setPersistenceDelegate(AnotationAttributeModel.class, new AnotationAtributeModelPersistenceDelegate());
+            this.encoder.setPersistenceDelegate(AnnotationAttributeModel.class, new AnotationAtributeModelPersistenceDelegate());
             this.encoder.setPersistenceDelegate(Cardinality.class, new CardinalityPersistenceDelegate());
             this.encoder.setPersistenceDelegate(ClassModel.class, new ClassModelPersistenceDelegate());
             this.encoder.setPersistenceDelegate(InterfaceModel.class, new InterfaceModelPersistenceDelegate());
@@ -98,6 +98,38 @@ public class PersistenceDelegatesTest {
     @Test
     public void testClassModelEncodeDecode() {
         AbstractElementModel cm = new ClassModel(Common.CLASS_NAME, Common.getMethods(), Common.getAttributes(), Common.getAnotations());
+        AbstractElementModel dcm = null;
+
+        this.encoder.writeObject(cm);
+        this.encoder.close();
+
+        dcm = (AbstractElementModel) this.decode(this.f);
+
+        assertEquals(Common.CLASS_NAME, dcm.getTypeName());
+        assertEquals(3, dcm.getAttributeModels().size());
+        assertEquals(2, dcm.getMethodModels().size());
+        assertEquals(3, dcm.getAnotations().size());
+    }
+
+    @Test
+    public void testInterfaceModelEncodeDecode() {
+        AbstractElementModel cm = new InterfaceModel(Common.CLASS_NAME, Common.getMethods(), Common.getAttributes(), Common.getAnotations());
+        AbstractElementModel dcm = null;
+
+        this.encoder.writeObject(cm);
+        this.encoder.close();
+
+        dcm = (AbstractElementModel) this.decode(this.f);
+
+        assertEquals(Common.CLASS_NAME, dcm.getTypeName());
+        assertEquals(3, dcm.getAttributeModels().size());
+        assertEquals(2, dcm.getMethodModels().size());
+        assertEquals(3, dcm.getAnotations().size());
+    }
+
+    @Test
+    public void testEnumModelEncodeDecode() {
+        AbstractElementModel cm = new EnumerationModel(Common.CLASS_NAME, Common.getMethods(), Common.getAttributes(), Common.getAnotations());
         AbstractElementModel dcm = null;
 
         this.encoder.writeObject(cm);

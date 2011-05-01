@@ -5,10 +5,9 @@
 
 package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 
-import java.util.HashSet;
-import java.util.Set;
 import cz.cvut.indepmod.classmodel.Common;
 import cz.cvut.indepmod.classmodel.api.model.IAnnotation;
+import cz.cvut.indepmod.classmodel.api.model.Visibility;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,6 +48,29 @@ public class AttributeModelTest {
     }
 
     @Test
+    public void testSetName() {
+        this.model.setName(Common.ATTRIBUTE_NAME2);
+        assertEquals(Common.ATTRIBUTE_NAME2, this.model.getName());
+    }
+
+    public void setVisibilityTest() {
+        this.model.setVisibility(Visibility.PRIVATE);
+        assertEquals(Visibility.PRIVATE, this.model.getVisibility());
+
+        this.model.setVisibility(Visibility.PROTECTED);
+        assertEquals(Visibility.PROTECTED, this.model.getVisibility());
+
+        this.model.setVisibility(Visibility.NONE);
+        assertEquals(Visibility.NONE, this.model.getVisibility());
+    }
+
+    @Test
+    public void setTypeTest() {
+        this.model.setType(new TypeModel(Common.TYPE_NAME2));
+        assertEquals(Common.TYPE_NAME2, this.model.getType());
+    }
+
+    @Test
     public void testAnotations() {
         this.model.addAnotation(new AnotationModel(Common.ANOT1));
         this.model.addAnotation(new AnotationModel(Common.ANOT2));
@@ -77,6 +99,14 @@ public class AttributeModelTest {
 
         this.model.addAnotation(new AnotationModel(Common.ANOT2));
         assertEquals(2, this.model.getAnotations().size());
+
+        this.model.removeAnotation(new AnotationModel(Common.ANOT1));
+        assertEquals(1, this.model.getAnotations().size());
     }
 
+    @Test
+    public void testToString() {
+        assertNotNull(model.toString());
+        assertTrue(model.toString().length() > 0);
+    }
 }

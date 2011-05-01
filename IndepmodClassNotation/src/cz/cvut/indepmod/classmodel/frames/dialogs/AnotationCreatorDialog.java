@@ -4,7 +4,7 @@ import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.model.IAnnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAnotationValue;
 import cz.cvut.indepmod.classmodel.frames.dialogs.validation.AbstractDialogValidation;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttributeModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnnotationAttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -77,7 +77,7 @@ public class AnotationCreatorDialog extends AnotationCreatorDialogView {
 
                 Object[] atrList = valueListModel.toArray();
                 for (int i = 0; i < atrList.length; i++) {
-                    returnValue.addAttribute((AnotationAttributeModel) atrList[i]);
+                    returnValue.addAttribute((AnnotationAttributeModel) atrList[i]);
                 }
                 dispose();
             }
@@ -89,7 +89,7 @@ public class AnotationCreatorDialog extends AnotationCreatorDialogView {
         @Override
         public void actionPerformed(ActionEvent e) {
             Frame window = WindowManager.getDefault().getMainWindow();
-            AnotationAttributeModel atr = new AnotationAttributeCreatorDialog(window).getReturnValue();
+            AnnotationAttributeModel atr = new AnotationAttributeCreatorDialog(window).getReturnValue();
 
             if (atr != null) {
                 valueListModel.addElement(atr);

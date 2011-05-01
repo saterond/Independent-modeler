@@ -22,7 +22,7 @@ import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModelFactory;
 import cz.cvut.indepmod.classmodel.diagramdata.DiagramDataModel;
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraph;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelClassCell;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttributeModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnnotationAttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
@@ -115,7 +115,7 @@ public class ClassModelXMLCoderTest {
         mod1.setStereotype(Common.VAL2);
 
         AnotationModel anot = new AnotationModel(Common.ANOT2);
-        AnotationAttributeModel anotAtr = new AnotationAttributeModel(Common.ATTRIBUTE_NAME2);
+        AnnotationAttributeModel anotAtr = new AnnotationAttributeModel(Common.ATTRIBUTE_NAME2);
         anotAtr.addValue(Common.VAL2);
         anotAtr.addValue(Common.VAL3);
         anot.addAttribute(anotAtr);

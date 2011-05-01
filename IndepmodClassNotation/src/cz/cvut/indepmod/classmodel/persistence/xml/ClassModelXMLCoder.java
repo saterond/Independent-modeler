@@ -17,7 +17,7 @@ import cz.cvut.indepmod.classmodel.persistence.xml.delegate.TypeModelPersistence
 import cz.cvut.indepmod.classmodel.workspace.ClassModelGraphModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelClassCell;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelVertexView;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttributeModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnnotationAttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.Cardinality;
@@ -180,7 +180,7 @@ public class ClassModelXMLCoder {
         encoder.setPersistenceDelegate(RelationModel.class, new RelationModelPersistenceDelegate());
         encoder.setPersistenceDelegate(HierarchyRelationModel.class, new HierarchyRelationModelPersistenceDelegate());
         encoder.setPersistenceDelegate(AnotationModel.class, new AnotationModelPersistenceDelegate());
-        encoder.setPersistenceDelegate(AnotationAttributeModel.class, new AnotationAtributeModelPersistenceDelegate());
+        encoder.setPersistenceDelegate(AnnotationAttributeModel.class, new AnotationAtributeModelPersistenceDelegate());
         encoder.setPersistenceDelegate(Cardinality.class, new CardinalityPersistenceDelegate());
         encoder.setPersistenceDelegate(ClassModel.class, new ClassModelPersistenceDelegate());
         encoder.setPersistenceDelegate(InterfaceModel.class, new InterfaceModelPersistenceDelegate());

@@ -100,7 +100,7 @@ public class MethodCreatorDialog extends MethodCreatorDialogView {
                     attrs.add(a);
                 }
 
-                if (returnType == null) {
+                if (returnValue == null) {
                     returnValue = new MethodModel(returnType, name, attrs, vis);
                 } else {
                     returnValue.setAttributeModels(attrs);

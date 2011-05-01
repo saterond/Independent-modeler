@@ -55,4 +55,11 @@ public class TypeModelTest {
         assertEquals(Common.TYPE_NAME, this.model.toString());
     }
 
+    @Test
+    public void testEqualsHashCode() {
+        assertTrue(model.equals(new TypeModel(Common.TYPE_NAME)));
+        assertFalse(model.equals(new TypeModel(Common.TYPE_NAME2)));
+        assertFalse(model.equals(null));
+        assertFalse(model.equals("xyz"));
+    }
 }

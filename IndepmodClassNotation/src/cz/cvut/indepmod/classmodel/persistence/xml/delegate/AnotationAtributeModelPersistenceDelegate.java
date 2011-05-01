@@ -1,6 +1,6 @@
 package cz.cvut.indepmod.classmodel.persistence.xml.delegate;
 
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttributeModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnnotationAttributeModel;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.Encoder;
 import java.beans.Expression;
@@ -16,7 +16,7 @@ public class AnotationAtributeModelPersistenceDelegate extends DefaultPersistenc
 
     @Override
     protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder out) {
-        AnotationAttributeModel aam = (AnotationAttributeModel)oldInstance;
+        AnnotationAttributeModel aam = (AnnotationAttributeModel)oldInstance;
 
         Collection<String> values = aam.getValues();
         for (String value : values) {
@@ -26,7 +26,7 @@ public class AnotationAtributeModelPersistenceDelegate extends DefaultPersistenc
 
     @Override
     protected Expression instantiate(Object oldInstance, Encoder out) {
-        AnotationAttributeModel am = (AnotationAttributeModel) oldInstance;
+        AnnotationAttributeModel am = (AnnotationAttributeModel) oldInstance;
         return new Expression(
                 oldInstance,
                 oldInstance.getClass(),

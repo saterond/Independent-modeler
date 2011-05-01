@@ -2,7 +2,7 @@ package cz.cvut.indepmod.classmodel.frames.dialogs;
 
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.frames.dialogs.validation.AbstractDialogValidation;
-import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationAttributeModel;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnnotationAttributeModel;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
  */
 public class AnotationAttributeCreatorDialog extends AnotationAttributeCreatorDialogView {
 
-    private AnotationAttributeModel returnValue;
+    private AnnotationAttributeModel returnValue;
 
     public AnotationAttributeCreatorDialog(Frame owner) {
         super(owner);
@@ -23,7 +23,7 @@ public class AnotationAttributeCreatorDialog extends AnotationAttributeCreatorDi
         this.setSizes();
     }
 
-    public AnotationAttributeModel getReturnValue() {
+    public AnnotationAttributeModel getReturnValue() {
         return returnValue;
     }
 
@@ -46,7 +46,7 @@ public class AnotationAttributeCreatorDialog extends AnotationAttributeCreatorDi
             String name = anotAtrName.getText();
 
             if (val.validateAnnotationAttributeName(name)) {
-                returnValue = new AnotationAttributeModel(name);
+                returnValue = new AnnotationAttributeModel(name);
 
                 Object[] objs = valueListModel.toArray();
                 for (int i = 0; i < objs.length; i++) {

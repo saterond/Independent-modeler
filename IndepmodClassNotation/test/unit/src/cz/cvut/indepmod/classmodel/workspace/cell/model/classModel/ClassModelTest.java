@@ -8,6 +8,7 @@ import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IMethod;
 import cz.cvut.indepmod.classmodel.api.model.IRelation;
 import cz.cvut.indepmod.classmodel.api.model.RelationType;
+import cz.cvut.indepmod.classmodel.api.model.Visibility;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelCellFactory;
 import org.jgraph.graph.Edge;
 import cz.cvut.indepmod.classmodel.workspace.cell.ClassModelClassCell;
@@ -135,6 +136,9 @@ public class ClassModelTest {
         m.addAttribute(new AttributeModel(new TypeModel(Common.TYPE_NAME), Common.ATTRIBUTE_NAME));
         assertEquals(1, m.getAttributeModels().size());
 
+        m.addAttribute(null);
+        assertEquals(1, m.getAttributeModels().size());
+
         IAttribute a = m.getAttributeModels().iterator().next();
         assertEquals(Common.TYPE_NAME, a.getType().getTypeName());
         assertEquals(Common.ATTRIBUTE_NAME, a.getName());
@@ -186,7 +190,13 @@ public class ClassModelTest {
 
         assertEquals(0, m.getMethodModels().size());
 
+        m.addMethod(null);
+        assertEquals(0, m.getMethodModels().size());
+
         m.addMethod(new MethodModel(new TypeModel(Common.TYPE_NAME), Common.METHOD_NAME, null));
+        assertEquals(1, m.getMethodModels().size());
+
+        m.addMethod(null);
         assertEquals(1, m.getMethodModels().size());
 
         m.addMethod(new MethodModel(new TypeModel(Common.TYPE_NAME2), Common.METHOD_NAME2, null));
@@ -312,5 +322,34 @@ public class ClassModelTest {
         assertTrue(isAnot1);
         assertTrue(isAnot2);
         assertTrue(isAnot3);
+    }
+
+    @Test
+    public void testConstructor() {
+        ClassModel cm = new ClassModel(model);
+
+        assertNotNull(cm.getMethodModels());
+        assertEquals(2, cm.getMethodModels().size());
+
+        assertNotNull(cm.getAttributeModels());
+        assertEquals(3, cm.getAttributeModels().size());
+
+        assertNotNull(cm.getAnotations());
+        assertEquals(3, cm.getAnotations().size());
+        this.doAnotationTest(cm);
+    }
+
+    @Test
+    public void testVisibility() {
+        assertEquals(Visibility.PUBLIC, model.getVisibility());
+    }
+
+    @Test
+    public void testAbstract() {
+        assertFalse(model.isAbstract());
+        model.setAbstract(true);
+        assertTrue(model.isAbstract());
+        model.setAbstract(false);
+        assertFalse(model.isAbstract());
     }
 }

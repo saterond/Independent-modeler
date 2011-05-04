@@ -408,68 +408,462 @@ public class LinuxGUIGactory extends AbstractGUIFactory {
 \chapter{Graphic User Interface Test Cases}
 \label{appendixUITC}
 
-\section{TC0 - Create class diagram}
+\section{TC0 - Create new class diagram}
 
-Prerequisite: Open an Java project with an package.
+Prerequisite: Open a project with a package.
 
-\begin{itemize}
-    \item Right click on a package \ding{213} new \ding{213} Other \ding{213} IndepMod \ding{213} New Class Diagram \ding{213} Next
-    \item Fill Name: ClassModel, select class model in model type, Java in Language selection and click on Finish
-    \item System will show an empty class diagram
-    \item Open the Tool Chooser (Windows \ding{213} Tool Chooser), select a class in it and add it into the class diagram.
-    \item System will show an class with name: "Class1"
-    \item Right click the class and select Edit
-    \item System will show an edit dialog with fields:
-    \begin{itemize}
-        \item Name
-        \item Stereotype
-        \item Abstract checkbox
-        \item Annotation list with buttons for creation/edition/deletion
-        \item Attribute list with buttons for creation/edition/deletion
-        \item Method list with buttons for creation/edition/deletion
-        \item Buttons save/cancel
-    \end{itemize}
-\end{itemize}
+\begin{packed_item}
+    \item Right click on a package \ding{213} click on 'new' \ding{213} click on 'Other' \ding{213} select 'IndepMod' in a list on the left \ding{213} select 'New Class Diagram' in the list on the right \ding{213} click 'Next' button
+    \item \textit{System will open a panel with field for the name of the diagram, selection of the diagram type and field with the desired language}
+    \item Fill the form as follows:
+    \begin{packed_item}
+        \item Name: ClassModel
+        \item Select class model in the model type
+        \item Select Java in Language selection
+        \item Click on Finish
+    \end{packed_item}
+    \item \textit{System will show an empty class diagram}
+\end{packed_item}
 
 \section{TC1 - Create business diagram}
 
-Prerequisite: Open an Java project with an package.
+Prerequisite: Opened project with a package.
 
-\begin{itemize}
-    \item Right click on a package \ding{213} new \ding{213} Other \ding{213} IndepMod \ding{213} New Class Diagram \ding{213} Next
-    \item Fill Name: BusinessModel, select business model in model type, Java in Language selection and click on Finish
-    \item System will show an empty class diagram
-    \item Open the Tool Chooser (Windows \ding{213} Tool Chooser), select a class in it and add it into the class diagram.
-    \item System will show an class with name: "Class1"
-    \item Right click the class and select Edit
-    \item System will show an edit dialog with fields:
-    \begin{itemize}
-        \item Name
-        \item Stereotype
-        \item Attribute list with buttons for creation/edition/deletion
-        \item Buttons save/cancel
-    \end{itemize}
-\end{itemize}
+\begin{packed_item}
+    \item Right click on a package \ding{213} click on 'new' \ding{213} click on 'Other' \ding{213} select 'IndepMod' in a list on the left \ding{213} select 'New Class Diagram' in the list on the right \ding{213} click 'Next' button
+    \item \textit{System will open a panel with field for the name of the diagram, selection of the diagram type and field with the desired language}
+    \item Fill the form as follows:
+    \begin{packed_item}
+        \item Name: BusinessModel
+        \item Select business model in the model type
+        \item Select Java in Language selection
+        \item Click on Finish
+    \end{packed_item}
+    \item \textit{System will show an empty business diagram}
+\end{packed_item}
 
-\section{TC2 - Test Elements}
+\section{TC2 - Open the Tool Chooser}
 
-Prerequisite: Created and opened an empty class diagram.
+\begin{packed_item}
+  \item Click on 'Window' in the maim menu and select 'Tool Chooser'
+  \item \textit{System will open the Tool Chooser panel with buttons for tool selection:}
+    \begin{packed_item}
+      \item \textit{controll}
+      \item \textit{class}
+      \item \textit{interface}
+      \item \textit{enumeration}
+      \item \textit{relation}
+      \item \textit{aggregation}
+      \item \textit{composition}
+      \item \textit{generalization}
+      \item \textit{realization}
+    \end{packed_item}
+\end{packed_item}
 
-\begin{itemize}
-    \item Add a class in the diagram
-    \item Open an edit dialog of the class and fill the name field as 'Parent'
-    \item Click on add annotation button and create an annotation with name 'version' and one attribute with name 'value' and value 'v1.1'
-    \item Click on add attribute button and create an attribute with name 'firstname', data type 'String', private visibility and one annotation with name 'Length' and attribute with name 'value' and value '20'
-    \item Click on add attribute button and create an attribute with name 'surname', data type 'String', private visibility and one annotation with name 'Length' and attribute with name 'value' and value '25'
-    \item Click on add method button and create a method with name 'getSurname', data type 'String', public visibility and no attribute
-    \item Click on add method button and create a method with name 'setSurname', data type 'void', public visibility and one attribute 'surname' of 'String' type
-    \item Save the class and verify that all information are shown
-    \item Create an interface and set its name as 'AnInterface', save it and verify that the name is changed
-    \item Create a realisation relation between the 'Parent' class and 'AnInterface' interface; verify that the relation is shown properly
-    \item Create class with name 'Child'
-    \item Create a generalization between the 'Child' and 'Parent'; verify that the relation is shown properly
-    \item Create an enumeration with name 'Gender' with attributes 'MALE' and 'FEMALE'; verify that enumeration is shown properly
-    \item Create an association between 'Child' and 'Gender'; Set its name to 'hasGender', source cardinality to '*', target cardinality '1', unidirectional relation and visible arrows; verify that relation is shown properly
-\end{itemize}
+\section{TC3 - Create new class}
+
+Prerequisite: Opened an empty class diagram
+
+\begin{packed_item}
+  \item Open the Tool Chooser [Extension Point: TC2]
+  \item Activate the diagram workspace to register it in the Tool Chooser
+  \item Select 'class' in the Tool Chooser
+  \item \textit{ToolChooser will show the selection}
+  \item Click somewhere in the diagram workspace to add new class
+  \item \textit{System will add new class into the workspace with name 'Class1'}
+\end{packed_item}
+
+\section{TC4 - Create new interface}
+
+Prerequisite: Opened an empty class diagram
+
+\begin{packed_item}
+  \item Open the Tool Chooser [Extension Point: TC2]
+  \item Activate the diagram workspace to register it in the Tool Chooser
+  \item Select 'interface' in the Tool Chooser
+  \item \textit{ToolChooser will show the selection}
+  \item Click somewhere in the diagram workspace to add new interface
+  \item \textit{System will add new interface into the workspace with name 'Interface1' and stereotype 'interface'}
+\end{packed_item}
+
+\section{TC5 - Create new enumeration}
+
+Prerequisite: Opened an empty class diagram
+
+\begin{packed_item}
+  \item Open the Tool Chooser [Extension Point: TC2]
+  \item Activate the diagram workspace to register it in the Tool Chooser
+  \item Select 'enumeration' in the Tool Chooser
+  \item \textit{ToolChooser will show the selection}
+  \item Click somewhere in the diagram workspace to add new enumeration
+  \item \textit{System will add new enumeration into the workspace with name 'Enum1' and stereotype 'enumeration'}
+\end{packed_item}
+
+\section{TC6 - Open a class edit dialog}
+
+Prerequisite: Opened a class diagram with a class
+
+\begin{packed_item}
+  \item Right click on the class and select 'Edit'
+  \item \textit{System will open an edit dialog with fields:}
+    \item \textit{Name}
+    \item \textit{Data type}
+    \item \textit{Abstract checkbox}
+    \item \textit{Annotation list with buttons for creation, editing and deletion}
+    \item \textit{Attribute list with buttons for creation, editing and deletion}
+    \item \textit{Method list with buttons for creation, editing and deletion}
+    \item \textit{Buttons save/cancel}
+\end{packed_item}
+
+\section{TC7 - Add a class attribute}
+
+Prerequisite: Opened a class diagram with a class
+
+\begin{packed_item}
+  \item Open the class edit dialog [include TC6]
+  \item Click on 'Add Attribute' button
+  \item \textit{System will open a dialog for attribute creation with fields:}
+    \item \textit{Name}
+    \item \textit{Data Type}
+    \item \textit{Visibility}
+    \item \textit{Annotation list with buttons for creation, editing and deletion}
+    \item \textit{Create button}
+  \item Fill the fields in the dialog and click on 'Create'
+  \item \textit{System will add the attribute into the Attribute list in the class edit dialog and also into the class in the diagram}
+  \item Click on 'Save' button and verify that the attribute was added properly
+\end{packed_item}
+
+\section{TC8 - Edit a class attribute}
+
+Prerequisite: Opened a class diagram with a class which has an attribute
+
+\begin{packed_item}
+  \item Open the class edit dialog [include TC6]
+  \item Select an attribute in the attribute list and click on 'Edit Attribute' button
+  \item \textit{System will open a dialog for attribute creation with filled fields according to the selected attribute}
+  \item Change some attribute fields and click on 'Create' button
+  \item \textit{System will change the attribute in the Attribute list in the class edit dialog and also in the class in the diagram}
+  \item Click on 'Save' button and verify that the attribute was changed properly
+\end{packed_item}
+
+\section{TC9 - Remove a class attribute}
+
+Prerequisite: Opened a class diagram with a class which has an attribute
+
+\begin{packed_item}
+  \item Open the class edit dialog [include TC6]
+  \item Select an attribute in the attribute list and click on 'Remove Attribute' button
+  \item \textit{System will remove the attribute from the Attribute list in the class edit dialog and also from the class in the diagram}
+  \item Click on 'Save' button and verify that the attribute was removed properly
+\end{packed_item}
+
+\section{TC10 - Add a class method}
+
+Prerequisite: Opened a class diagram with a class
+
+\begin{packed_item}
+  \item Open the class edit dialog [include TC6]
+  \item Click on 'Add Method' button
+  \item \textit{System will open a dialog for method creation with fields:}
+    \item \textit{Name}
+    \item \textit{Data Type}
+    \item \textit{Visibility}
+    \item \textit{Static checkbox}
+    \item \textit{Abstract checkbox}
+    \item \textit{Attribute list with buttons for creation, editing and deletion}
+    \item \textit{Save/Cancel button}
+  \item Fill the fields in the dialog and click on 'Save'
+  \item \textit{System will add the method into the method list in the class edit dialog and also into the class in the diagram}
+  \item Click on 'Save' button and verify that the method was added properly
+\end{packed_item}
+
+\section{TC11 - Edit a class method}
+
+Prerequisite: Opened a class diagram with a class which has a method
+
+\begin{packed_item}
+  \item Open the class edit dialog [include TC6]
+  \item Select a method in the method list
+  \item Click on 'Edit Method' button
+  \item \textit{System will open a dialog for method creation with filled fields according to the method}
+  \item Change the fields in the dialog and click on 'Save'
+  \item \textit{System will change the method in the method list in the class edit dialog and also in the class in the diagram}
+  \item Click on 'Save' button and verify that the method was changed properly
+\end{packed_item}
+
+\section{TC12 - Remove a class method}
+
+Prerequisite: Opened a class diagram with a class which has a method
+
+\begin{packed_item}
+  \item Open the class edit dialog [include TC6]
+  \item Select a method in the method list
+  \item Click on 'Delete Method' button
+  \item \textit{System will remove the method from the method list in the class edit dialog and also from the class in the diagram}
+  \item Click on 'Save' button and verify that the method was removed properly
+\end{packed_item}
+
+\section{TC13 - Add a class annotation}
+
+Prerequisite: Opened a class diagram with a class
+
+\begin{packed_item}
+  \item Open the class edit dialog [include TC6]
+  \item Click on 'Add Annotation' button
+  \item \textit{System will open a dialog for annotation creation with fields:}
+    \item \textit{Name}
+    \item \textit{Value list with buttons for creation and deletion}
+    \item \textit{Create button}
+  \item Add an annotation value [Extension point: TC16]
+  \item Remove an annotation value [Extension point: TC17]
+  \item Fill the fields in the dialog and click on 'Save'
+  \item \textit{System will add the annotation into the annotation list in the class edit dialog and also into the class in the diagram}
+  \item Click on 'Save' button and verify that the annotation was added properly
+\end{packed_item}
+
+\section{TC14 - Edit a class annotation}
+
+Prerequisite: Opened a class diagram with a class which has an annotation
+
+\begin{packed_item}
+  \item Open the class edit dialog [include TC6]
+  \item Select an annotation in the annotation list
+  \item Click on 'Edit Annotation' button
+  \item \textit{System will open a dialog for annotation creation with filled fields according to the selected annotation}
+  \item Add an annotation value [Extension point: TC16]
+  \item Remove an annotation value [Extension point: TC17]
+  \item Change the fields in the dialog and click on 'Save'
+  \item \textit{System will change the annotation in the annotation list in the class edit dialog and also in the class in the diagram}
+  \item Click on 'Save' button and verify that the annotation was changed properly
+\end{packed_item}
+
+\section{TC15 - Remove a class annotation}
+
+Prerequisite: Opened a class diagram with a class which has an annotation
+
+\begin{packed_item}
+  \item Open the class edit dialog [include TC6]
+  \item Select an annotation in the annotation list
+  \item Click on 'Delete Annotation' button
+  \item \textit{System will remove the annotation from the annotation list in the class edit dialog and also from the class in the diagram}
+  \item Click on 'Save' button and verify that the annotation was removed properly
+\end{packed_item}
+
+\section{TC16 - Add an annotation value}
+
+Prerequisite: Opened a dialog for annotation creation/editing.
+
+\begin{packed_item}
+  \item Click on 'Add Value' button
+  \item \textit{System will open a dialog for attribute value creation with fields:}
+  \begin{packed_item}
+    \item \textit{Name}
+    \item \textit{Value list with delete button}
+    \item \textit{Value text field with add button}
+    \item \textit{Create button}
+  \end{packed_item}
+  \item Fill these fields and click the Create button
+  \item \textit{System will add an annotation value into the annotation value list}
+\end{packed_item}
+
+\section{TC17 - Remove an annotation value}
+
+Prerequisite: Opened a dialog for annotation creation/editing.
+
+\begin{packed_item}
+  \item Select an annotation value in the annotation value list and click on Delete value button
+  \item \textit{System will remove the annotation value from the annotation value list}
+\end{packed_item}
+
+\section{TC18 - Add a relation}
+
+Prerequisite: Opened a dialog with at least two classes.
+
+\begin{packed_item}
+  \item Open the Tool Chooser [Extension Point: TC2]  
+  \item Select the relation in the Tool Chooser
+  \item \textit{Tool Chooser will show the selection and classes in the diagram will have blue rectangles indicating the ability to join the relation}
+  \item Add the relation between two classes by clicking and holding the left mouse button on a class, moving into another class and releasing the left mouse button
+  \item \textit{System will add the relation between desired classes}
+\end{packed_item}
+
+\section{TC19 - Add an aggregation}
+
+Prerequisite: Opened a dialog with at least two classes.
+
+\begin{packed_item}
+  \item Open the Tool Chooser [Extension Point: TC2]  
+  \item Select the aggregation in the Tool Chooser
+  \item \textit{Tool Chooser will show the selection and classes in the diagram will have blue rectangles indicating the ability to join the aggregation}
+  \item Add the aggregation between two classes by clicking and holding the left mouse button on a class, moving into another class and releasing the left mouse button
+  \item \textit{System will add the aggregation between desired classes}
+\end{packed_item}
+
+\section{TC20 - Add a composition}
+
+Prerequisite: Opened a dialog with at least two classes.
+
+\begin{packed_item}
+  \item Open the Tool Chooser [Extension Point: TC2]  
+  \item Select the composition in the Tool Chooser
+  \item \textit{Tool Chooser will show the selection and classes in the diagram will have blue rectangles indicating the ability to join the composition}
+  \item Add the composition between two classes by clicking and holding the left mouse button on a class, moving into another class and releasing the left mouse button
+  \item \textit{System will add the composition between desired classes}
+\end{packed_item}
+
+\section{TC21 - Add a generalization}
+
+Prerequisite: Opened a dialog with at least two classes.
+
+\begin{packed_item}
+  \item Open the Tool Chooser [Extension Point: TC2]
+  \item Select the generalization in the Tool Chooser
+  \item \textit{Tool Chooser will show the selection and classes in the diagram will have blue rectangles indicating the ability to join the generalization}
+  \item Add the generalization between two classes by clicking and holding the left mouse button on a class, moving into another class and releasing the left mouse button
+  \item \textit{System will add the generalization between desired classes}
+\end{packed_item}
+
+\section{TC22 - Add a realisation}
+
+Prerequisite: Opened a dialog with at least one class and one interface.
+
+\begin{packed_item}
+  \item Open the Tool Chooser [Extension Point: TC2]
+  \item Select the realisation in the Tool Chooser
+  \item \textit{Tool Chooser will show the selection and classes in the diagram will have blue rectangles indicating the ability to join the realisation}
+  \item Add the realisation between the class and interface by clicking and holding the left mouse button on the class, moving into the interface and releasing the left mouse button
+  \item \textit{System will add the realisation between the class and the interface}
+\end{packed_item}
+
+\section{TC23 - remove a relation}
+
+Prerequisite: Opened a dialog with a realation
+
+\begin{packed_item}
+  \item Right click on the relation and select delete
+  \item \textit{System will remove the relation}
+\end{packed_item}
+
+\section{TC24 - remove an aggregation}
+
+Prerequisite: Opened a dialog with an aggregation
+
+\begin{packed_item}
+  \item Right click on the aggregation and select delete
+  \item \textit{System will remove the aggregation}
+\end{packed_item}
+
+\section{TC25 - remove a composition}
+
+Prerequisite: Opened a dialog with a composition
+
+\begin{packed_item}
+  \item Right click on the composition and select delete
+  \item \textit{System will remove the composition}
+\end{packed_item}
+
+\section{TC26 - remove a generalization}
+
+Prerequisite: Opened a dialog with a generalization
+
+\begin{packed_item}
+  \item Right click on the generalization and select delete
+  \item \textit{System will remove the generalization}
+\end{packed_item}
+
+\section{TC27 - remove a realisation}
+
+Prerequisite: Opened a dialog with a realisation
+
+\begin{packed_item}
+  \item Right click on the realisation and select delete
+  \item \textit{System will remove the realisation}
+\end{packed_item}
+
+\section{TC28 - Edit a relation}
+
+Prerequisite: Opened a dialog with a relation
+
+\begin{packed_item}
+  \item Right click on the relation and select edit
+  \item \textit{System will open a relation edit dialog with fields:}
+  \begin{packed_item}
+    \item \textit{Name}
+    \item \textit{Source Cardinality}
+    \item \textit{Target Cardinality}
+    \item \textit{Relation type (Unidirectional, Bidirectional)}
+    \item \textit{Show arrows checkbox}
+    \item \textit{Name along the edge checkbox}
+    \item \textit{Save and Cancel buttons}
+  \end{packed_item}
+  \item Fill the fields and click Save button
+  \item \textit{System will update the relation}
+\end{packed_item}
+
+\section{TC29 - Edit an aggregation}
+
+Prerequisite: Opened a dialog with an aggregation
+
+\begin{packed_item}
+  \item Right click on the aggregation and select edit
+  \item \textit{System will open an aggregation edit dialog with fields:}
+  \begin{packed_item}
+    \item \textit{Name}
+    \item \textit{Source Cardinality}
+    \item \textit{Target Cardinality}
+    \item \textit{Relation type (Unidirectional, Bidirectional)}
+    \item \textit{Show arrows checkbox}
+    \item \textit{Name along the edge checkbox}
+    \item \textit{Save and Cancel buttons}
+  \end{packed_item}
+  \item Fill the fields and click Save button
+  \item \textit{System will update the aggregation}
+\end{packed_item}
+
+\section{TC30 - Edit a composition}
+
+Prerequisite: Opened a dialog with a composition
+
+\begin{packed_item}
+  \item Right click on the composition and select edit
+  \item \textit{System will open a composition edit dialog with fields:}
+  \begin{packed_item}
+    \item \textit{Name}
+    \item \textit{Source Cardinality}
+    \item \textit{Target Cardinality}
+    \item \textit{Relation type (Unidirectional, Bidirectional)}
+    \item \textit{Show arrows checkbox}
+    \item \textit{Name along the edge checkbox}
+    \item \textit{Save and Cancel buttons}
+  \end{packed_item}
+  \item Fill the fields and click Save button
+  \item \textit{System will update the composition}
+\end{packed_item}
+
+\section{TC31 - Save and Load a diagram}
+
+Prerequisite: Open an empty class diagram
+
+\begin{packed_item}
+  \item Create a class [INCLUDE TC3]
+  \item Create another three classes [INCLUDE TC3]
+  \item Add an interface [INCLUDE TC4]
+  \item Add an enumeration [INCLUDE TC5]
+  \item Add a class attribute [INCLUDE TC7]
+  \item Add a class method [INCLUDE TC10]
+  \item Add a class annotation [INCLUDE TC13]
+  \item Add a relation [INCLUDE TC18]
+  \item Add an aggregation [INCLUDE TC19]
+  \item Add a composition [INCLUDE TC20]
+  \item Add a generalization [INCLUDE TC21]
+  \item Add a realisation [INCLUDE TC22]
+  \item Click on the File in the main menu and select Save
+  \item \textit{System will save the diagram (The bold font of the diagram's name will be changed to the normal font)}
+  \item Close the diagram
+  \item \textit{System will close the diagram}
+  \item Open the diagram
+  \item \textit{System will open the diagram}
+  \item Verify that all elements were loaded properly
+\end{packed_item}
 
 \end{document}

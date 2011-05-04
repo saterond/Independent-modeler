@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentListener;
 
 /**
  * Date: 19.2.2011
@@ -47,6 +48,10 @@ public class ClassModelWizardVisualPanel1 extends JPanel {
 
     public void setFileName(String fileName) {
         this.nameField.setText(fileName);
+    }
+
+    public void addNameDocumentChangeListener(DocumentListener lsnr) {
+        this.nameField.getDocument().addDocumentListener(lsnr);
     }
 
     public String getSelectedLanguage() {

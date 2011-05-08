@@ -31,7 +31,7 @@ public class MethodModelPersistenceDelegate extends DefaultPersistenceDelegate {
                 oldInstance,
                 oldInstance.getClass(),
                 "new",
-                new Object[]{mm.getType(), mm.getName(), mm.getAttributeModels(), mm.getVisibility()});
+                new Object[]{mm.getType(), mm.getName(), mm.getAttributeModels(), mm.getAnotations(), mm.getVisibility()});
     }
 
 }

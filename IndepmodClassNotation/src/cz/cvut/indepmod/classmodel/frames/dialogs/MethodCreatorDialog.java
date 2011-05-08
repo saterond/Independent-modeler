@@ -3,11 +3,13 @@ package cz.cvut.indepmod.classmodel.frames.dialogs;
 import cz.cvut.indepmod.classmodel.Globals;
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.model.DiagramType;
+import cz.cvut.indepmod.classmodel.api.model.IAnnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IType;
 import cz.cvut.indepmod.classmodel.api.model.Visibility;
 import cz.cvut.indepmod.classmodel.frames.dialogs.factory.AbstractDialogFactory;
 import cz.cvut.indepmod.classmodel.frames.dialogs.validation.AbstractDialogValidation;
+import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AnotationModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.AttributeModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.MethodModel;
 import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.TypeModel;
@@ -16,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import org.openide.windows.WindowManager;
 
 /**
  * Date: 23.10.2010
@@ -49,8 +52,11 @@ public class MethodCreatorDialog extends MethodCreatorDialogView {
     private void initAction() {
         this.saveButton.addActionListener(new SaveAction());
         this.addAttrButton.addActionListener(new AddAttributeAction());
+        this.addAnnotButton.addActionListener(new AddAnnotationAction());
         this.editAttrButton.addActionListener(new EditAttributeAction());
+        this.editAnnotButton.addActionListener(new EditAnnotationAction());
         this.remAttrButton.addActionListener(new RemoveAttributeAction());
+        this.remAnnotButton.addActionListener(new RemoveAnnotationAction());
         this.cancelButton.addActionListener(new CancelAction());
 
         this.getRootPane().setDefaultButton(this.saveButton);
@@ -77,6 +83,9 @@ public class MethodCreatorDialog extends MethodCreatorDialogView {
             for (IAttribute attr : this.returnValue.getAttributeModels()) {
                 this.attributeListModel.addElement(attr);
             }
+            for (IAnnotation anot : this.returnValue.getAnotations()) {
+                this.annotationListModel.addElement(anot);
+            }
         }
     }
 
@@ -100,10 +109,18 @@ public class MethodCreatorDialog extends MethodCreatorDialogView {
                     attrs.add(a);
                 }
 
+                Set<IAnnotation> annots = new HashSet<IAnnotation>();
+                size = annotationListModel.size();
+                for (int i = 0; i < size; i++) {
+                    AnotationModel a = (AnotationModel) annotationListModel.get(i);
+                    annots.add(a);
+                }
+
                 if (returnValue == null) {
-                    returnValue = new MethodModel(returnType, name, attrs, vis);
+                    returnValue = new MethodModel(returnType, name, attrs, annots, vis);
                 } else {
                     returnValue.setAttributeModels(attrs);
+                    returnValue.setAnnotationModels(annots);
                     returnValue.setType(returnType);
                     returnValue.setName(name);
                     returnValue.setVisibility(vis);
@@ -131,6 +148,19 @@ public class MethodCreatorDialog extends MethodCreatorDialogView {
         }
     }
 
+    private class AddAnnotationAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Frame window = WindowManager.getDefault().getMainWindow();
+            IAnnotation anot = new AnotationCreatorDialog(window).getAnotation();
+
+            if (anot != null) {
+                annotationListModel.addElement(anot);
+            }
+        }
+    }
+
     private class EditAttributeAction extends ClassModelAbstractAction {
 
         @Override
@@ -147,6 +177,21 @@ public class MethodCreatorDialog extends MethodCreatorDialogView {
         }
     }
 
+    private class EditAnnotationAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int index = annotList.getSelectedIndex();
+            if (index != -1) {
+                IAnnotation anot = (IAnnotation) annotationListModel.getElementAt(index);
+                Frame window = WindowManager.getDefault().getMainWindow();
+                new AnotationCreatorDialog(window, anot).getAnotation();
+
+                annotationListModel.set(index, anot);
+            }
+        }
+    }
+
     private class RemoveAttributeAction extends ClassModelAbstractAction {
 
         @Override
@@ -154,6 +199,17 @@ public class MethodCreatorDialog extends MethodCreatorDialogView {
             AttributeModel attr = (AttributeModel) attrList.getSelectedValue();
             if (attr != null) {
                 attributeListModel.removeElement(attr);
+            }
+        }
+    }
+
+    private class RemoveAnnotationAction extends ClassModelAbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int index = annotList.getSelectedIndex();
+            if (index != -1) {
+                annotationListModel.remove(index);
             }
         }
     }

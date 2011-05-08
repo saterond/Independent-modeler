@@ -26,6 +26,30 @@ public interface IMethod {
     public void setVisibility(Visibility vis);
 
     /**
+     * Returns a collection of anotations
+     * @return a collection of anotations
+     */
+    public Set<IAnnotation> getAnotations();
+
+    /**
+     * Adds an anotation
+     * @param anot the anotation to be added
+     */
+    public void addAnotation(IAnnotation anot);
+
+    /**
+     * Removes an anotation
+     * @param anot The anotation to be removed
+     */
+    public void removeAnotation(IAnnotation anot);
+
+    /**
+     * Sets a new collection of annotations
+     * @param anots
+     */
+    public void setAnnotationModels(Set<IAnnotation> anots);
+
+    /**
      * Returns an unmodifiable view of the attributes set
      *
      * @return an unmodifiable view of the attributes set

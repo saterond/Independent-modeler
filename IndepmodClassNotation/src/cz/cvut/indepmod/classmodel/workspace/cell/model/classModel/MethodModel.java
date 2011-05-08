@@ -1,5 +1,6 @@
 package cz.cvut.indepmod.classmodel.workspace.cell.model.classModel;
 
+import cz.cvut.indepmod.classmodel.api.model.IAnnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IMethod;
 import cz.cvut.indepmod.classmodel.api.model.IType;
@@ -18,15 +19,24 @@ public class MethodModel extends AbstractModel implements IMethod {
     private IType type;
     private String name;
     private Set<IAttribute> attributeModels;
+    private Set<IAnnotation> annotations;
     private Visibility visibility;
     private boolean isAbstract;
     private boolean isStatic;
 
+    public MethodModel(TypeModel typeModel, String name) {
+        this(typeModel, name, null);
+    }
+    
     public MethodModel(TypeModel typeModel, String name, Set<IAttribute> attributeModels) {
-        this(typeModel, name, attributeModels, Visibility.PUBLIC);
+        this(typeModel, name, attributeModels, null);
     }
 
-    public MethodModel(TypeModel typeModel, String name, Set<IAttribute> attributeModels, Visibility v) {
+    public MethodModel(TypeModel typeModel, String name, Set<IAttribute> attributeModels, Set<IAnnotation> annotations) {
+        this(typeModel, name, attributeModels, annotations, Visibility.PUBLIC);
+    }
+
+    public MethodModel(TypeModel typeModel, String name, Set<IAttribute> attributeModels, Set<IAnnotation> annotations, Visibility v) {
         this.visibility = v;
         this.type = typeModel;
         this.name = name;
@@ -35,6 +45,12 @@ public class MethodModel extends AbstractModel implements IMethod {
             this.attributeModels = new HashSet<IAttribute>(attributeModels);
         } else {
             this.attributeModels = new HashSet<IAttribute>();
+        }
+
+        if (annotations != null) {
+            this.annotations = new HashSet<IAnnotation>(annotations);
+        } else {
+            this.annotations = new HashSet<IAnnotation>();
         }
     }
 
@@ -82,6 +98,14 @@ public class MethodModel extends AbstractModel implements IMethod {
 
         bfr.append(") : ");
         bfr.append(this.type.toString());
+
+        if (!this.annotations.isEmpty()) {
+            bfr.append(" [");
+            for (IAnnotation anot : this.annotations) {
+                bfr.append(anot.toString());
+            }
+            bfr.append("]");
+        }
 
         return bfr.toString();
     }
@@ -139,5 +163,25 @@ public class MethodModel extends AbstractModel implements IMethod {
     @Override
     public void setType(IType type) {
         this.type = type;
+    }
+
+    @Override
+    public Set<IAnnotation> getAnotations() {
+        return new HashSet<IAnnotation>(this.annotations);
+    }
+
+    @Override
+    public void addAnotation(IAnnotation anot) {
+        this.annotations.add(anot);
+    }
+
+    @Override
+    public void removeAnotation(IAnnotation anot) {
+        this.annotations.remove(anot);
+    }
+
+    @Override
+    public void setAnnotationModels(Set<IAnnotation> anots) {
+        this.annotations = new HashSet<IAnnotation>(anots);
     }
 }

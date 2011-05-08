@@ -67,7 +67,7 @@ public class AttributeModelTest {
     @Test
     public void setTypeTest() {
         this.model.setType(new TypeModel(Common.TYPE_NAME2));
-        assertEquals(Common.TYPE_NAME2, this.model.getType());
+        assertEquals(Common.TYPE_NAME2, this.model.getType().getTypeName());
     }
 
     @Test

@@ -54,8 +54,8 @@ public class Common {
     public static Set<IMethod> getMethods() {
         if (methods == null) {
             methods = new HashSet<IMethod>();
-            methods.add(new MethodModel(new TypeModel(Common.TYPE_NAME), Common.METHOD_NAME, null));
-            methods.add(new MethodModel(new TypeModel(Common.TYPE_NAME2), Common.METHOD_NAME2, null));
+            methods.add(new MethodModel(new TypeModel(Common.TYPE_NAME), Common.METHOD_NAME));
+            methods.add(new MethodModel(new TypeModel(Common.TYPE_NAME2), Common.METHOD_NAME2));
         }
 
         return methods;

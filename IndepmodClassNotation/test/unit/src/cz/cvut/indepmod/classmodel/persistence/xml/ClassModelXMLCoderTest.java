@@ -1,11 +1,15 @@
 package cz.cvut.indepmod.classmodel.persistence.xml;
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.awt.geom.Point2D;
 import cz.cvut.indepmod.classmodel.Common;
 import cz.cvut.indepmod.classmodel.api.model.IElement;
 import java.util.Collection;
+import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.type.DeclaredType;
 import org.jgraph.graph.Edge;
 import org.jgraph.graph.Port;
 import cz.cvut.indepmod.classmodel.api.model.RelationType;
@@ -14,6 +18,7 @@ import cz.cvut.indepmod.classmodel.workspace.cell.model.classModel.RelationModel
 import org.jgraph.graph.DefaultPort;
 import cz.cvut.indepmod.classmodel.actions.ClassModelAbstractAction;
 import cz.cvut.indepmod.classmodel.api.ToolChooserModel;
+import cz.cvut.indepmod.classmodel.api.model.IAnnotation;
 import cz.cvut.indepmod.classmodel.api.model.IAttribute;
 import cz.cvut.indepmod.classmodel.api.model.IRelation;
 import cz.cvut.indepmod.classmodel.api.model.IType;
@@ -37,6 +42,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.HashSet;
+import javax.lang.model.element.AnnotationMirror;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
 import org.junit.After;
@@ -126,9 +132,12 @@ public class ClassModelXMLCoderTest {
         AnotationModel anot2 = new AnotationModel(Common.ANOT3);
         atr.addAnotation(anot);
 
+        Set<IAnnotation> anotList = new HashSet<IAnnotation>();
+        anotList.add(new AnotationModel(Common.ANOT2));
+
         Set<IAttribute> atrList = new HashSet<IAttribute>();
         atrList.add(new AttributeModel(mod2, Common.ATTRIBUTE_NAME2));
-        MethodModel method = new MethodModel(mod1, Common.METHOD_NAME, atrList, Visibility.PRIVATE);
+        MethodModel method = new MethodModel(mod1, Common.METHOD_NAME, atrList, anotList, Visibility.PRIVATE);
         mod1.addMethod(method);
 
         File file = new File(FILE_NAME);
@@ -179,6 +188,8 @@ public class ClassModelXMLCoderTest {
         assertEquals(1, model.getMethodModels().size());
         assertEquals(Common.METHOD_NAME, model.getMethodModels().iterator().next().getName());
         assertEquals(Visibility.PRIVATE, model.getMethodModels().iterator().next().getVisibility());
+        assertEquals(1, model.getMethodModels().iterator().next().getAnotations().size());
+        assertEquals(Common.ANOT2, model.getMethodModels().iterator().next().getAnotations().iterator().next().getName());
         assertEquals(model, model.getMethodModels().iterator().next().getType());
         assertEquals(1, model.getMethodModels().iterator().next().getAttributeModels().size());
         assertEquals(Common.ATTRIBUTE_NAME2, model.getMethodModels().iterator().next().getAttributeModels().iterator().next().getName());

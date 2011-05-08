@@ -24,21 +24,26 @@ public class MethodCreatorDialogView extends AbstractClassModelDialog {
     public static final String TITLE = Resources.getString("dialog_method_creator_title");
 
     public static final String ADD_ATTR_BUTTON = Resources.getString("dialog_method_creator_add_attr");
+    public static final String ADD_ANNOT_BUTTON = Resources.getString("dialog_method_creator_add_annot");
     public static final String EDIT_ATTR_BUTTON = Resources.getString("dialog_method_creator_edit_attr");
+    public static final String EDIT_ANNOT_BUTTON = Resources.getString("dialog_method_creator_edit_annot");
     public static final String CANCEL_BUTTON = Resources.getString("dialog_method_creator_cancel");
     public static final String LABEL_ATTRIBUTE = Resources.getString("dialog_method_creator_attr_list");
+    public static final String LABEL_ANNOTATION = Resources.getString("dialog_method_creator_annot_list");
     public static final String LABEL_NAME = Resources.getString("dialog_method_creator_name");
     public static final String LABEL_TYPE = Resources.getString("dialog_method_creator_type");
     public static final String LABEL_VISIBILITY = Resources.getString("dialog_method_creator_visibility");
     public static final String IS_STATIC = Resources.getString("dialog_method_creator_is_static");
     public static final String IS_ABSTRACT = Resources.getString("dialog_method_creator_is_abstract");
     public static final String REM_ATTR_BUTTON = Resources.getString("dialog_method_creator_rem_attr");
+    public static final String REM_ANNOT_BUTTON = Resources.getString("dialog_method_creator_rem_annot");
     public static final String SAVE_BUTTON = Resources.getString("dialog_method_creator_save");
 
     protected JLabel nameLabel = new JLabel(LABEL_NAME);
     protected JLabel typeLabel = new JLabel(LABEL_TYPE);
     protected JLabel visibilityLabel = new JLabel(LABEL_VISIBILITY);
     protected JLabel attrLabel = new JLabel(LABEL_ATTRIBUTE);
+    protected JLabel annotLabel = new JLabel(LABEL_ANNOTATION);
     protected JTextField nameField = new JTextField();
     protected JComboBox typeBox = new JComboBox();
     protected JComboBox visibilityBox = new JComboBox();
@@ -49,8 +54,13 @@ public class MethodCreatorDialogView extends AbstractClassModelDialog {
     protected JButton addAttrButton = new JButton(ADD_ATTR_BUTTON);
     protected JButton editAttrButton = new JButton(EDIT_ATTR_BUTTON);
     protected JButton remAttrButton = new JButton(REM_ATTR_BUTTON);
+    protected JButton addAnnotButton = new JButton(ADD_ANNOT_BUTTON);
+    protected JButton editAnnotButton = new JButton(EDIT_ANNOT_BUTTON);
+    protected JButton remAnnotButton = new JButton(REM_ANNOT_BUTTON);
     protected DefaultListModel attributeListModel = new DefaultListModel();
+    protected DefaultListModel annotationListModel = new DefaultListModel();
     protected JList attrList = new JList(this.attributeListModel);
+    protected JList annotList = new JList(this.annotationListModel);
 
 
     public MethodCreatorDialogView(Frame owner) {
@@ -98,31 +108,53 @@ public class MethodCreatorDialogView extends AbstractClassModelDialog {
 
         c = GridBagConstraintsUtils.createNewConstraints(0, 4, 1, 1);
         c.anchor = GridBagConstraints.LINE_START;
-        this.add(this.attrLabel, c);
+        this.add(this.annotLabel, c);
 
         c = GridBagConstraintsUtils.createNewConstraints(1, 4, 1, 4);
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 0.5;
         c.weighty = 0.5;
-        this.add(new JScrollPane(this.attrList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), c);
+        this.add(new JScrollPane(this.annotList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), c);
 
         c = GridBagConstraintsUtils.createNewConstraints(2, 4, 1, 1);
         c.fill = GridBagConstraints.HORIZONTAL;
-        this.add(this.addAttrButton, c);
+        this.add(this.addAnnotButton, c);
 
         c = GridBagConstraintsUtils.createNewConstraints(2, 5, 1, 1);
         c.fill = GridBagConstraints.HORIZONTAL;
-        this.add(this.editAttrButton, c);
+        this.add(this.editAnnotButton, c);
 
         c = GridBagConstraintsUtils.createNewConstraints(2, 6, 1, 1);
         c.fill = GridBagConstraints.HORIZONTAL;
+        this.add(this.remAnnotButton, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(0, 8, 1, 1);
+        c.anchor = GridBagConstraints.LINE_START;
+        this.add(this.attrLabel, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(1, 8, 1, 4);
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        this.add(new JScrollPane(this.attrList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(2, 8, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        this.add(this.addAttrButton, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(2, 9, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        this.add(this.editAttrButton, c);
+
+        c = GridBagConstraintsUtils.createNewConstraints(2, 10, 1, 1);
+        c.fill = GridBagConstraints.HORIZONTAL;
         this.add(this.remAttrButton, c);
 
-        c = GridBagConstraintsUtils.createNewConstraints(1, 8, 1, 1);
+        c = GridBagConstraintsUtils.createNewConstraints(1, 12, 1, 1);
         c.anchor = GridBagConstraints.LINE_END;
         this.add(this.saveButton, c);
 
-        c = GridBagConstraintsUtils.createNewConstraints(2, 8, 1, 1);
+        c = GridBagConstraintsUtils.createNewConstraints(2, 12, 1, 1);
         c.anchor = GridBagConstraints.LINE_START;
         this.add(this.cancelButton, c);
     }

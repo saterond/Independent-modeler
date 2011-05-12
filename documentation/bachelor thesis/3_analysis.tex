@@ -10,7 +10,7 @@ There are a lot of applications that provides the class modeling. Basic appearan
 
 Every class diagram modeller has to be able to depict the basic elements of the class diagram as were described in section \ref{section:classDiagramDescription}. Existing modellers provides another functionality like information about complexities of single classes, their constraints, statuses, requirements, notes and many others. It is a lot of functionality that can not be created during one bachelor project but it can be implemented in a related project.
 
-Main aim of this project is to implement a metamodel of the class diagram. Developers of CASE system does not treat UML diagrams like diagrams. For them, the basics of UML diagram is the metamodel and the diagram is only its graphical representation. The metamodel represents the structure of the diagram and is standardly represented by an UML class diagram. The metamodel is not used only in conjunction with UML diagrams. The metamodel can be used to represent the abstraction of any other problem. The reason why I use the metamodel in conjunction with the UML diagram is that the OMG\footnote{OMG - Object Management Group - is a consortium which created (among others) the UML specification.} defined its UML standard by use of metamodel. The structure of the metamodel that will be implemented in this project is described in next section \ref{section-metamodel}.
+Main aim of this project is to implement a meta-model of the class diagram. Developers of CASE system does not treat UML diagrams like diagrams. For them, the basics of UML diagram is the meta-model and the diagram is only its graphical representation. The meta-model represents the structure of the diagram and is standardly represented by an UML class diagram. The meta-model is not used only in conjunction with UML diagrams. The meta-model can be used to represent the abstraction of any other problem. The reason why I use the meta-model in conjunction with the UML diagram is that the OMG\footnote{OMG - Object Management Group - is a consortium which created (among others) the UML specification.} defined its UML standard by use of meta-model. The structure of the meta-model that will be implemented in this project is described in next section \ref{section-metamodel}.
 
 A feature that is not a common one and is implemented in the Indepmod Class Notation Modeller is an annotation modelling. It provides the ability to annotate a class, a method or an attribute. Annotations are used in the Java programming language from version 1.5 and in the C\# programming language. Annotations are form of metadata which are stored in the source code. This metadata specifies another features of that class/method/attribute. Alternative to annotations are configuration files (very often of XML type) that hold these information. Annotations (or XML configuration files) are often used by frameworks. An example can be the JPA\footnote{JPA - Java Persistence API} framework of Java EE\footnote{Java EE - Java Enterprise Edition} that uses these metadata for the definition of object relation mapping (ORM)\footnote{Object Relation Mapping - a technique that maps objects of object oriented software into tables of relation database}. In a former version of java, these metadata were stored in XML configuration files (very often inside one XML file). When there was a lot of classes to be configured, these configuration files were very large and confusing. On the other hand, annotations allow to specify these configurations inside the classes. This means that if you want to see or edit a class configuration, you don't have to search it in a file with maybe hundreds or thousands lines. Instead, you will open a desired class and find these information right there.
 
@@ -20,23 +20,24 @@ The Indepmod Class Diagram Plugin will be also able to provide its diagram data 
 
 At the end of this section I would like to recapitulate three main requirements on the Indepmod Class Diagram Plugin. These requirements are:
 \begin{itemize}
-    \item Implement the standard class diagram modelling tool,
-    \item it will also have a special feature for annotation modelling,
-    \item created model will be provided to other Netbeans plugin by an public API.
+    \item The system will allow to create a class model according to the chapter \ref{section:classDiagramDescription}.
+    \item The system will allow to create both platform independent model and platform specific model.
+    \item The system will provide an annotation modeling functionality.
+    \item System will provide an API which will allow other Netbeans plugins to access created diagram.
 \end{itemize}
 
-\subsection{Class Diagram Metamodel}
+\subsection{Class Diagram Meta-model}
 \label{section-metamodel}
 
 \begin{figure}[!ht]
 \begin{center}
-\includegraphics[scale=1]{img/classDiagramMetamodel.png}
-\caption{Class Diagram Metamodel}
+\includegraphics[width=\textwidth]{img/classDiagramMetamodel.png}
+\caption{Class Diagram Meta-model}
 \label{f-classDiagramMetamodel}
 \end{center}
 \end{figure}
 
-Figure \ref{f-classDiagramMetamodel} shows the metamodel of the class diagram that Indepmod Class Notation uses. From this metamodel you can see what the Indepmod Class Notation can and what it can not to model. Main building block of whole class diagram is an Element. The Element can be a Class, an Interface or an Enumeration. Every Element has a visibility, a stereotype (which can be empty) and a name. Each Element defines a data type identified by its name. In addition to the stereotype and the name, the Element has also the list of annotations, attributes and methods.
+Figure \ref{f-classDiagramMetamodel} shows the meta-model of the class diagram that Indepmod Class Notation uses. From this meta-model you can see what the Indepmod Class Notation can and what it can not to model. Main building block of whole class diagram is an Element. The Element can be a Class, an Interface or an Enumeration. Every Element has a visibility, a stereotype (which can be empty) and a name. Each Element defines a data type identified by its name. In addition to the stereotype and the name, the Element has also the list of annotations, attributes and methods.
 
 An Attribute has a name, a visibility and represents a data type. This data type can be the data type of an Element that we have already created or it can be another else data type (like String or int data type in Java). The Attribute can also have several (or none) Annotations. A Method is also defined by a name and has a visibility. The Attributes owned by the Method represents the parameters and the data type represents what the method returns. An Annotation has a name and can have several Annotation Attributes. Each Annotation Attribute has the name and a list of values.
 

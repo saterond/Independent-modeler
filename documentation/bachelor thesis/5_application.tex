@@ -1,6 +1,6 @@
-\chapter{Architecture}
+\chapter{Application Architecture and its Implementation}
 
-In the Figure \ref{f-screenSmallModule} you can see the print screen of running application. The whole window system (window, menus, etc.) is provided by Netbeans platform. On the left side you can see the project tree, which is the standard component of Netbeans platform (frequently used e.g. in Netbeans IDE). Next to the project tree there is a workspace where user can create and manage his/her class model. On the right side there is a panel, called Tool Chooser, which is used for tool selection (tool for new class addition, etc.).
+In the Figure \ref{f-screenSmallModule} you can see the print screen of the running application. The whole window system (window, menus, etc.) is provided by Netbeans platform. On the left side (number 1) you can see the project tree, which is the standard component of Netbeans platform (frequently used e.g. in Netbeans IDE). Next to the project tree there is a workspace (number 2) where user can create and manage his/her class model. On the right side there is a panel (number 3), called Tool Chooser, which is used for tool selection (tool for new class addition, etc.).
 
 \begin{figure}[!ht]
 \begin{center}
@@ -15,7 +15,7 @@ Indepmod Class Notation plugin consists of several modules which provides its fu
 \begin{itemize}
 	\item Editor - the main module of the Indepmod Class Notation plugin. This module takes care about whole class modeling. It handles the workspace and its user interface can be seen in the Figure \ref{f-screenSmallModule} between Project Tree and Tool Chooser panels. The workspace has a JGraph inside which controls whole class modeling.
     \item API - this module provides a public API (interfaces). Implementations of these interfaces can be found (e.g. by other Netbeans plugins) in the Lookup of the workspace (part of the Editor module). This module is public so it can be used (imported as a library) by any other plugin.
-    \item Tool Chooser - allows the user to choose a tool of actual selected workspace. The user interface of the module is a panel with single tools in it (e.g. a class or a relation between classes).
+    \item Tool Chooser - allows user to choose a tool of actual selected workspace. The user interface of the module is a panel with single tools in it (e.g. a class or a relation between classes).
     \item JGraph - this module is used as a library wrap for JGraph (it allows other modules to use JGraph framework).
 \end{itemize} 
 
@@ -24,14 +24,14 @@ Figure \ref{f-Editor_ToolChooser_Components} illustrates the relation between Ed
 \begin{figure}[!ht]
 \begin{center}
 \includegraphics{img/Editor_ToolChooser_Components.png}
-\caption{Component diagram of Editor and ToolChooser Modules}
+\caption{Component diagram of Editor and ToolChooser Modules (created in Enterprise Architect)}
 \label{f-Editor_ToolChooser_Components}
 \end{center}
 \end{figure}
 
 \section{API Module}
 
-This module defines interfaces (or classes) whose implementations can be found in the lookup of the workspace (workspace is the part of the editor module). This module is public so it can be used by any other module (or any other plugin). There are two packages in this module:
+This module defines interfaces whose implementations can be found in the lookup of the workspace (workspace is the part of the editor module). Purpose of these interfaces are described in next sections. This module is public so it can be used by any other module (or any other plugin). There are two packages in this module:
 
 \begin{itemize}
     \item cz.cvut.indepmod.classmodel.api.model
@@ -41,7 +41,7 @@ This module defines interfaces (or classes) whose implementations can be found i
 \subsection{ClassModel API}
 \label{section:classModelAPI}
 
-This package contains interfaces whose implementation can be used to access the information about class model. Lookup of the workspace contains the implementation of the IClassModelModel interface. This object provides the information about the type of a model (business model / class model), list of elements from the model (IElement interface) and the picture of the model. IElement represents a class, an interface or an enumeration. Elements provides the list of annotations (IAnotation interface), attributes (IAttribute interface), methods (IMethod interface) and relations to other classes(IRelation interface). And so on with the attributes, etc. 
+This package contains interfaces whose implementation can be used to access the information about class model. Lookup of the workspace contains the implementation of the IClassModelModel interface. This object provides the information about the type of a model (business model / class model), list of elements from the model (IElement interface) and the picture of the model. IElement represents a class, an interface or an enumeration. Elements provides the list of annotations (IAnotation interface), attributes (IAttribute interface), methods (IMethod interface) and relations to other classes(IRelation interface). And so on with the attributes, etc. These interfaces represents the structure of the class model meta-model, described in section \ref{classModelMetaModel}.
 
 Relation between (two) classes is represented by instance of IRelation interface. IElement returns the list of IRelations that belongs to it. IRelation holds information about its type (simple relation, composition, agregation, generalization, implementation) and about what element is at the beginning and at the end of the relation, including cardinalities. 
 
@@ -121,12 +121,12 @@ In the layer.xml file there is set the action for opening the ToolChooser (in ru
 
 \section{Editor Module}
 
-This is the fundamental module whose purpose is to create a workspace which provides the class modeling. For graphical part of class modeling is used framework JGraph (\url{http://www.jgraph.com}). More info about JGraph framework can be found in \cite{jgraphmanual}.
+This is the fundamental module whose purpose is to create a workspace which provides the class modeling. For graphical part of class modeling is used framework JGraph (\cite{JGraphWeb}). More info about JGraph framework can be found in \cite{jgraphmanual}.
 
 \subsection{Module Structure}
 \label{section:editorModuleStructure}
 
-Main class (part of the cz.cvut.indepmod.classmodel.workspace package), which comprises the workspace, is the ClassModelWorkspace. Thus, if you want to study the code, you should start right here. ClassModelWorkspace is extended from the TopComponent. This class is responsible for whole initialization. It creates:
+Main class (part of the cz.cvut.indepmod.classmodel.workspace package), which represents the workspace, is the ClassModelWorkspace. Thus, if you want to study the code, you should start right here. ClassModelWorkspace is extended from the TopComponent. This class is responsible for whole initialization. It creates:
 \begin{itemize}
     \item ClassModelGraph - this class is extended from JGraph and represents the class model graph to the user. Instance of this class is situated inside the ClassModelWorkspace component (JGraph is also derived from JComponent)
     \item ClassModelModel - Implementation of IClassModelModel which returns the list of classes that are in the class model and the type of the diagram (class or business model). The purpose of IClassModelModel interface is described in the section \ref{section:classModelAPI}.
@@ -135,7 +135,7 @@ Main class (part of the cz.cvut.indepmod.classmodel.workspace package), which co
 
 ClassModelWorkspace is simply JComponent (TopComponent) which has the JGraph inside. JGraph presents the class model to the user. There are cells (representing classes) which are related together by edges (representing relations).
 
-In next section I will try to describe the implementation of the Editor Module. I Will start from the initialization and after that I will try to explain every part that is created during the initialization.
+In the next section I will try to describe the implementation of the Editor Module. I Will start from the initialization and after that I will try to explain every part that is created during the initialization.
 
 \subsection{Editor Module Initialisation}
 
@@ -268,12 +268,12 @@ These methods are treated as template methods so they can be overrode. The abstr
 
 The BusinessModelEditClassDialog is extended from the abstract controller and overrides methods that creates annotation and method panels. It overrides them in a way that it returns an null pointer. The abstract view compose its UI of these parts and when a part is null, it is not added there. The ClassModelEditClassDialog does not override any method because all desired functionality is done in its predecessors.
 
-These dialogs are created by an Abstract Factory. The Abstract Factory is situated in the cz.cvut.indepmod.classmodel.frames.dialogs.factory package and is called AbstractDialogFactory. It has a static method which accepts the type of the diagram and returns an instance of a concrete factory. This concrete factory creates the dialog. Please take a look at the javadoc of this project for more information about the names of methods, etc. For more information about the Abstract Factory design pattern take a look at the \cite{DesignPatterns}.
+These dialogs are created by an Abstract Factory. The Abstract Factory class is placed in the cz.cvut.indepmod.classmodel.frames.dialogs.factory package and is called AbstractDialogFactory. It has a static method which accepts the type of the diagram and returns an instance of a concrete factory. This concrete factory creates the dialog. Please take a look at the javadoc of this project for more information about the names of methods, etc. For more information about the Abstract Factory design pattern take a look at the \cite{DesignPatterns}.
 
 \subsection{Persistence}
 \label{subsection:persistence}
 
-Persistence layer implementation is situated in the cz.cvut.indepmod.classmodel.persistence.xml package. There is a ClassModelXMLCoder class that is created as a singleton. Instance of this class is responsible for encoding and decoding the ClassModelDiagramDataModel instance into or from a stream (InputStream or OutputStream). Its method for encoding, encode(ClassModelDiagramDataModel model, OutputStream stream), is called by SaveCookie (discussed in the section \ref{subsection:lookup}).
+Persistence layer implementation is situated in the cz.cvut.indepmod.classmodel.persistence.xml package. There is a ClassModelXMLCoder class that is created as a singleton. Instance of this class is responsible for encoding and decoding the ClassModelDiagramDataModel instance into or from a stream (InputStream or OutputStream). Its method for encoding, \texttt{encode(ClassModelDiagramDataModel model, OutputStream stream)}, is called by SaveCookie (discussed in the section \ref{subsection:lookup}).
 
 ClassModelXMLCoder uses java.beans.XMLEncoder and java.beans.XMLDecoder. This creates the xml file that represents the steps to create the exactly same object that was encoded. Because XMLEncoder can encode in default only some types of objects, there are some persistence delegates that allow to encode particular object I use. These persistence delegates can be found in the cz.cvut.indepmod.classmodel.persistence.xml.delegate package.
 
@@ -299,7 +299,7 @@ ToolChooserModel instance is used by ToolChooser Module to set the desired tool.
 
 ClassModelModel instance implements the IClassModelModel interface and can be also used by other plugins. It provides the Class Model API to the outside world. Thanks to this there can be for example another plugin that will generate the code from the class model of this module.
 
-When user does any change into the model (add new class, new relation between classes, change the attribute of the class or something similar), ClassModelWorkspace inserts a SaveCookie instance into its Lookup. This tells the Netbeans platform that this component is changed and can be saved (save action in File menu is enabled). When user calls this action, the SaveCookie tells the ClassModelXMLCoder to save the GraphLayoutCache into the associated file. When it is done, this SaveCookie implementation is removed from the Lookup, so the Netbeans platform knows that the component does not have to be saved.
+When user does any change in the model (add new class, new relation between classes, change the attribute of the class or something similar), ClassModelWorkspace inserts a SaveCookie instance into its Lookup. This tells the Netbeans platform that this component is changed and can be saved (save action in File menu is enabled). When user calls this action, the SaveCookie tells the ClassModelXMLCoder to save the GraphLayoutCache into the associated file. When it is done, this SaveCookie implementation is removed from the Lookup, so the Netbeans platform knows that the component does not have to be saved.
 
 \subsubsection{Lookup example}
 
@@ -334,3 +334,5 @@ public final class MyAction implements ActionListener {
     }
 }
 \end{lstlisting}
+
+On the line 16, there is a command, that loads the implementation of IClassModelModel from an active workspace. \texttt{Utilities.actionsGlobalContext()} returns the Lookup of the active workspace. Active workspace is the TopComponent which the user is working with. This Lookup instance is consequently asked to return the implementation of the IClassModelModel interface.

@@ -27,7 +27,7 @@ As it has been already said in the last paragraph, there can be relations betwee
     \item Association - this relation type defines a feature of the source class\footnote{In this chapter when I write the source or the target class, I will not mean only a class, but also an interface or an enumeration. If it is not, I will point it out.}. In the class diagram it is depicted as a solid line which leads from the source class to the target class (the target class defines the data type of the feature). The relation can be unidirectional (only source class has the pointer to the target) or bidirectional (both source and target class has the pointer to each other). The relation can also have a simple arrow defining the relation's direction (unidirectional or bidirectional). On the end of the direction (the side where the arrow is) there is the name and cardinality of the feature. You can see an association example in the Figure \ref{f-exampleAssociation}.
     \item Aggregation - defines that the target class is a part of the source class. This relation is depicted as a solid line with a blank diamond on the start (on the side where the starting/owning class is). An example of the Aggregation is shown in the Figure \ref{f-exampleAggregation}.
     \item Composition - represents stronger relation than the Aggregation. Composition tells us that when the owner object (instance of the class) is destroyed, the owned object will be destroyed as well. Composition is depicted by a solid line with a filled diamond on the start. Figure \ref{f-exampleComposition} shows an example of the Composition.
-    \item Generalization - this relation defines that source class is derived from the target class. There are some restrictions for this relation. Class can be derived only from class (not from interface) and interface can be derived again only from interface. Realisation is depicted as a solid line with a solid arrow on the end. AN example of this relation can be found in the figure \ref{f-exampleGeneralization}
+    \item Generalization - this relation defines that source class is derived from the target class. There are some restrictions for this relation. Class can be derived only from class (not from interface) and interface can be derived again only from interface. Realisation is depicted as a solid line with a solid arrow on the end. An example of this relation can be found in the figure \ref{f-exampleGeneralization}
     \item Realisation - defines that a class (not an interface) implements an interface. Realisation is shown as a dashed line with a solid arrow on the end. The example is shown in the Figure \ref{f-exampleRealisation}
 \end{itemize}
 
@@ -58,13 +58,14 @@ As it has been already said in the last paragraph, there can be relations betwee
 \end{center}
 \end{figure}
 
-\section{Meta-Model}
+\section{Meta-Model of a Class Model}
+\label{classModelMetaModel}
 
-The UML defines a notation and a meta-model. The notation is the graphical representation which can be seen in diagrams (e.g. in the class diagram). The meta-model is used to define the concepts of a language. It is represented by a diagram (very often it is a class diagram) which depicts all of its components. Meta-model is very important for developers of CASE tools because it defines the UML structure, which can be translated into the code. Person, which only creates (paints) the diagram does not need to be bothered by the existence of meta-model.
+The UML defines a notation and a meta-model. The notation is the graphical representation which can be seen in diagrams (e.g. in the class diagram). The meta-model is used to define the concepts of a model. It is represented by a diagram (very often it is a class diagram) which depicts all of its components. Meta-model is very important for developers of CASE tools because it defines the UML structure, which can be translated into the code. Person, which only creates (paints) the diagram does not need to be bothered by the existence of meta-model.
 
-The UML's meta-model is very complex and is not shown here. It depicts the UML structure on very abstract level. Due to this fact it can be quite easily extended.
+The UML's meta-model is very complex and is not shown here. It depicts the UML structure on very abstract level. Due to this fact it can be quite easily extended. For information about class model meta-model I used the information from \cite{UMLDistilled} and \cite{ArlowUML}. Some information can be found also in \cite{UMLWeb}.
 
-\section{Diagram types}
+\section{Platform Independend and Platform Specific Model}
 \label{ClassDiagramDiagramTypes}
 
 In a computer engineering, class diagram is used for both conceptual modeling (business modeling) and class modeling on platform level, which is consequently translated into a programming language (into the programming code).
@@ -82,4 +83,6 @@ The application that inspired me most was Enterprise Architect from Sparx System
 \begin{itemize}
     \item Enterprise Architect - Professional CASE tool for easy creation of UML diagrams and much more. More info in \cite{sparxsystemsweb}.
     \item ArgoUML - Open Source UML Modeling tool based on Java programming language. More info in \cite{ArgoUMLWeb}.
+    \item MagicDraw - Business process, architecture, software and system modeling tool with teamwork support. More info in \cite{MagicDrawWeb}.
+    \item StarUML - Open Source UML Modeling tool running on Win32 platform. More info in \cite{StarUMLWeb}.
 \end{itemize}
